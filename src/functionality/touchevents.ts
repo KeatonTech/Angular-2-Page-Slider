@@ -1,7 +1,7 @@
 // INTERACTIVITY - TOUCH EVENTS =============================================================
 // Handles HTML touch events and formats it nicely for 
 
-import { PageSliderControlAPI } from "./types";
+import { PageSliderControlAPI } from "../types";
 
 // Snap back if user has moved less than 10% of the page
 const kDistanceThreshold = 0.1;

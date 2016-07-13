@@ -31,9 +31,9 @@ import {
 } from '@angular/core';
 
 import { KBPagesRendererDirective, KBPage } from "./render.component";
-import { PageSliderControlAPI } from "./types";
-import { TouchEventHandler } from "./touchevents";
-import { SlideAnimation } from "./animation";
+import { PageSliderControlAPI } from "../types";
+import { TouchEventHandler } from "../functionality/touchevents";
+import { SlideAnimation } from "../functionality/animation";
 
 
 // PAGE CONTAINER DIRECTIVE =================================================================
@@ -72,7 +72,7 @@ export class KBPageSliderComponent implements PageSliderControlAPI {
 
 	// INTERFACE
 
-	@Input() set page(pn: number) {
+	@Input() public set page(pn: number) {
 		if (this.renderer) this.renderer.page = pn;
 		this.pageChange.emit(pn);
 	}

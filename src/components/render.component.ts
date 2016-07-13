@@ -3,7 +3,7 @@ import {
 	ViewContainerRef, TemplateRef, EmbeddedViewRef
 } from '@angular/core';
 
-import { StackLocation } from "./types";
+import { StackLocation } from "../types";
 
 
 // PAGE CLASS ===============================================================================
