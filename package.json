@@ -1,0 +1,20 @@
+{
+  "name": "ng2-page-slider",
+  "version": "0.5.0",
+  "description": "Mimicks the functionality of UIPageViewController in pure HTML for mobile web apps with Angular 2",
+  "main": "pageslider.component.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "Angular2",
+    "NG2",
+    "UIPageView",
+    "UIPageViewController",
+    "Pagination",
+    "Slider",
+    "Carousel"
+  ],
+  "author": "Keaton Brandt",
+  "license": "MIT"
+}
