@@ -1,15 +1,10 @@
-# Mobile Pagination Slider
-### Components for Angular 2
-#### Keaton Brandt, 2016
-*** 
-
-Mimicks the functionality of UIPageViewController in pure HTML for mobile web apps, using
+*Mimicks the functionality of UIPageViewController in pure HTML for mobile web apps, using
 DOM recycling and CSS3 transitions for near-native performance. Built with Angular 2, and
-designed to work seamlessly in normal NG2 templates.
+designed to work seamlessly in normal NG2 templates.*
 
-## API
+# API
 
-### KBPageSliderComponent (kb-page-slider)
+## KBPageSliderComponent (kb-page-slider)
 Container component for pages. Optionally includes a KBDotIndicatorComponent at the bottom.
 Handles touch events, resizing and animation.
 
@@ -26,7 +21,7 @@ Handles touch events, resizing and animation.
 	* Boolean, defaults to true
 
 
-### KBPagesRendererDirective (kbPages)
+## KBPagesRendererDirective (kbPages)
 Renders pages using DOM recycling, so only at most 3 exist on the DOM at any given time
 (previous, current, next). Modeled on ngFor, uses the exact same looping syntax.
 
@@ -43,7 +38,7 @@ These variables are available inside of kbPages, similar to ngFor loop items.
 * **isActive:** *boolean* True when the page is currently being viewed by the user.
 
 
-### KBDotIndicatorComponent (kb-dot-indicator)
+## KBDotIndicatorComponent (kb-dot-indicator)
 Indicates the current page and the total number of pages using dots, in a style popularized
 by iOS. Scrolls smoothly when the number of pages exceeds the number of dots that can fit on
 the screen. Can be used independantly of KBPageSliderComponent.
@@ -57,7 +52,7 @@ the screen. Can be used independantly of KBPageSliderComponent.
 	* Number >= 0
 
 
-## Example Usage
+# Example Usage
 
 ```html
 <kb-page-slider>
