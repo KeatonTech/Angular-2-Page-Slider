@@ -57,10 +57,30 @@ the screen. Can be used independantly of KBPageSliderComponent.
 
 # Example Usage
 
-```html
-<kb-page-slider>
-	<div *kbPages="let page of pages" class="page" [style.background]="page.color">
-		<h1>{{page.title}}</h1>
-	</div>
-</kb-page-slider>
+### Installation
 ```
+npm install --save ng2-page-slider
+```
+
+### Typescript NG2 Component
+
+```typescript
+import { Component } from '@angular/core';
+import { KBPagesRendererDirective, KBPageSliderComponent } from 'ng2-page-slider';
+
+@Component({
+	selector: 'example-component',
+	directives: [KBPagesRendererDirective, KBPageSliderComponent],
+	template: `
+		<kb-page-slider>
+			<div *kbPages="let page of pages" class="page" [style.background]="page.color">
+				<h1>{{page.title}}</h1>
+			</div>
+		</kb-page-slider>
+	`
+})
+export class ExampleComponent {}
+```
+
+*It should also be possible to use this component from JS-based NG2 apps from index.js,
+although I have not gotten the chance to test that.*
