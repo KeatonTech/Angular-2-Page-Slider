@@ -7,8 +7,10 @@ import {
 import { KBPagesRendererDirective, KBPage } from "./render.component";
 import { KBDotIndicatorComponent } from './dotindicator.component';
 import { PageSliderControlAPI } from "../types";
-import { TouchEventHandler } from "../functionality/touchevents";
 import { SlideAnimation } from "../functionality/animation";
+
+import { SideClickHandler } from "../functionality/sideclick";
+import { TouchEventHandler } from "../functionality/touchevents";
 
 
 // PAGE CONTAINER DIRECTIVE =================================================================
@@ -47,12 +49,16 @@ import { SlideAnimation } from "../functionality/animation";
 })
 export class KBPageSliderComponent implements PageSliderControlAPI {
 
-	private eventHandler : TouchEventHandler;
 	private innerContainer : HTMLElement;
+	private touchEventHandler : TouchEventHandler;
+	private sideClickHandler : SideClickHandler;
 	constructor(
 		private element: ElementRef
 	) {
-		this.eventHandler = new TouchEventHandler(this, this.element.nativeElement);
+		var htmlElement = this.element.nativeElement;
+
+		this.touchEventHandler = new TouchEventHandler(this, htmlElement);
+		this.sideClickHandler = new SideClickHandler(this, htmlElement);
 	}
 
 
@@ -68,8 +74,14 @@ export class KBPageSliderComponent implements PageSliderControlAPI {
 	public get pageCount(){return (this.renderer) ? this.renderer.pageCount : 0;}
 	@Output() pageCountChange = new EventEmitter<number>();
 
+	// Dot Indicator
 	@Input() public showIndicator : boolean = true;
 	@Input() public overlayIndicator : boolean = true;
+
+	// Interactivity
+	@Input() public set enableSideClicks(enabled: boolean) {
+		(this.sideClickHandler) ? this.sideClickHandler.enabled = enabled : null;
+	}
 
 
 	// PRIVATE VARIABLES

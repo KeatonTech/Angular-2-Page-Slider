@@ -63,6 +63,32 @@ declare module "src/components/dotindicator.component" {
         private updateSelected();
     }
 }
+declare module "src/functionality/animation" {
+    export class SlideAnimation {
+        private element;
+        private current_px;
+        private dest_px;
+        private momentum_px;
+        private on_complete;
+        then(on_complete: () => void): this;
+        constructor(element: HTMLElement, current_px: number, dest_px: number, momentum_px: number);
+        private CalculateDuration();
+    }
+}
+declare module "src/functionality/sideclick" {
+    /**
+     * When the user clicks very close to the edge of a page, move in that direction.
+     */
+    import { PageSliderControlAPI } from "src/types";
+    export class SideClickHandler {
+        private delegate;
+        private element;
+        constructor(delegate: PageSliderControlAPI, element: HTMLElement);
+        enabled: boolean;
+        threshold: number;
+        private ClickHandler(e);
+    }
+}
 declare module "src/functionality/touchevents" {
     import { PageSliderControlAPI } from "src/types";
     export class TouchEventHandler {
@@ -85,18 +111,6 @@ declare module "src/functionality/touchevents" {
         private GetTrackingTouch(list);
     }
 }
-declare module "src/functionality/animation" {
-    export class SlideAnimation {
-        private element;
-        private current_px;
-        private dest_px;
-        private momentum_px;
-        private on_complete;
-        then(on_complete: () => void): this;
-        constructor(element: HTMLElement, current_px: number, dest_px: number, momentum_px: number);
-        private CalculateDuration();
-    }
-}
 declare module "src/components/pageslider.component" {
     export { KBPagesRendererDirective, KBPage } from "src/components/render.component";
     import { EventEmitter, ElementRef } from '@angular/core';
@@ -105,8 +119,9 @@ declare module "src/components/pageslider.component" {
     import { SlideAnimation } from "src/functionality/animation";
     export class KBPageSliderComponent implements PageSliderControlAPI {
         private element;
-        private eventHandler;
         private innerContainer;
+        private touchEventHandler;
+        private sideClickHandler;
         constructor(element: ElementRef);
         page: number;
         pageChange: EventEmitter<number>;
@@ -114,6 +129,7 @@ declare module "src/components/pageslider.component" {
         pageCountChange: EventEmitter<number>;
         showIndicator: boolean;
         overlayIndicator: boolean;
+        enableSideClicks: boolean;
         private _pageOffset;
         private pageOffset;
         private pxOffset;

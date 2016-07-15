@@ -5,9 +5,9 @@
 
 const kEasingFunction = "cubic-bezier(.35,.45,.5,1)";
 const kEasingStartSlope = 1.33;
-const kDefaultDuration = 300;
+const kDefaultDuration = 250;
 const kMinDuration = 60;
-const kMaxDuration = 500;
+const kMaxDuration = 660;
 
 export class SlideAnimation {
 
@@ -62,7 +62,7 @@ export class SlideAnimation {
 		var travel_px = this.dest_px - this.current_px;
 
 		// If the momentum is going the same direction as the movement, use it!
-		if ((this.momentum_px < 0) == (travel_px < 0)) {
+		if (this.momentum_px != 0 && (this.momentum_px < 0) == (travel_px < 0)) {
 			var linear_duration = 1000 * Math.abs(travel_px) / Math.abs(this.momentum_px);
 			var estimate = linear_duration * kEasingStartSlope;
 			return Math.max(Math.min(estimate, kMaxDuration), kMinDuration);

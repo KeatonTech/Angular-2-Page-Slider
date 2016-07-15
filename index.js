@@ -311,7 +311,7 @@ System.register("src/components/dotindicator.component", ['@angular/core'], func
                         template: "\n\t\t<div *ngFor=\"let item of items\" class=\"dot\"\n\t\t\t [class.active]=\"item.active\"></div>\n\t",
                         styles: [
                             ":host {\n\t\t\tdisplay: -webkit-box;\n\t\t\tdisplay: -ms-flexbox;\n\t\t\tdisplay: flex;\n\t\t\t-webkit-box-orient: horizontal;\n\t\t\t-webkit-box-direction: normal;\n\t\t\t\t-ms-flex-direction: row;\n\t\t\t\t\tflex-direction: row;\n\t\t\t-webkit-box-pack: center;\n\t\t\t\t-ms-flex-pack: center;\n\t\t\t\t\tjustify-content: center;\n\t\t}",
-                            ".dot {\n\t\t\twidth: 7px;\n\t\t\theight: 7px;\n\t\t\tborder-radius: 3px;\n\t\t\tmargin: 0 2px;\n\t\t\tbackground: white;\n\t\t\topacity: 0.5;\n\n\t\t\ttransition: opacity 66ms linear;\n\t\t\t-webkit-transition: opacity 66ms linear;\n\t\t}",
+                            ".dot {\n\t\t\twidth: 6px;\n\t\t\theight: 6px;\n\t\t\tborder-radius: 3px;\n\t\t\tmargin: 0 2px;\n\t\t\tbackground: white;\n\t\t\topacity: 0.33;\n\n\t\t\ttransition: opacity 90ms linear;\n\t\t\t-webkit-transition: opacity 90ms linear;\n\t\t}",
                             ".dot.active {\n\t\t\topacity: 1.0;\n\t\t}",
                         ]
                     }), 
@@ -323,11 +323,121 @@ System.register("src/components/dotindicator.component", ['@angular/core'], func
         }
     }
 });
-// INTERACTIVITY - TOUCH EVENTS =============================================================
-// Handles HTML touch events and formats it nicely for 
-System.register("src/functionality/touchevents", [], function(exports_4, context_4) {
+/*
+    A special class that wraps CSS3 animations and also determines their ideal duration
+    based on momentum and distance to travel.
+*/
+System.register("src/functionality/animation", [], function(exports_4, context_4) {
     "use strict";
     var __moduleName = context_4 && context_4.id;
+    var kEasingFunction, kEasingStartSlope, kDefaultDuration, kMinDuration, kMaxDuration, SlideAnimation;
+    return {
+        setters:[],
+        execute: function() {
+            kEasingFunction = "cubic-bezier(.35,.45,.5,1)";
+            kEasingStartSlope = 1.33;
+            kDefaultDuration = 250;
+            kMinDuration = 60;
+            kMaxDuration = 660;
+            SlideAnimation = (function () {
+                // The real meat of the animation code
+                // Hard-coded to the 'left' property because that's all we use here
+                // but certainly this code could be generalized if needed.
+                function SlideAnimation(element, current_px, dest_px, momentum_px) {
+                    var _this = this;
+                    this.element = element;
+                    this.current_px = current_px;
+                    this.dest_px = dest_px;
+                    this.momentum_px = momentum_px;
+                    // Pseudo-promise
+                    this.on_complete = [];
+                    // Set up the CSS transition
+                    var duration = Math.round(this.CalculateDuration());
+                    var tProperty = "left " + duration + "ms " + kEasingFunction;
+                    element.style.transition = tProperty;
+                    element.style.webkitTransition = tProperty;
+                    // Wait for that to propogate
+                    setTimeout(function () {
+                        // Move to the destination location
+                        element.style.left = dest_px + "px";
+                        // Wait for that to finish and clean it up
+                        setTimeout(function () {
+                            for (var _i = 0, _a = _this.on_complete; _i < _a.length; _i++) {
+                                var f = _a[_i];
+                                f();
+                            }
+                            element.style.transition = "";
+                            element.style.webkitTransition = "";
+                        }, duration + 10);
+                    }, 10);
+                }
+                SlideAnimation.prototype.then = function (on_complete) {
+                    this.on_complete.push(on_complete);
+                    return this;
+                };
+                // HELPERS
+                // First step is figuring out the duration such that the starting
+                // momentum of the transition matches the user's scroll momentum.
+                // We could do this with 100% accuracy by determining the slope
+                // of the bezier easing curve but ... meh. It's about 1.5-ish.
+                SlideAnimation.prototype.CalculateDuration = function () {
+                    var travel_px = this.dest_px - this.current_px;
+                    // If the momentum is going the same direction as the movement, use it!
+                    if (this.momentum_px != 0 && (this.momentum_px < 0) == (travel_px < 0)) {
+                        var linear_duration = 1000 * Math.abs(travel_px) / Math.abs(this.momentum_px);
+                        var estimate = linear_duration * kEasingStartSlope;
+                        return Math.max(Math.min(estimate, kMaxDuration), kMinDuration);
+                    }
+                    else {
+                        return kDefaultDuration;
+                    }
+                };
+                return SlideAnimation;
+            }());
+            exports_4("SlideAnimation", SlideAnimation);
+        }
+    }
+});
+/**
+ * When the user clicks very close to the edge of a page, move in that direction.
+ */
+System.register("src/functionality/sideclick", [], function(exports_5, context_5) {
+    "use strict";
+    var __moduleName = context_5 && context_5.id;
+    var SideClickHandler;
+    return {
+        setters:[],
+        execute: function() {
+            SideClickHandler = (function () {
+                function SideClickHandler(delegate, element) {
+                    this.delegate = delegate;
+                    this.element = element;
+                    this.enabled = true;
+                    this.threshold = 20; // 20px from the edge of the screen
+                    element.addEventListener("click", this.ClickHandler.bind(this));
+                }
+                SideClickHandler.prototype.ClickHandler = function (e) {
+                    if (!this.enabled)
+                        return;
+                    var elementX = e.clientX - this.element.getBoundingClientRect().left;
+                    if (elementX < this.threshold) {
+                        this.delegate.AnimateToPreviousPage(0);
+                    }
+                    else if (elementX > this.element.offsetWidth - this.threshold) {
+                        this.delegate.AnimateToNextPage(0);
+                    }
+                };
+                return SideClickHandler;
+            }());
+            exports_5("SideClickHandler", SideClickHandler);
+        }
+    }
+});
+// INTERACTIVITY - TOUCH EVENTS =============================================================
+// Handles HTML touch events and formats it nicely for 
+System.register("src/functionality/touchevents", [], function(exports_6, context_6) {
+    "use strict";
+    var __moduleName = context_6 && context_6.id;
     var kDistanceThreshold, kMomentumThreshold, kDistanceMomentumThreshold, TouchEventHandler;
     return {
         setters:[],
@@ -404,6 +514,8 @@ System.register("src/functionality/touchevents", [], function(exports_4, context
                     var touch = this.GetTrackingTouch(event.changedTouches);
                     if (touch == null)
                         return;
+                    if (this.start_x == this.current_x)
+                        return;
                     this.tracking = null;
                     this.current_scroll = 1;
                     var ending_momentum_x = this.momentum_x;
@@ -442,94 +554,19 @@ System.register("src/functionality/touchevents", [], function(exports_4, context
                 };
                 return TouchEventHandler;
             }());
-            exports_4("TouchEventHandler", TouchEventHandler);
+            exports_6("TouchEventHandler", TouchEventHandler);
         }
     }
 });
-/*
-    A special class that wraps CSS3 animations and also determines their ideal duration
-    based on momentum and distance to travel.
-*/
-System.register("src/functionality/animation", [], function(exports_5, context_5) {
+System.register("src/components/pageslider.component", ["src/components/render.component", '@angular/core', "src/components/dotindicator.component", "src/functionality/animation", "src/functionality/sideclick", "src/functionality/touchevents"], function(exports_7, context_7) {
     "use strict";
-    var __moduleName = context_5 && context_5.id;
-    var kEasingFunction, kEasingStartSlope, kDefaultDuration, kMinDuration, kMaxDuration, SlideAnimation;
-    return {
-        setters:[],
-        execute: function() {
-            kEasingFunction = "cubic-bezier(.35,.45,.5,1)";
-            kEasingStartSlope = 1.33;
-            kDefaultDuration = 300;
-            kMinDuration = 60;
-            kMaxDuration = 500;
-            SlideAnimation = (function () {
-                // The real meat of the animation code
-                // Hard-coded to the 'left' property because that's all we use here
-                // but certainly this code could be generalized if needed.
-                function SlideAnimation(element, current_px, dest_px, momentum_px) {
-                    var _this = this;
-                    this.element = element;
-                    this.current_px = current_px;
-                    this.dest_px = dest_px;
-                    this.momentum_px = momentum_px;
-                    // Pseudo-promise
-                    this.on_complete = [];
-                    // Set up the CSS transition
-                    var duration = Math.round(this.CalculateDuration());
-                    var tProperty = "left " + duration + "ms " + kEasingFunction;
-                    element.style.transition = tProperty;
-                    element.style.webkitTransition = tProperty;
-                    // Wait for that to propogate
-                    setTimeout(function () {
-                        // Move to the destination location
-                        element.style.left = dest_px + "px";
-                        // Wait for that to finish and clean it up
-                        setTimeout(function () {
-                            for (var _i = 0, _a = _this.on_complete; _i < _a.length; _i++) {
-                                var f = _a[_i];
-                                f();
-                            }
-                            element.style.transition = "";
-                            element.style.webkitTransition = "";
-                        }, duration + 10);
-                    }, 10);
-                }
-                SlideAnimation.prototype.then = function (on_complete) {
-                    this.on_complete.push(on_complete);
-                    return this;
-                };
-                // HELPERS
-                // First step is figuring out the duration such that the starting
-                // momentum of the transition matches the user's scroll momentum.
-                // We could do this with 100% accuracy by determining the slope
-                // of the bezier easing curve but ... meh. It's about 1.5-ish.
-                SlideAnimation.prototype.CalculateDuration = function () {
-                    var travel_px = this.dest_px - this.current_px;
-                    // If the momentum is going the same direction as the movement, use it!
-                    if ((this.momentum_px < 0) == (travel_px < 0)) {
-                        var linear_duration = 1000 * Math.abs(travel_px) / Math.abs(this.momentum_px);
-                        var estimate = linear_duration * kEasingStartSlope;
-                        return Math.max(Math.min(estimate, kMaxDuration), kMinDuration);
-                    }
-                    else {
-                        return kDefaultDuration;
-                    }
-                };
-                return SlideAnimation;
-            }());
-            exports_5("SlideAnimation", SlideAnimation);
-        }
-    }
-});
-System.register("src/components/pageslider.component", ["src/components/render.component", '@angular/core', "src/components/dotindicator.component", "src/functionality/touchevents", "src/functionality/animation"], function(exports_6, context_6) {
-    "use strict";
-    var __moduleName = context_6 && context_6.id;
-    var core_3, render_component_1, dotindicator_component_1, touchevents_1, animation_1;
+    var __moduleName = context_7 && context_7.id;
+    var core_3, render_component_1, dotindicator_component_1, animation_1, sideclick_1, touchevents_1;
     var KBPageSliderComponent;
     return {
         setters:[
             function (render_component_2_1) {
-                exports_6({
+                exports_7({
                     "KBPagesRendererDirective": render_component_2_1["KBPagesRendererDirective"],
                     "KBPage": render_component_2_1["KBPage"]
                 });
@@ -541,11 +578,14 @@ System.register("src/components/pageslider.component", ["src/components/render.c
             function (dotindicator_component_1_1) {
                 dotindicator_component_1 = dotindicator_component_1_1;
             },
-            function (touchevents_1_1) {
-                touchevents_1 = touchevents_1_1;
-            },
             function (animation_1_1) {
                 animation_1 = animation_1_1;
+            },
+            function (sideclick_1_1) {
+                sideclick_1 = sideclick_1_1;
+            },
+            function (touchevents_1_1) {
+                touchevents_1 = touchevents_1_1;
             }],
         execute: function() {
             // PAGE CONTAINER DIRECTIVE =================================================================
@@ -555,13 +595,16 @@ System.register("src/components/pageslider.component", ["src/components/render.c
                     this.element = element;
                     this.pageChange = new core_3.EventEmitter();
                     this.pageCountChange = new core_3.EventEmitter();
+                    // Dot Indicator
                     this.showIndicator = true;
                     this.overlayIndicator = true;
                     // PRIVATE VARIABLES
                     this._pageOffset = 1;
                     // INTERACTION HANDLER ==================================================================
                     this.blockInteraction = false;
-                    this.eventHandler = new touchevents_1.TouchEventHandler(this, this.element.nativeElement);
+                    var htmlElement = this.element.nativeElement;
+                    this.touchEventHandler = new touchevents_1.TouchEventHandler(this, htmlElement);
+                    this.sideClickHandler = new sideclick_1.SideClickHandler(this, htmlElement);
                 }
                 Object.defineProperty(KBPageSliderComponent.prototype, "page", {
                     get: function () { return (this.renderer) ? this.renderer.page : 0; },
@@ -576,6 +619,14 @@ System.register("src/components/pageslider.component", ["src/components/render.c
                 });
                 Object.defineProperty(KBPageSliderComponent.prototype, "pageCount", {
                     get: function () { return (this.renderer) ? this.renderer.pageCount : 0; },
+                    enumerable: true,
+                    configurable: true
+                });
+                Object.defineProperty(KBPageSliderComponent.prototype, "enableSideClicks", {
+                    // Interactivity
+                    set: function (enabled) {
+                        (this.sideClickHandler) ? this.sideClickHandler.enabled = enabled : null;
+                    },
                     enumerable: true,
                     configurable: true
                 });
@@ -704,6 +755,11 @@ System.register("src/components/pageslider.component", ["src/components/render.c
                     __metadata('design:type', Boolean)
                 ], KBPageSliderComponent.prototype, "overlayIndicator", void 0);
                 __decorate([
+                    core_3.Input(), 
+                    __metadata('design:type', Boolean), 
+                    __metadata('design:paramtypes', [Boolean])
+                ], KBPageSliderComponent.prototype, "enableSideClicks", null);
+                __decorate([
                     core_3.ContentChild(render_component_1.KBPagesRendererDirective), 
                     __metadata('design:type', render_component_1.KBPagesRendererDirective)
                 ], KBPageSliderComponent.prototype, "renderer", void 0);
@@ -722,7 +778,7 @@ System.register("src/components/pageslider.component", ["src/components/render.c
                 ], KBPageSliderComponent);
                 return KBPageSliderComponent;
             }());
-            exports_6("KBPageSliderComponent", KBPageSliderComponent);
+            exports_7("KBPageSliderComponent", KBPageSliderComponent);
         }
     }
 });
@@ -751,18 +807,18 @@ System.register("src/components/pageslider.component", ["src/components/render.c
     DEALINGS IN THE SOFTWARE.
 
 */
-System.register("index", ["src/components/pageslider.component", "src/components/render.component"], function(exports_7, context_7) {
+System.register("index", ["src/components/pageslider.component", "src/components/render.component"], function(exports_8, context_8) {
     "use strict";
-    var __moduleName = context_7 && context_7.id;
+    var __moduleName = context_8 && context_8.id;
     return {
         setters:[
             function (pageslider_component_1_1) {
-                exports_7({
+                exports_8({
                     "KBPageSliderComponent": pageslider_component_1_1["KBPageSliderComponent"]
                 });
             },
             function (render_component_3_1) {
-                exports_7({
+                exports_8({
                     "KBPagesRendererDirective": render_component_3_1["KBPagesRendererDirective"]
                 });
             }],

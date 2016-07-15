@@ -20,15 +20,15 @@ import { Component, Input, Output } from '@angular/core';
 					justify-content: center;
 		}`,
 		`.dot {
-			width: 7px;
-			height: 7px;
+			width: 6px;
+			height: 6px;
 			border-radius: 3px;
 			margin: 0 2px;
 			background: white;
-			opacity: 0.5;
+			opacity: 0.33;
 
-			transition: opacity 66ms linear;
-			-webkit-transition: opacity 66ms linear;
+			transition: opacity 90ms linear;
+			-webkit-transition: opacity 90ms linear;
 		}`,
 		`.dot.active {
 			opacity: 1.0;

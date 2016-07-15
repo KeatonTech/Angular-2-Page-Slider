@@ -38,19 +38,19 @@ import { KBPagesRendererDirective, KBPageSliderComponent } from '../../index';
 export class AppComponent {
 	public pages = [
 		{
-			title: "Page One",
+			title: "Page 1",
 			color: "red"
 		},
 		{
-			title: "Page II",
+			title: "Page 2",
 			color: "green"
 		},
 		{
-			title: "Page The Third",
+			title: "Page 3",
 			color: "blue"
 		},
 		{
-			title: "Page4",
+			title: "Page 4",
 			color: "purple"
 		},
 		{
@@ -58,12 +58,12 @@ export class AppComponent {
 			color: "maroon"
 		},
 		{
-			title: "Page  6",
+			title: "Page 6",
 			color: "seagreen"
 		},
 		{
-			title: "Page   7",
-			color: "grey"
+			title: "Page 7",
+			color: "orange"
 		}
 	]
 }

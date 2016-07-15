@@ -2,6 +2,38 @@
 DOM recycling and CSS3 transitions for near-native performance. Built with Angular 2, and
 designed to work seamlessly in normal NG2 templates.**
 
+
+# Example Usage
+
+### Installation
+```
+npm install --save ng2-page-slider
+```
+
+### Typescript NG2 Component
+
+```typescript
+import { Component } from '@angular/core';
+import { KBPagesRendererDirective, KBPageSliderComponent } from 'ng2-page-slider';
+
+@Component({
+	selector: 'example-component',
+	directives: [KBPagesRendererDirective, KBPageSliderComponent],
+	template: `
+		<kb-page-slider>
+			<div *kbPages="let page of pages" class="page" [style.background]="page.color">
+				<h1>{{page.title}}</h1>
+			</div>
+		</kb-page-slider>
+	`
+})
+export class ExampleComponent {}
+```
+
+*It should also be possible to use this component from JS-based NG2 apps from index.js,
+although I have not gotten the chance to test that.*
+
+
 # API
 
 ## KBPageSliderComponent (kb-page-slider)
@@ -20,6 +52,9 @@ Handles touch events, resizing and animation.
 	* Input property
 	* Boolean, defaults to true
 * **overlayIndicator:** When true, renders indicator above the page content.
+	* Input property
+	* Boolean, defaults to true
+* **enableSideClicks:** When true, clicking near the edge of a page will cause page navigation.
 	* Input property
 	* Boolean, defaults to true
 
@@ -53,34 +88,3 @@ the screen. Can be used independantly of KBPageSliderComponent.
 * **pageCount:** Total number of pages, determined by KBPagesRendererDirective.
 	* Input property
 	* Number >= 0
-
-
-# Example Usage
-
-### Installation
-```
-npm install --save ng2-page-slider
-```
-
-### Typescript NG2 Component
-
-```typescript
-import { Component } from '@angular/core';
-import { KBPagesRendererDirective, KBPageSliderComponent } from 'ng2-page-slider';
-
-@Component({
-	selector: 'example-component',
-	directives: [KBPagesRendererDirective, KBPageSliderComponent],
-	template: `
-		<kb-page-slider>
-			<div *kbPages="let page of pages" class="page" [style.background]="page.color">
-				<h1>{{page.title}}</h1>
-			</div>
-		</kb-page-slider>
-	`
-})
-export class ExampleComponent {}
-```
-
-*It should also be possible to use this component from JS-based NG2 apps from index.js,
-although I have not gotten the chance to test that.*

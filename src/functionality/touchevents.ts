@@ -86,6 +86,7 @@ export class TouchEventHandler {
 	public TouchEnd(event: TouchEvent) {
 		var touch = this.GetTrackingTouch(event.changedTouches);
 		if (touch == null) return;
+		if (this.start_x == this.current_x) return;
 		this.tracking = null;
 		this.current_scroll = 1;
 		var ending_momentum_x = this.momentum_x;
