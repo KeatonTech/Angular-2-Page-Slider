@@ -1,4 +1,4 @@
-declare module "types" {
+declare module "src/types" {
     export enum StackLocation {
         Previous = 0,
         Current = 1,
@@ -13,9 +13,9 @@ declare module "types" {
         pageHeight: number;
     }
 }
-declare module "components/render.component" {
+declare module "src/components/render.component" {
     import { ViewContainerRef, TemplateRef } from '@angular/core';
-    import { StackLocation } from "types";
+    import { StackLocation } from "src/types";
     export class KBPage {
         $implicit: any;
         index: number;
@@ -52,8 +52,19 @@ declare module "components/render.component" {
         private GoToPreviousPage();
     }
 }
-declare module "functionality/touchevents" {
-    import { PageSliderControlAPI } from "types";
+declare module "src/components/dotindicator.component" {
+    export class KBDotIndicatorComponent {
+        private _page;
+        private _pageCount;
+        page: number;
+        pageCount: number;
+        private items;
+        private updateItems();
+        private updateSelected();
+    }
+}
+declare module "src/functionality/touchevents" {
+    import { PageSliderControlAPI } from "src/types";
     export class TouchEventHandler {
         private delegate;
         private element;
@@ -74,7 +85,7 @@ declare module "functionality/touchevents" {
         private GetTrackingTouch(list);
     }
 }
-declare module "functionality/animation" {
+declare module "src/functionality/animation" {
     export class SlideAnimation {
         private element;
         private current_px;
@@ -86,12 +97,12 @@ declare module "functionality/animation" {
         private CalculateDuration();
     }
 }
-declare module "components/pageslider.component" {
-    export { KBPagesRendererDirective, KBPage } from "components/render.component";
+declare module "src/components/pageslider.component" {
+    export { KBPagesRendererDirective, KBPage } from "src/components/render.component";
     import { EventEmitter, ElementRef } from '@angular/core';
-    import { KBPagesRendererDirective } from "components/render.component";
-    import { PageSliderControlAPI } from "types";
-    import { SlideAnimation } from "functionality/animation";
+    import { KBPagesRendererDirective } from "src/components/render.component";
+    import { PageSliderControlAPI } from "src/types";
+    import { SlideAnimation } from "src/functionality/animation";
     export class KBPageSliderComponent implements PageSliderControlAPI {
         private element;
         private eventHandler;
@@ -101,6 +112,8 @@ declare module "components/pageslider.component" {
         pageChange: EventEmitter<number>;
         pageCount: number;
         pageCountChange: EventEmitter<number>;
+        showIndicator: boolean;
+        overlayIndicator: boolean;
         private _pageOffset;
         private pageOffset;
         private pxOffset;
@@ -118,7 +131,7 @@ declare module "components/pageslider.component" {
         ClampX(x: number): number;
     }
 }
-declare module "main" {
-    export { KBPageSliderComponent } from "components/pageslider.component";
-    export { KBPagesRendererDirective } from "components/render.component";
+declare module "pageslider" {
+    export { KBPageSliderComponent } from "src/components/pageslider.component";
+    export { KBPagesRendererDirective } from "src/components/render.component";
 }

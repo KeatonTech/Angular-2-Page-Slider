@@ -1,29 +1,3 @@
-/*
-
-	ANGULAR 2 PAGE SLIDER COMPONENT
-	with DOM recycling and caching
-	designed for mobile devices
-
-	Copyright (c) 2016 Keaton Brandt
-
-	Permission is hereby granted, free of charge, to any person obtaining a copy of this
-	software and associated documentation files (the "Software"), to deal in the Software
-	without restriction, including without limitation the rights to use, copy, modify, merge,
-	publish, distribute, sublicense, and/or sell copies of the Software, and to permit
-	persons to whom the Software is furnished to do so, subject to the following conditions:
-
-	The above copyright notice and this permission notice shall be included in all copies or
-	substantial portions of the Software.
-
-	THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,
-	INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR
-	PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE
-	FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
-	OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
-	DEALINGS IN THE SOFTWARE.
-
-*/
-
 export { KBPagesRendererDirective, KBPage } from "./render.component";
 
 import {
@@ -31,6 +5,7 @@ import {
 } from '@angular/core';
 
 import { KBPagesRendererDirective, KBPage } from "./render.component";
+import { KBDotIndicatorComponent } from './dotindicator.component';
 import { PageSliderControlAPI } from "../types";
 import { TouchEventHandler } from "../functionality/touchevents";
 import { SlideAnimation } from "../functionality/animation";
@@ -41,11 +16,17 @@ import { SlideAnimation } from "../functionality/animation";
 
 @Component({
 	selector: 'kb-page-slider',
+	directives: [KBDotIndicatorComponent],
 	template: `
 		<div class="inner" 
-			[style.width]="containerWidth" [style.height]="containerHeight">
+				[style.width]="containerWidth"
+				[style.height]="containerHeight">
 			<ng-content></ng-content>
-		<div>
+		</div>
+		<kb-dot-indicator *ngIf="showIndicator"
+				[page]="page"
+				[pageCount]="pageCount">
+		</kb-dot-indicator>
 	`,
 	styles: [
 		`:host {
@@ -56,6 +37,11 @@ import { SlideAnimation } from "../functionality/animation";
 			position: absolute;
 			top: 0;
 			will-change: left;
+		}`,
+		`kb-dot-indicator {
+			position: absolute;
+			bottom: 16px;
+			width: 100%;
 		}`
 	]
 })
@@ -81,7 +67,10 @@ export class KBPageSliderComponent implements PageSliderControlAPI {
 
 	public get pageCount(){return (this.renderer) ? this.renderer.pageCount : 0;}
 	@Output() pageCountChange = new EventEmitter<number>();
-	
+
+	@Input() public showIndicator : boolean = true;
+	@Input() public overlayIndicator : boolean = true;
+
 
 	// PRIVATE VARIABLES
 
@@ -101,7 +90,10 @@ export class KBPageSliderComponent implements PageSliderControlAPI {
 	public get pageWidth() {return this.element.nativeElement.offsetWidth;}
 	public get pageHeight() {return this.element.nativeElement.offsetHeight;}
 	private get containerWidth() {return this.pageWidth * 3 + "px";}
-	private get containerHeight() {return this.pageHeight + "px";}
+	private get containerHeight() {
+		var chin = (this.showIndicator && !this.overlayIndicator) ? 40 : 0;
+		return (this.pageHeight - chin) + "px";
+	}
 
 
 	// LIFECYCLE METHODS

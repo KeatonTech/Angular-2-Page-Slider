@@ -3,9 +3,14 @@
   "version": "0.5.0",
   "description": "Mimicks the functionality of UIPageViewController in pure HTML for mobile web apps with Angular 2",
   "repository": "https://github.com/KeatonTech/Angular-2-Page-Slider",
-  "main": "pageslider.js",
+  "main": "pageslider.ts",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "tsc -d",
+    "watch": "tsc -d -w",
+    "examples": "concurrently \"npm run watch\" \"npm run watchExamples\" \"npm run serveExamples\"",
+    "serveExamples": "live-server --entry-file=./examples/index.html",
+    "buildExamples": "tsc -p ./examples",
+    "watchExamples": "tsc -w -p ./examples"
   },
   "keywords": [
     "Angular2",
@@ -19,20 +24,21 @@
   ],
   "author": "Keaton Brandt",
   "license": "MIT",
-  "devDependencies": {
+  "dependencies": {
     "@angular/common": "2.0.0-rc.4",
     "@angular/compiler": "2.0.0-rc.4",
     "@angular/core": "2.0.0-rc.4",
     "@angular/platform-browser": "2.0.0-rc.4",
-    "@angular/platform-browser-dynamic": "2.0.0-rc.4",
+    "@angular/platform-browser-dynamic": "2.0.0-rc.4"
+  },
+  "devDependencies": {
     "systemjs": "0.19.27",
     "core-js": "^2.4.0",
     "reflect-metadata": "^0.1.3",
     "rxjs": "5.0.0-beta.6",
     "zone.js": "^0.6.12",
     "concurrently": "^2.0.0",
-    "lite-server": "^2.2.0",
-    "typescript": "^1.8.10",
-    "typings":"^1.0.4"
+    "live-server": "1.0.0",
+    "typescript": "^1.8.10"
   }
 }

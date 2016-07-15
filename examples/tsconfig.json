@@ -8,9 +8,6 @@
     "experimentalDecorators": true,
     "removeComments": false,
     "noImplicitAny": false,
-    "outFile": "pageslider.js"
-  },
-  "files": [
-    "pageslider.ts"
-  ]
+    "outFile": "./build.js"
+  }
 }

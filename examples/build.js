@@ -770,3 +770,74 @@ System.register("pageslider", ["src/components/pageslider.component", "src/compo
         }
     }
 });
+System.register("examples/mobile/app", ['@angular/core', '@angular/platform-browser-dynamic', "pageslider"], function(exports_8, context_8) {
+    "use strict";
+    var __moduleName = context_8 && context_8.id;
+    var core_4, platform_browser_dynamic_1, pageslider_1;
+    var AppComponent;
+    return {
+        setters:[
+            function (core_4_1) {
+                core_4 = core_4_1;
+            },
+            function (platform_browser_dynamic_1_1) {
+                platform_browser_dynamic_1 = platform_browser_dynamic_1_1;
+            },
+            function (pageslider_1_1) {
+                pageslider_1 = pageslider_1_1;
+            }],
+        execute: function() {
+            AppComponent = (function () {
+                function AppComponent() {
+                    this.pages = [
+                        {
+                            title: "Page One",
+                            color: "red"
+                        },
+                        {
+                            title: "Page II",
+                            color: "green"
+                        },
+                        {
+                            title: "Page The Third",
+                            color: "blue"
+                        },
+                        {
+                            title: "Page4",
+                            color: "purple"
+                        },
+                        {
+                            title: "Page 5",
+                            color: "maroon"
+                        },
+                        {
+                            title: "Page  6",
+                            color: "seagreen"
+                        },
+                        {
+                            title: "Page   7",
+                            color: "grey"
+                        }
+                    ];
+                }
+                AppComponent = __decorate([
+                    core_4.Component({
+                        selector: 'mobile-example-app',
+                        directives: [pageslider_1.KBPagesRendererDirective, pageslider_1.KBPageSliderComponent],
+                        template: "\n\t\t<kb-page-slider>\n\t\t\t<div *kbPages=\"let page of pages\" class=\"page\" [style.background]=\"page.color\">\n\t\t\t\t<h1>{{page.title}}</h1>\n\t\t\t</div>\n\t\t</kb-page-slider>\n\t",
+                        styles: [
+                            ":host {\n\t\t\tposition: relative;\n\t\t\tdisplay: block;\n\t\t\twidth: 100%;\n\t\t\theight: 100%;\n\t\t}",
+                            "kb-page-slider {\n\t\t\tposition: absolute;\n\t\t\ttop: 0;\n\t\t\tbottom: 0;\n\t\t\tleft: 0;\n\t\t\tright: 0;\n\t\t}",
+                            ".page {\n\t\t\tpadding: 15px 5px;\n\t\t\ttext-align: center;\n\t\t}"
+                        ]
+                    }), 
+                    __metadata('design:paramtypes', [])
+                ], AppComponent);
+                return AppComponent;
+            }());
+            exports_8("AppComponent", AppComponent);
+            // Angular Bootstrap
+            platform_browser_dynamic_1.bootstrap(AppComponent);
+        }
+    }
+});

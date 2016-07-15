@@ -1,6 +1,38 @@
-<!DOCTYPE HTML>
+<!doctype html>
 <html>
-<head>
-	<title>Mobile Page Slider</title>
-</head>
+  <head>
+    <!-- HTML Meta -->
+    <title>Mobile Page Slider Example</title>
+    <meta charset="UTF-8">
+    <base href="./">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="./style.css"></link>
+
+    <!-- Javascript Libraries -->
+    <script src="/node_modules/core-js/client/shim.min.js"></script>
+    <script src="/node_modules/zone.js/dist/zone.js"></script>
+    <script src="/node_modules/reflect-metadata/Reflect.js"></script>
+    <script src="/node_modules/systemjs/dist/system.src.js"></script>
+
+	<!-- Configure Module Resolution -->
+	<script src="../systemjs.config.js"></script>
+
+	<!-- Example App Code -->
+	<script src="../build.js"></script>
+
+    <!-- AMD Module Importing -->
+    <script>
+		window.onload = function(){
+			System.import('examples/mobile/app').then(null, function(err){
+				console.error(err);
+			});
+		}
+    </script>
+
+  </head>
+  <body>
+
+    <!-- Let's go -->
+    <mobile-example-app>Loading...</mobile-example-app>
+  </body>
 </html>

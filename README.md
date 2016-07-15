@@ -1,6 +1,6 @@
-*Mimicks the functionality of UIPageViewController in pure HTML for mobile web apps, using
+**Mimicks the functionality of UIPageViewController in pure HTML for mobile web apps, using
 DOM recycling and CSS3 transitions for near-native performance. Built with Angular 2, and
-designed to work seamlessly in normal NG2 templates.*
+designed to work seamlessly in normal NG2 templates.**
 
 # API
 
@@ -8,7 +8,7 @@ designed to work seamlessly in normal NG2 templates.*
 Container component for pages. Optionally includes a KBDotIndicatorComponent at the bottom.
 Handles touch events, resizing and animation.
 
-#### Properties
+### Properties
 * **page:** Current page number, zero-based index.
 	* Input property, allows two-way data binding
 	* Must be a number 0 <= page < pageCount
@@ -17,6 +17,9 @@ Handles touch events, resizing and animation.
 	* *Read-only* instance property
 	* Number >= 0
 * **showIndicator:** When true, includes a dot indicator at the bottom.
+	* Input property
+	* Boolean, defaults to true
+* **overlayIndicator:** When true, renders indicator above the page content.
 	* Input property
 	* Boolean, defaults to true
 
@@ -29,7 +32,7 @@ Renders pages using DOM recycling, so only at most 3 exist on the DOM at any giv
 instead of a loop over a set of data. It'd work but, in the future it might be good to add
 an alternative directive for that use case.*
 
-#### Provided Loop Variables
+### Provided Loop Variables
 These variables are available inside of kbPages, similar to ngFor loop items.
 
 * **index:** *number* Zero-based index of the current page.
@@ -43,7 +46,7 @@ Indicates the current page and the total number of pages using dots, in a style 
 by iOS. Scrolls smoothly when the number of pages exceeds the number of dots that can fit on
 the screen. Can be used independantly of KBPageSliderComponent.
 
-#### Properties
+### Properties
 * **page:** Current page number, zero-based index.
 	* Input property
 	* Must be a number 0 <= page < pageCount
