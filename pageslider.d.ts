@@ -131,7 +131,7 @@ declare module "src/components/pageslider.component" {
         ClampX(x: number): number;
     }
 }
-declare module "pageslider" {
+declare module "index" {
     export { KBPageSliderComponent } from "src/components/pageslider.component";
     export { KBPagesRendererDirective } from "src/components/render.component";
 }

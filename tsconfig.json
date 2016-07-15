@@ -11,6 +11,6 @@
     "outFile": "pageslider.js"
   },
   "files": [
-    "pageslider.ts"
+    "index.ts"
   ]
 }
