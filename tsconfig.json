@@ -8,7 +8,7 @@
     "experimentalDecorators": true,
     "removeComments": false,
     "noImplicitAny": false,
-    "outFile": "pageslider.js"
+    "outFile": "index.js"
   },
   "files": [
     "index.ts"

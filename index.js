@@ -751,7 +751,7 @@ System.register("src/components/pageslider.component", ["src/components/render.c
     DEALINGS IN THE SOFTWARE.
 
 */
-System.register(["src/components/pageslider.component", "src/components/render.component"], function(exports_7, context_7) {
+System.register("index", ["src/components/pageslider.component", "src/components/render.component"], function(exports_7, context_7) {
     "use strict";
     var __moduleName = context_7 && context_7.id;
     return {
