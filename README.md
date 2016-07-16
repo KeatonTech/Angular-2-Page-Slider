@@ -30,9 +30,6 @@ import { KBPagesRendererDirective, KBPageSliderComponent } from 'ng2-page-slider
 	`
 })
 export class ExampleComponent {
-	public pageNumber : number = 0;
-	public pageCount : number = 0;
-	
 	public pages = [
 		{title: "Page 1", color: "red"},
 		{title: "Page 2", color: "green"}
@@ -71,6 +68,8 @@ import {
 	`
 })
 export class ExampleComponent {
+	public pageNumber : number = 0;
+	public pageCount : number = 0;
 	public pages = [
 		{image: "http://asset.url/1.png"},
 		{image: "http://asset.url/2.png"}
