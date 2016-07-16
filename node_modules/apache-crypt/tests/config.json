@@ -1,0 +1,152 @@
+{
+	"keys":	{
+			    "md5": ["","pa55w0rd","passw0rdpa55word","pa55wordpassw0rdabcd1234"],
+			    "sha256": ["","password01234567","password01234567abcdefgh01234567","passwordabcdefgh0123456789ijklmnopqrstuv2356489"],
+			    "sha512": [
+			                "",
+			                "password01234567abcdefgh01234567",
+			                "passwordabcdefgh0123456789ijklmnopqrstuvpasswordabcdefgh0123456789ijklmnopqrstuv",
+			                "passwordabcdefgh0123456789ijklmnopqrstuvpasswordabcdefgh0123456789ijklmnopqrstuvasd0562185as"
+			            ], 
+			    "des": ["","pa55","pa55w0rd","pa55w0rd123abc"]
+			},
+
+	"salts": {
+			    "md5_1": ["$1$","$1$abc123","$1$0123abcd","$1$0123abcd0a0a"],
+			    "md5_apr1": ["$apr1$","$apr1$abc123","$apr1$0123abcd","$apr1$0123abcd0a0a"],
+			    "sha256": ["$5$","$5$abc123","$5$0123456789ABCDEF","$5$0123456789ABCDEFGHIJK"],
+			    "sha512": ["$6$","$6$abc123","$6$0123456789ABCDEF","$6$0123456789ABCDEFGHIJK"],
+			    "des": ["","x","0x","0x0x"]
+			},
+
+	"results":	[
+                    [
+                        [
+                            "$1$$qRPK7m23GJusamGpoGLby/",
+                            "$1$abc123$2VbVI5i1XZg7rtdYYM/Nb0",
+                            "$1$0123abcd$Lvei9DWqWTBduDaJrXFIP1",
+                            "$1$0123abcd$Lvei9DWqWTBduDaJrXFIP1"
+                        ],
+                        [
+                            "$apr1$$J/S5FGXXjRRxbhIznTb/E1",
+                            "$apr1$abc123$Bh8P6qbbqc9YrAOT/3lIL/",
+                            "$apr1$0123abcd$5CfKTUzx/RwoJidpYir71/",
+                            "$apr1$0123abcd$5CfKTUzx/RwoJidpYir71/"
+                        ],
+                        [
+                            "$5$$3c2QQ0KjIU1OLtB29cl8Fplc2WN7X89bnoEjaR7tWu.",
+                            "$5$abc123$OwsBcjerToUNLi0Y1o4SKi70JM90dSbsutY4qDfYdS6",
+                            "$5$0123456789ABCDEF$2uaA7kdIqnF6Rfzm691bP2ob0tAzcxXQp1CouLhKlA6",
+                            "$5$0123456789ABCDEF$2uaA7kdIqnF6Rfzm691bP2ob0tAzcxXQp1CouLhKlA6"
+                        ],
+                        [
+                            "$6$$/chiBau24cE26QQVW3IfIe68Xu5.JQ4E8Ie7lcRLwqxO5cxGuBhqF2HmTL.zWJ9zjChg3yJYFXeGBQ2y3Ba1d1",
+                            "$6$abc123$owTH8S3QlG7WYxhEpTU7zordxdvYfobfNBCfDH/Hox1xuUOkCBqHGZeHPsQ45.Ne09BhhptydkK/HplXN0EvN.",
+                            "$6$0123456789ABCDEF$4o9J2On3D7cK8GwnNz62KWS8qlR3CPqPSt6q.wKwb4rO9hfZyyVeD3HWTwaL9OzeLSryfdT/UwMzIPlbiYGDb0",
+                            "$6$0123456789ABCDEF$4o9J2On3D7cK8GwnNz62KWS8qlR3CPqPSt6q.wKwb4rO9hfZyyVeD3HWTwaL9OzeLSryfdT/UwMzIPlbiYGDb0"
+                        ],
+                        [
+                            "kPUVFs/vNo6nc",
+                            "xx95eIq3U1EUg",
+                            "0xrepdrFZTycI",
+                            "0xrepdrFZTycI"
+                        ]
+                    ],
+                    [
+                        [
+                            "$1$$fMlonEobSO6/BRZpGbF3w/",
+                            "$1$abc123$SUWV0qVDyrE0pSmiS/LmY1",
+                            "$1$0123abcd$a3epN.8/R6kFcY51imwyK0",
+                            "$1$0123abcd$a3epN.8/R6kFcY51imwyK0"
+                        ],
+                        [
+                            "$apr1$$Jg4UdRvZghX/tiddB9lzj1",
+                            "$apr1$abc123$JzzdbctpEpBNRWS4PI1s6/",
+                            "$apr1$0123abcd$o/WPHqisOc0Iu3EalqFDH.",
+                            "$apr1$0123abcd$o/WPHqisOc0Iu3EalqFDH."
+                        ],
+                        [
+                            "$5$$wrtR632.w1XhJX7S4EMlrrdNNx4aZzk4bgXT79Ntlt1",
+                            "$5$abc123$r.BcBi2tezOYCfLezxthY5LvUikzz6NX6YIY1hs3GbD",
+                            "$5$0123456789ABCDEF$0gyP.qZq6gzj93Xcxveqz7GW2zOA.ztgEf2C4.M2Hk5",
+                            "$5$0123456789ABCDEF$0gyP.qZq6gzj93Xcxveqz7GW2zOA.ztgEf2C4.M2Hk5"
+                        ],
+                        [
+                            "$6$$wNA9ozJzxXxhAdjVSnUtm6ZD97tjOp9K2EtAbxEpGHcbEPI9V5wIAYtHtcFG5Nat7RKytEB9VKTtOo0VZUBlJ/",
+                            "$6$abc123$yPSRVcpcITPtG2zUkazH0hDkFL82omb9fqBGsnnLUGN4BYo0Kw3bPTr/wMQ5kD2L.lWGcYPzWY2MNgs/S.L48.",
+                            "$6$0123456789ABCDEF$rUt4BKR7RJ5GDMDFV..lFvlMm4csUwqBR9wybwM3azfH1x/jlSFiBPafHElIJJVzr7sQ/nIkD92pDDdxkG6/C0",
+                            "$6$0123456789ABCDEF$rUt4BKR7RJ5GDMDFV..lFvlMm4csUwqBR9wybwM3azfH1x/jlSFiBPafHElIJJVzr7sQ/nIkD92pDDdxkG6/C0"
+                        ],
+                        [
+                            "ea6WshT2vVO.Q",
+                            "xxCiip2Fw2xZc",
+                            "0xpu3CXIvCe7Q",
+                            "0xpu3CXIvCe7Q"
+                        ]
+                    ],
+                    [
+                        [
+                            "$1$$fnxE0BZI7JuCXcpJlWeVJ0",
+                            "$1$abc123$darreLah.NjTZylGm0djN.",
+                            "$1$0123abcd$IW4Otv7NAvTzF2op9Dr9o/",
+                            "$1$0123abcd$IW4Otv7NAvTzF2op9Dr9o/"
+                        ],
+                        [
+                            "$apr1$$qLpCEp5.u5ipetKxv5KaZ/",
+                            "$apr1$abc123$OiZjG0D2SIrJzCfuYGeU10",
+                            "$apr1$0123abcd$Jm96de5jitTXQjkUhE7gc1",
+                            "$apr1$0123abcd$Jm96de5jitTXQjkUhE7gc1"
+                        ],
+                        [
+                            "$5$$Uoh6ZPqcnfeu2iZWg4bFSV6yGv023s/zLlQ4JD5A.L5",
+                            "$5$abc123$4jrphCRlffGIKOyqeRbZIN5nNzibKUnXs7HU2GXP1Z1",
+                            "$5$0123456789ABCDEF$E2sajIXG3eCdxMOQpe90etKGuTPeLD.LqjeRnC47AW1",
+                            "$5$0123456789ABCDEF$E2sajIXG3eCdxMOQpe90etKGuTPeLD.LqjeRnC47AW1"
+                        ],
+                        [
+                            "$6$$DC.uYsvohHzEoko/cMiCGtsniVZ9zm915WL0ovTUeNgIimWJ5aC4y83JGPh9VAAZ2WILVMT8VzlStPuAEsTR31",
+                            "$6$abc123$lFy2wzP/xJw8VKG9Y35OvEAN4DAK4/BS5maXZ32qDMIdcCBOchXjC6hdZTqG01YXzDsLxWMVVV9WizBxJm09r0",
+                            "$6$0123456789ABCDEF$rJGm2f2/WNzg4BHvmRJ2BQTtT0qn/7dKNvrPCvu3UV9e0gK7W3gcNHJr/650JNSKKxpRl145K4cjvMse1Y9Xe1",
+                            "$6$0123456789ABCDEF$rJGm2f2/WNzg4BHvmRJ2BQTtT0qn/7dKNvrPCvu3UV9e0gK7W3gcNHJr/650JNSKKxpRl145K4cjvMse1Y9Xe1"
+                        ],
+                        [
+                            "eqkZAOkfzT1L6",
+                            "xxoTSGn6WK4FM",
+                            "0xYq3Lo.HE/Ak",
+                            "0xYq3Lo.HE/Ak"
+                        ]
+                    ],
+                    [
+                        [
+                            "$1$$BRZk3sY2RWwbyxTwkst8v/",
+                            "$1$abc123$lddn6Bl1qn5PHBJObBBqu/",
+                            "$1$0123abcd$9lPd9o86HLnXaiGK5UuGy/",
+                            "$1$0123abcd$9lPd9o86HLnXaiGK5UuGy/"
+                        ],
+                        [
+                            "$apr1$$aoNlaPNpADdo6kcea/X1l0",
+                            "$apr1$abc123$nob6rw1OTSqlRKfTBUgvD/",
+                            "$apr1$0123abcd$82OS4S.UL5b7fb0mspMTX0",
+                            "$apr1$0123abcd$82OS4S.UL5b7fb0mspMTX0"
+                        ],
+                        [
+                            "$5$$Zrg8F2JSfo56J3uFH1TyLPSOx.KgBe4gbZTpjK5oQU1",
+                            "$5$abc123$bclPx7YDBGaA0KOpWZNl9HiJZph3v6aud7GxwbKHb5A",
+                            "$5$0123456789ABCDEF$8gnxo1/NNFBiw2lLx5i5ASnpXgl71Kl0PL.5uC1sKQ8",
+                            "$5$0123456789ABCDEF$8gnxo1/NNFBiw2lLx5i5ASnpXgl71Kl0PL.5uC1sKQ8"
+                        ],
+                        [
+                            "$6$$jfnCpimtChsoQ0uloyDPxJifLfAcxLcp3x5mLI4BbkO3DZrf50Kqhw1Ezi2uVu.DlauZDxpuLQkMTCBEYhwfl1",
+                            "$6$abc123$PXWXd5UTe7LVVd5WCBn72HEH9xzl0BYZRwNuGfGnSoIQvPXh3LCs/Uq4jH9pjhk/.aoiULCeIjxLVx51OLxYE0",
+                            "$6$0123456789ABCDEF$9KZEhOaxjAJRYHcmM/AH5i3f64PLRqX5y66/GMRYPgFqdI7W1psmoGhdInW5eaIIt45moiKq0mG9Svy0Mkxhx/",
+                            "$6$0123456789ABCDEF$9KZEhOaxjAJRYHcmM/AH5i3f64PLRqX5y66/GMRYPgFqdI7W1psmoGhdInW5eaIIt45moiKq0mG9Svy0Mkxhx/"
+                        ],
+                        [
+                            "x9dK6qqDDCTXA",
+                            "xxoTSGn6WK4FM",
+                            "0xYq3Lo.HE/Ak",
+                            "0xYq3Lo.HE/Ak"
+                        ]
+                    ]
+                ]
+}
