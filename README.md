@@ -27,7 +27,12 @@ import { KBPagesRendererDirective, KBPageSliderComponent } from 'ng2-page-slider
 		</kb-page-slider>
 	`
 })
-export class ExampleComponent {}
+export class ExampleComponent {
+	public pages = [
+		{title: "Page 1", color: "red"},
+		{title: "Page 2", color: "green"}
+	];
+}
 ```
 
 *It should also be possible to use this component from JS-based NG2 apps from index.js,
