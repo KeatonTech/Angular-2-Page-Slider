@@ -7,6 +7,11 @@
   var map = {
     'examples/mobile/app':          '/examples/build.js',
     '@angular':                     '../../node_modules/@angular',
+    '@angular/common':              '../../node_modules/@angular/common',
+    '@angular/core':                '../../node_modules/@angular/core',
+    '@angular/compiler':            '../../node_modules/@angular/compiler',
+    '@angular/platform-browser':    '../../node_modules/@angular/platform-browser',
+    '@angular/platform-browser-dynamic': '../../node_modules/@angular/platform-browser-dynamic',
     'angular2-in-memory-web-api':   '../../node_modules/angular2-in-memory-web-api',
     'rxjs':                         '../../node_modules/rxjs'
   };
