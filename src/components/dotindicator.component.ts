@@ -4,6 +4,7 @@ import { Component, Input, Output } from '@angular/core';
 	selector: 'kb-dot-indicator',
 	template: `
 		<div *ngFor="let item of items" class="dot"
+			 [style.background]="dotColor"
 			 [class.active]="item.active"></div>
 	`,
 	styles: [
@@ -24,7 +25,6 @@ import { Component, Input, Output } from '@angular/core';
 			height: 6px;
 			border-radius: 3px;
 			margin: 0 2px;
-			background: white;
 			opacity: 0.33;
 
 			transition: opacity 90ms linear;
@@ -50,6 +50,8 @@ export class KBDotIndicatorComponent {
 		this._pageCount = p;
 		this.updateItems();
 	}
+
+	@Input() dotColor : string = "white";
 
 
 	// DATA REPRESENTATION

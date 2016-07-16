@@ -60,9 +60,13 @@ export class KBPagesRendererDirective {
 	// PAGINATION
 
 	// Calculate page count from the loop
+	private _lastPageCount : number;
 	public get pageCount() {
-		return (this.collection) ? this.collection.length : 0;
+		var count = (this.collection) ? this.collection.length : 0;
+		if (this._lastPageCount != count) this.pageCountChange.emit(count);
+		return count;
 	}
+	public pageCountChange = new EventEmitter<number>();
 
 	// Page access
 	private _page: number = 0;

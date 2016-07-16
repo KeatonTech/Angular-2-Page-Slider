@@ -2,7 +2,7 @@
 <html>
   <head>
     <!-- HTML Meta -->
-    <title>Mobile Page Slider Example</title>
+    <title>Hero Page Slider Example</title>
     <meta charset="UTF-8">
     <base href="./">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -20,19 +20,19 @@
 	<!-- Example App Code -->
 	<script src="../build.js"></script>
 
-    <!-- AMD Module Importing -->
-    <script>
-		window.onload = function(){
-			System.import('examples/mobile/app').then(null, function(err){
-				console.error(err);
-			});
-		}
-    </script>
+  <!-- AMD Module Importing -->
+  <script>
+  window.onload = function(){
+    System.import('examples/hero/app').then(null, function(err){
+      console.error(err);
+    });
+  }
+  </script>
 
   </head>
   <body>
 
     <!-- Let's go -->
-    <mobile-example-app>Loading...</mobile-example-app>
+    <hero-example-app>Loading...</hero-example-app>
   </body>
 </html>

@@ -35,7 +35,7 @@ import { KBPagesRendererDirective, KBPageSliderComponent } from '../../index';
 		}`
 	]
 })
-export class AppComponent {
+export class MobileAppComponent {
 	public pages = [
 		{
 			title: "Page 1",
@@ -69,4 +69,4 @@ export class AppComponent {
 }
 
 // Angular Bootstrap
-bootstrap(AppComponent);
+bootstrap(MobileAppComponent);

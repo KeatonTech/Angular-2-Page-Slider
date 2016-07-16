@@ -1,16 +1,18 @@
 export { KBPagesRendererDirective, KBPage } from "./render.component";
 
 import {
-	Component, Input, Output, EventEmitter, ContentChild, ElementRef
+	Component, Input, Output, EventEmitter, ContentChild, ContentChildren, ElementRef
 } from '@angular/core';
 
 import { KBPagesRendererDirective, KBPage } from "./render.component";
 import { KBDotIndicatorComponent } from './dotindicator.component';
+import { KBNavButtonComponent } from './navbutton.component';
 import { PageSliderControlAPI } from "../types";
 import { SlideAnimation } from "../functionality/animation";
 
 import { SideClickHandler } from "../functionality/sideclick";
 import { TouchEventHandler } from "../functionality/touchevents";
+import { ArrowKeysHandler } from "../functionality/arrowkeys";
 
 
 // PAGE CONTAINER DIRECTIVE =================================================================
@@ -20,20 +22,32 @@ import { TouchEventHandler } from "../functionality/touchevents";
 	selector: 'kb-page-slider',
 	directives: [KBDotIndicatorComponent],
 	template: `
+		<!-- Display the actual pages -->
 		<div class="inner" 
 				[style.width]="containerWidth"
 				[style.height]="containerHeight">
 			<ng-content></ng-content>
 		</div>
+
+		<div class="buttons" *ngIf="buttons.length > 0" [style.top]="buttonTop">
+			<!-- Display navigation buttons -->
+			<ng-content select="kb-nav-button[forward]"></ng-content>
+			<ng-content select="kb-nav-button[backward]"></ng-content>
+		</div>
+
+		<!-- Display the page indicator -->
 		<kb-dot-indicator *ngIf="showIndicator"
 				[page]="page"
-				[pageCount]="pageCount">
+				[pageCount]="pageCount"
+				[dotColor]="dotColor"
+				[style.bottom]="dotBottom">
 		</kb-dot-indicator>
 	`,
 	styles: [
 		`:host {
 			overflow: hidden;
 			display: block;
+			position: relative;
 		}`,
 		`.inner {
 			position: absolute;
@@ -42,9 +56,19 @@ import { TouchEventHandler } from "../functionality/touchevents";
 		}`,
 		`kb-dot-indicator {
 			position: absolute;
-			bottom: 16px;
 			width: 100%;
-		}`
+		}`,
+		`.buttons {
+			position: absolute;
+			z-index: 100;
+			width: 100%;
+		}`,
+		`.buttons >>> kb-nav-button {
+			position: absolute;
+			top: 0;
+		}`,
+		`.buttons >>> kb-nav-button[backward] {left: 15px;}`,
+		`.buttons >>> kb-nav-button[forward] {right: 15px;}`,
 	]
 })
 export class KBPageSliderComponent implements PageSliderControlAPI {
@@ -52,6 +76,8 @@ export class KBPageSliderComponent implements PageSliderControlAPI {
 	private innerContainer : HTMLElement;
 	private touchEventHandler : TouchEventHandler;
 	private sideClickHandler : SideClickHandler;
+	private arrowKeysHandler : ArrowKeysHandler;
+
 	constructor(
 		private element: ElementRef
 	) {
@@ -59,14 +85,27 @@ export class KBPageSliderComponent implements PageSliderControlAPI {
 
 		this.touchEventHandler = new TouchEventHandler(this, htmlElement);
 		this.sideClickHandler = new SideClickHandler(this, htmlElement);
+		this.arrowKeysHandler = new ArrowKeysHandler(this, htmlElement);
 	}
 
 
 	// PUBLIC INTERFACE =====================================================================
 
 	@Input() public set page(pn: number) {
-		if (this.renderer) this.renderer.page = pn;
-		this.pageChange.emit(pn);
+		if (pn < 0 || pn >= this.pageCount) return;
+		if (pn == this.renderer.page) return;
+		if (this.renderer) {
+			if (pn == this.renderer.page + 1) {
+				if (this.blockInteraction) {this.pageChange.emit(this.page); return;}
+				this.AnimateToNextPage();
+			} else if (pn == this.renderer.page - 1) {
+				if (this.blockInteraction) {this.pageChange.emit(this.page); return;}
+				this.AnimateToPreviousPage();
+			} else {
+				this.renderer.page = pn;
+				this.pageChange.emit(pn);
+			}
+		}
 	}
 	public get page(){return (this.renderer) ? this.renderer.page : 0;}
 	@Output() pageChange = new EventEmitter<number>();
@@ -78,12 +117,16 @@ export class KBPageSliderComponent implements PageSliderControlAPI {
 	// Dot Indicator
 	@Input() public showIndicator : boolean = true;
 	@Input() public overlayIndicator : boolean = true;
+	@Input() public dotColor : string = "white";
 
 	// Interactivity
 	@Input() public transitionDuration : number;
 	@Input() public enableOverscroll : boolean = true;
 	@Input() public set enableSideClicks(enabled: boolean) {
 		(this.sideClickHandler) ? this.sideClickHandler.enabled = enabled : null;
+	}
+	@Input() public set enableArrowKeys(enabled: boolean) {
+		(this.arrowKeysHandler) ? this.arrowKeysHandler.enabled = enabled : null;
 	}
 
 
@@ -100,20 +143,35 @@ export class KBPageSliderComponent implements PageSliderControlAPI {
 	private get pxOffset() { return -this.pageOffset * this.pageWidth + "px"; }
 
 
+	// NAV BUTTONS
+
+	@ContentChildren(KBNavButtonComponent) buttons;
+	public get buttonTop() {
+		return this.pageHeight / 2 - this.buttons.first.size / 2 + "px"
+	}
+
+
 	// SIZING
 
 	public get pageWidth() {return this.element.nativeElement.offsetWidth;}
-	public get pageHeight() {return this.element.nativeElement.offsetHeight;}
+	public get pageHeight() {
+		var fullHeight = this.element.nativeElement.offsetHeight;
+		var chin = (this.showIndicator && !this.overlayIndicator) ? 20 : 0;
+		return fullHeight - chin;
+	}
 
 	protected get containerWidth() {return this.pageWidth * 3 + "px";}
-	protected get containerHeight() {
-		var chin = (this.showIndicator && !this.overlayIndicator) ? 40 : 0;
-		return (this.pageHeight - chin) + "px";
-	}
+	protected get containerHeight() {return this.pageHeight + "px";}
+
+	private get dotBottom() {return (this.overlayIndicator) ? "16px" : "0px";}
 
 	// Get the page renderer loop and keep its size up to date
 	@ContentChild(KBPagesRendererDirective) renderer : KBPagesRendererDirective;
 	ngOnInit(){
+		this.renderer.pageCountChange.subscribe((count)=>{
+			this.pageCountChange.emit(count);
+		});
+
 		this.Resize();
 		this.renderer.Resize(this.pageWidth, this.pageHeight);
 		window.addEventListener("resize", ()=>{
@@ -146,7 +204,8 @@ export class KBPageSliderComponent implements PageSliderControlAPI {
 		if (momentum === undefined) momentum = 0;
 
 		this.AnimateToX(2, momentum).then(()=>{
-			this.page++;
+			this.renderer.page++;
+			this.pageChange.emit(this.renderer.page);
 			this.pageOffset = 1;
 		});
 	}
@@ -159,7 +218,8 @@ export class KBPageSliderComponent implements PageSliderControlAPI {
 		if (momentum === undefined) momentum = 0;
 
 		this.AnimateToX(0, momentum).then(()=>{
-			this.page--;
+			this.renderer.page--;
+			this.pageChange.emit(this.renderer.page);
 			this.pageOffset = 1;
 		});
 	}

@@ -14,7 +14,7 @@ declare module "src/types" {
     }
 }
 declare module "src/components/render.component" {
-    import { ViewContainerRef, TemplateRef } from '@angular/core';
+    import { EventEmitter, ViewContainerRef, TemplateRef } from '@angular/core';
     import { StackLocation } from "src/types";
     export class KBPage {
         $implicit: any;
@@ -33,7 +33,9 @@ declare module "src/components/render.component" {
         kbPagesOf: Array<any>;
         private isInitialized;
         ngOnInit(): void;
+        private _lastPageCount;
         pageCount: number;
+        pageCountChange: EventEmitter<number>;
         private _page;
         page: number;
         SetPage(page: number): boolean;
@@ -58,9 +60,31 @@ declare module "src/components/dotindicator.component" {
         private _pageCount;
         page: number;
         pageCount: number;
+        dotColor: string;
         private items;
         private updateItems();
         private updateSelected();
+    }
+}
+declare module "src/components/navbutton.component" {
+    import { EventEmitter } from '@angular/core';
+    export class KBNavButtonComponent {
+        private isForward;
+        constructor(forward: string, backward: string);
+        page: number;
+        pageChange: EventEmitter<number>;
+        pageCount: number;
+        size: number;
+        showBackground: boolean;
+        iconColor: string;
+        backgroundColor: string;
+        disabled: boolean;
+        private derivedIconColor;
+        private derivedBackgroundColor;
+        private derivedSize;
+        private halfSize;
+        private symbol;
+        private OnClick();
     }
 }
 declare module "src/functionality/animation" {
@@ -112,6 +136,19 @@ declare module "src/functionality/touchevents" {
         private GetTrackingTouch(list);
     }
 }
+declare module "src/functionality/arrowkeys" {
+    /**
+     * When the user clicks very close to the edge of a page, move in that direction.
+     */
+    import { PageSliderControlAPI } from "src/types";
+    export class ArrowKeysHandler {
+        private delegate;
+        private element;
+        constructor(delegate: PageSliderControlAPI, element: HTMLElement);
+        enabled: boolean;
+        private KeyHandler(e);
+    }
+}
 declare module "src/components/pageslider.component" {
     export { KBPagesRendererDirective, KBPage } from "src/components/render.component";
     import { EventEmitter, ElementRef } from '@angular/core';
@@ -123,6 +160,7 @@ declare module "src/components/pageslider.component" {
         private innerContainer;
         private touchEventHandler;
         private sideClickHandler;
+        private arrowKeysHandler;
         constructor(element: ElementRef);
         page: number;
         pageChange: EventEmitter<number>;
@@ -131,16 +169,21 @@ declare module "src/components/pageslider.component" {
         pageCountChange: EventEmitter<number>;
         showIndicator: boolean;
         overlayIndicator: boolean;
+        dotColor: string;
         transitionDuration: number;
         enableOverscroll: boolean;
         enableSideClicks: boolean;
+        enableArrowKeys: boolean;
         private _pageOffset;
         protected pageOffset: number;
         private pxOffset;
+        buttons: any;
+        buttonTop: string;
         pageWidth: any;
-        pageHeight: any;
+        pageHeight: number;
         protected containerWidth: string;
         protected containerHeight: string;
+        private dotBottom;
         renderer: KBPagesRendererDirective;
         ngOnInit(): void;
         protected Resize(): void;
@@ -156,4 +199,6 @@ declare module "src/components/pageslider.component" {
 declare module "index" {
     export { KBPageSliderComponent } from "src/components/pageslider.component";
     export { KBPagesRendererDirective } from "src/components/render.component";
+    export { KBDotIndicatorComponent } from "src/components/dotindicator.component";
+    export { KBNavButtonComponent } from "src/components/navbutton.component";
 }
