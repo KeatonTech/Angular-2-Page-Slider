@@ -393,7 +393,7 @@ System.register("src/functionality/animation", [], function(exports_4, context_4
                         return Math.max(Math.min(estimate, kMaxDuration), kMinDuration);
                     }
                     else {
-                        return kDefaultDuration;
+                        return this.default_duration;
                     }
                 };
                 return SlideAnimation;
@@ -868,7 +868,7 @@ System.register("index", ["src/components/pageslider.component", "src/components
         }
     }
 });
-System.register("examples/hero/app", ['@angular/core', '@angular/platform-browser-dynamic', "index"], function(exports_9, context_9) {
+System.register("examples/mobile/app", ['@angular/core', '@angular/platform-browser-dynamic', "index"], function(exports_9, context_9) {
     "use strict";
     var __moduleName = context_9 && context_9.id;
     var core_4, platform_browser_dynamic_1, index_1;
@@ -936,77 +936,6 @@ System.register("examples/hero/app", ['@angular/core', '@angular/platform-browse
             exports_9("AppComponent", AppComponent);
             // Angular Bootstrap
             platform_browser_dynamic_1.bootstrap(AppComponent);
-        }
-    }
-});
-System.register("examples/mobile/app", ['@angular/core', '@angular/platform-browser-dynamic', "index"], function(exports_10, context_10) {
-    "use strict";
-    var __moduleName = context_10 && context_10.id;
-    var core_5, platform_browser_dynamic_2, index_2;
-    var AppComponent;
-    return {
-        setters:[
-            function (core_5_1) {
-                core_5 = core_5_1;
-            },
-            function (platform_browser_dynamic_2_1) {
-                platform_browser_dynamic_2 = platform_browser_dynamic_2_1;
-            },
-            function (index_2_1) {
-                index_2 = index_2_1;
-            }],
-        execute: function() {
-            AppComponent = (function () {
-                function AppComponent() {
-                    this.pages = [
-                        {
-                            title: "Page 1",
-                            color: "red"
-                        },
-                        {
-                            title: "Page 2",
-                            color: "green"
-                        },
-                        {
-                            title: "Page 3",
-                            color: "blue"
-                        },
-                        {
-                            title: "Page 4",
-                            color: "purple"
-                        },
-                        {
-                            title: "Page 5",
-                            color: "maroon"
-                        },
-                        {
-                            title: "Page 6",
-                            color: "seagreen"
-                        },
-                        {
-                            title: "Page 7",
-                            color: "orange"
-                        }
-                    ];
-                }
-                AppComponent = __decorate([
-                    core_5.Component({
-                        selector: 'mobile-example-app',
-                        directives: [index_2.KBPagesRendererDirective, index_2.KBPageSliderComponent],
-                        template: "\n\t\t<kb-page-slider>\n\t\t\t<div *kbPages=\"let page of pages\" class=\"page\" [style.background]=\"page.color\">\n\t\t\t\t<h1>{{page.title}}</h1>\n\t\t\t</div>\n\t\t</kb-page-slider>\n\t",
-                        styles: [
-                            ":host {\n\t\t\tposition: relative;\n\t\t\tdisplay: block;\n\t\t\twidth: 100%;\n\t\t\theight: 100%;\n\t\t}",
-                            "kb-page-slider {\n\t\t\tposition: absolute;\n\t\t\ttop: 0;\n\t\t\tbottom: 0;\n\t\t\tleft: 0;\n\t\t\tright: 0;\n\t\t}",
-                            ".page {\n\t\t\tpadding: 15px 5px;\n\t\t\ttext-align: center;\n\t\t}"
-                        ]
-                    }), 
-                    __metadata('design:paramtypes', [])
-                ], AppComponent);
-                return AppComponent;
-            }());
-            exports_10("AppComponent", AppComponent);
-            // Angular Bootstrap
-            platform_browser_dynamic_2.bootstrap(AppComponent);
         }
     }
 });

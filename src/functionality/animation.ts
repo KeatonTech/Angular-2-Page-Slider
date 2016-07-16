@@ -73,7 +73,7 @@ export class SlideAnimation {
 
 		// Otherwise, throw it out and use our default duration
 		} else {
-			return kDefaultDuration;
+			return this.default_duration;
 		}
 	}
 }

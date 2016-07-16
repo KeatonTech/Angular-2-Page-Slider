@@ -393,7 +393,7 @@ System.register("src/functionality/animation", [], function(exports_4, context_4
                         return Math.max(Math.min(estimate, kMaxDuration), kMinDuration);
                     }
                     else {
-                        return kDefaultDuration;
+                        return this.default_duration;
                     }
                 };
                 return SlideAnimation;
