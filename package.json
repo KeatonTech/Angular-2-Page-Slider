@@ -8,7 +8,7 @@
     "build": "tsc -d",
     "watch": "tsc -d -w",
     "examples": "concurrently \"npm run watch\" \"npm run watchExamples\" \"npm run serveExamples\"",
-    "serveExamples": "live-server --entry-file=./examples/index.html",
+    "serveExamples": "live-server --entry-file=./index.html",
     "buildExamples": "tsc -p ./examples",
     "watchExamples": "tsc -w -p ./examples"
   },
