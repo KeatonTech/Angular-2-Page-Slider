@@ -241,9 +241,10 @@ System.register("src/components/render.component", ['@angular/core', "src/types"
                 ], KBPagesRendererDirective.prototype, "kbPagesOf", null);
                 KBPagesRendererDirective = __decorate([
                     core_1.Directive({ selector: '[kbPages]' }), 
-                    __metadata('design:paramtypes', [core_1.ViewContainerRef, core_1.TemplateRef])
+                    __metadata('design:paramtypes', [(typeof (_a = typeof core_1.ViewContainerRef !== 'undefined' && core_1.ViewContainerRef) === 'function' && _a) || Object, (typeof (_b = typeof core_1.TemplateRef !== 'undefined' && core_1.TemplateRef) === 'function' && _b) || Object])
                 ], KBPagesRendererDirective);
                 return KBPagesRendererDirective;
+                var _a, _b;
             }());
             exports_2("KBPagesRendererDirective", KBPagesRendererDirective);
         }
@@ -1064,9 +1065,10 @@ System.register("src/components/pageslider.component", ["src/components/render.c
                             ".buttons >>> kb-nav-button[forward] {right: 15px;}",
                         ]
                     }), 
-                    __metadata('design:paramtypes', [core_4.ElementRef])
+                    __metadata('design:paramtypes', [(typeof (_a = typeof core_4.ElementRef !== 'undefined' && core_4.ElementRef) === 'function' && _a) || Object])
                 ], KBPageSliderComponent);
                 return KBPageSliderComponent;
+                var _a;
             }());
             exports_9("KBPageSliderComponent", KBPageSliderComponent);
         }

@@ -14,7 +14,7 @@ declare module "src/types" {
     }
 }
 declare module "src/components/render.component" {
-    import { EventEmitter, ViewContainerRef, TemplateRef } from '@angular/core';
+    import { ViewContainerRef, TemplateRef } from '@angular/core';
     import { StackLocation } from "src/types";
     export class KBPage {
         $implicit: any;
@@ -35,7 +35,7 @@ declare module "src/components/render.component" {
         ngOnInit(): void;
         private _lastPageCount;
         pageCount: number;
-        pageCountChange: EventEmitter<number>;
+        pageCountChange: any;
         private _page;
         page: number;
         SetPage(page: number): boolean;
@@ -67,12 +67,11 @@ declare module "src/components/dotindicator.component" {
     }
 }
 declare module "src/components/navbutton.component" {
-    import { EventEmitter } from '@angular/core';
     export class KBNavButtonComponent {
         private isForward;
         constructor(forward: string, backward: string);
         page: number;
-        pageChange: EventEmitter<number>;
+        pageChange: any;
         pageCount: number;
         size: number;
         showBackground: boolean;
@@ -151,7 +150,7 @@ declare module "src/functionality/arrowkeys" {
 }
 declare module "src/components/pageslider.component" {
     export { KBPagesRendererDirective, KBPage } from "src/components/render.component";
-    import { EventEmitter, ElementRef } from '@angular/core';
+    import { ElementRef } from '@angular/core';
     import { KBPagesRendererDirective } from "src/components/render.component";
     import { PageSliderControlAPI } from "src/types";
     import { SlideAnimation } from "src/functionality/animation";
@@ -163,10 +162,10 @@ declare module "src/components/pageslider.component" {
         private arrowKeysHandler;
         constructor(element: ElementRef);
         page: number;
-        pageChange: EventEmitter<number>;
-        pageSizeChange: EventEmitter<[number, number]>;
+        pageChange: any;
+        pageSizeChange: any;
         pageCount: number;
-        pageCountChange: EventEmitter<number>;
+        pageCountChange: any;
         showIndicator: boolean;
         overlayIndicator: boolean;
         dotColor: string;
