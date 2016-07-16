@@ -25,8 +25,12 @@ export class SlideAnimation {
 		private element : HTMLElement,
 		private current_px : number,
 		private dest_px : number,
-		private momentum_px : number
+		private momentum_px : number,
+		private default_duration? : number
 	){
+		if (default_duration === undefined) {
+			this.default_duration = kDefaultDuration;
+		}
 
 		// Set up the CSS transition
 		var duration = Math.round(this.CalculateDuration());

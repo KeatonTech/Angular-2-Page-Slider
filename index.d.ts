@@ -69,9 +69,10 @@ declare module "src/functionality/animation" {
         private current_px;
         private dest_px;
         private momentum_px;
+        private default_duration;
         private on_complete;
         then(on_complete: () => void): this;
-        constructor(element: HTMLElement, current_px: number, dest_px: number, momentum_px: number);
+        constructor(element: HTMLElement, current_px: number, dest_px: number, momentum_px: number, default_duration?: number);
         private CalculateDuration();
     }
 }
@@ -125,26 +126,31 @@ declare module "src/components/pageslider.component" {
         constructor(element: ElementRef);
         page: number;
         pageChange: EventEmitter<number>;
+        pageSizeChange: EventEmitter<[number, number]>;
         pageCount: number;
         pageCountChange: EventEmitter<number>;
         showIndicator: boolean;
         overlayIndicator: boolean;
+        transitionDuration: number;
+        enableOverscroll: boolean;
         enableSideClicks: boolean;
         private _pageOffset;
-        private pageOffset;
+        protected pageOffset: number;
         private pxOffset;
         pageWidth: any;
         pageHeight: any;
-        private containerWidth;
-        private containerHeight;
+        protected containerWidth: string;
+        protected containerHeight: string;
         renderer: KBPagesRendererDirective;
         ngOnInit(): void;
+        protected Resize(): void;
         private blockInteraction;
         ScrollTo(x: number): void;
-        AnimateToNextPage(momentum: number): void;
-        AnimateToPreviousPage(momentum: number): void;
+        AnimateToNextPage(momentum?: number): SlideAnimation;
+        AnimateToPreviousPage(momentum?: number): SlideAnimation;
         AnimateToX(x: number, momentum: number): SlideAnimation;
-        ClampX(x: number): number;
+        protected ClampX(x: number): number;
+        protected OverscrollRamp(input: number): number;
     }
 }
 declare module "index" {

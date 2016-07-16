@@ -62,7 +62,7 @@ export class KBPageSliderComponent implements PageSliderControlAPI {
 	}
 
 
-	// INTERFACE
+	// PUBLIC INTERFACE =====================================================================
 
 	@Input() public set page(pn: number) {
 		if (this.renderer) this.renderer.page = pn;
@@ -70,6 +70,7 @@ export class KBPageSliderComponent implements PageSliderControlAPI {
 	}
 	public get page(){return (this.renderer) ? this.renderer.page : 0;}
 	@Output() pageChange = new EventEmitter<number>();
+	@Output() pageSizeChange = new EventEmitter<[number, number]>();
 
 	public get pageCount(){return (this.renderer) ? this.renderer.pageCount : 0;}
 	@Output() pageCountChange = new EventEmitter<number>();
@@ -79,16 +80,18 @@ export class KBPageSliderComponent implements PageSliderControlAPI {
 	@Input() public overlayIndicator : boolean = true;
 
 	// Interactivity
+	@Input() public transitionDuration : number;
+	@Input() public enableOverscroll : boolean = true;
 	@Input() public set enableSideClicks(enabled: boolean) {
 		(this.sideClickHandler) ? this.sideClickHandler.enabled = enabled : null;
 	}
 
 
-	// PRIVATE VARIABLES
+	// INTERNAL STATE =======================================================================
 
 	private _pageOffset : number = 1;
-	private get pageOffset() {return this._pageOffset;}
-	private set pageOffset(v: number) {
+	protected get pageOffset() {return this._pageOffset;}
+	protected set pageOffset(v: number) {
 		this._pageOffset = v;
 		if (!this.blockInteraction) {
 			this.innerContainer.style.left = this.pxOffset;
@@ -101,29 +104,33 @@ export class KBPageSliderComponent implements PageSliderControlAPI {
 
 	public get pageWidth() {return this.element.nativeElement.offsetWidth;}
 	public get pageHeight() {return this.element.nativeElement.offsetHeight;}
-	private get containerWidth() {return this.pageWidth * 3 + "px";}
-	private get containerHeight() {
+
+	protected get containerWidth() {return this.pageWidth * 3 + "px";}
+	protected get containerHeight() {
 		var chin = (this.showIndicator && !this.overlayIndicator) ? 40 : 0;
 		return (this.pageHeight - chin) + "px";
 	}
 
-
-	// LIFECYCLE METHODS
-
 	// Get the page renderer loop and keep its size up to date
 	@ContentChild(KBPagesRendererDirective) renderer : KBPagesRendererDirective;
 	ngOnInit(){
-		this.innerContainer = this.element.nativeElement.querySelector(".inner");
-		this.innerContainer.style.left = -this.pageWidth + "px";
-
+		this.Resize();
 		this.renderer.Resize(this.pageWidth, this.pageHeight);
 		window.addEventListener("resize", ()=>{
+			this.Resize();
 			this.renderer.Resize(this.pageWidth, this.pageHeight);
+			this.pageSizeChange.emit([this.pageWidth, this.pageHeight]);
 		});
 	}
 
+	protected Resize() {
+		this.innerContainer = this.element.nativeElement.querySelector(".inner");
+		this.innerContainer.style.left = -this.pageWidth + "px";
+	}
 
-	// INTERACTION HANDLER ==================================================================
+
+	// INTERACTIVE NAVIGATION ===============================================================
+
 	private blockInteraction : boolean = false;
 
 	public ScrollTo(x: number) {
@@ -131,18 +138,26 @@ export class KBPageSliderComponent implements PageSliderControlAPI {
 		this.pageOffset = this.ClampX(x);
 	}
 
-	public AnimateToNextPage(momentum: number) {
+	public AnimateToNextPage(momentum?: number) {
 		if (this.blockInteraction) return;
-		if (this.page == this.renderer.pageCount - 1) return;
+		if (this.page == this.renderer.pageCount - 1) {
+			return this.AnimateToX(1, 0).then(()=>{this.pageOffset = 1;})
+		}
+		if (momentum === undefined) momentum = 0;
+
 		this.AnimateToX(2, momentum).then(()=>{
 			this.page++;
 			this.pageOffset = 1;
 		});
 	}
 
-	public AnimateToPreviousPage(momentum: number) {
+	public AnimateToPreviousPage(momentum?: number) {
 		if (this.blockInteraction) return;
-		if (this.page == 0) return;
+		if (this.page == 0) {
+			return this.AnimateToX(1, 0).then(()=>{this.pageOffset = 1;})
+		}
+		if (momentum === undefined) momentum = 0;
+
 		this.AnimateToX(0, momentum).then(()=>{
 			this.page--;
 			this.pageOffset = 1;
@@ -158,21 +173,35 @@ export class KBPageSliderComponent implements PageSliderControlAPI {
 			this.innerContainer,	 	// Element to animate
 			-this.pageOffset * w,		// Current position (px)
 			-x * w,	 					// Destination position (px)
-			momentum * w			 	// User scroll momentum (px/s)
+			momentum * w,			 	// User scroll momentum (px/s)
+			this.transitionDuration		// Default duration, when momentum = 0
 		).then(()=>{
 			this.blockInteraction = false;
 		});
 	}
 
 
-	// HELPERS
+	// OVERSCROLL (iOS STYLE) ===============================================================
 
 	// Get X to a reasonable range, taking into account page boundaries
-	public ClampX(x: number) {
+	protected ClampX(x: number) {
 		if (x < 0) x = 0;
 		if (x > 2) x = 2;
-		if (this.page == 0 && x < 1) x = 1;
-		if (this.page == this.renderer.pageCount - 1 && x > 1) x = 1;
+
+		// Allow some overscrolling on the first and last page
+		if (this.page == 0 && x < 1) {
+			if (this.enableOverscroll) x = 1 - this.OverscrollRamp(1 - x);
+			else x = 1;
+		}
+		if (this.page == this.renderer.pageCount - 1 && x > 1) {
+			if (this.enableOverscroll) x = 1 + this.OverscrollRamp(x - 1);
+			else x = 1;
+		}
 		return x;
+	}
+
+	// Exponential ramp to simulate elastic pressure on overscrolling
+	protected OverscrollRamp(input: number) : number {
+		return Math.pow(input, 0.5) / 5;
 	}
 }

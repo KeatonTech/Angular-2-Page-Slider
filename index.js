@@ -343,14 +343,18 @@ System.register("src/functionality/animation", [], function(exports_4, context_4
                 // The real meat of the animation code
                 // Hard-coded to the 'left' property because that's all we use here
                 // but certainly this code could be generalized if needed.
-                function SlideAnimation(element, current_px, dest_px, momentum_px) {
+                function SlideAnimation(element, current_px, dest_px, momentum_px, default_duration) {
                     var _this = this;
                     this.element = element;
                     this.current_px = current_px;
                     this.dest_px = dest_px;
                     this.momentum_px = momentum_px;
+                    this.default_duration = default_duration;
                     // Pseudo-promise
                     this.on_complete = [];
+                    if (default_duration === undefined) {
+                        this.default_duration = kDefaultDuration;
+                    }
                     // Set up the CSS transition
                     var duration = Math.round(this.CalculateDuration());
                     var tProperty = "left " + duration + "ms " + kEasingFunction;
@@ -594,13 +598,15 @@ System.register("src/components/pageslider.component", ["src/components/render.c
                 function KBPageSliderComponent(element) {
                     this.element = element;
                     this.pageChange = new core_3.EventEmitter();
+                    this.pageSizeChange = new core_3.EventEmitter();
                     this.pageCountChange = new core_3.EventEmitter();
                     // Dot Indicator
                     this.showIndicator = true;
                     this.overlayIndicator = true;
-                    // PRIVATE VARIABLES
+                    this.enableOverscroll = true;
+                    // INTERNAL STATE =======================================================================
                     this._pageOffset = 1;
-                    // INTERACTION HANDLER ==================================================================
+                    // INTERACTIVE NAVIGATION ===============================================================
                     this.blockInteraction = false;
                     var htmlElement = this.element.nativeElement;
                     this.touchEventHandler = new touchevents_1.TouchEventHandler(this, htmlElement);
@@ -608,7 +614,7 @@ System.register("src/components/pageslider.component", ["src/components/render.c
                 }
                 Object.defineProperty(KBPageSliderComponent.prototype, "page", {
                     get: function () { return (this.renderer) ? this.renderer.page : 0; },
-                    // INTERFACE
+                    // PUBLIC INTERFACE =====================================================================
                     set: function (pn) {
                         if (this.renderer)
                             this.renderer.page = pn;
@@ -623,7 +629,6 @@ System.register("src/components/pageslider.component", ["src/components/render.c
                     configurable: true
                 });
                 Object.defineProperty(KBPageSliderComponent.prototype, "enableSideClicks", {
-                    // Interactivity
                     set: function (enabled) {
                         (this.sideClickHandler) ? this.sideClickHandler.enabled = enabled : null;
                     },
@@ -672,12 +677,17 @@ System.register("src/components/pageslider.component", ["src/components/render.c
                 });
                 KBPageSliderComponent.prototype.ngOnInit = function () {
                     var _this = this;
-                    this.innerContainer = this.element.nativeElement.querySelector(".inner");
-                    this.innerContainer.style.left = -this.pageWidth + "px";
+                    this.Resize();
                     this.renderer.Resize(this.pageWidth, this.pageHeight);
                     window.addEventListener("resize", function () {
+                        _this.Resize();
                         _this.renderer.Resize(_this.pageWidth, _this.pageHeight);
+                        _this.pageSizeChange.emit([_this.pageWidth, _this.pageHeight]);
                     });
+                };
+                KBPageSliderComponent.prototype.Resize = function () {
+                    this.innerContainer = this.element.nativeElement.querySelector(".inner");
+                    this.innerContainer.style.left = -this.pageWidth + "px";
                 };
                 KBPageSliderComponent.prototype.ScrollTo = function (x) {
                     if (this.blockInteraction)
@@ -688,8 +698,11 @@ System.register("src/components/pageslider.component", ["src/components/render.c
                     var _this = this;
                     if (this.blockInteraction)
                         return;
-                    if (this.page == this.renderer.pageCount - 1)
-                        return;
+                    if (this.page == this.renderer.pageCount - 1) {
+                        return this.AnimateToX(1, 0).then(function () { _this.pageOffset = 1; });
+                    }
+                    if (momentum === undefined)
+                        momentum = 0;
                     this.AnimateToX(2, momentum).then(function () {
                         _this.page++;
                         _this.pageOffset = 1;
@@ -699,8 +712,11 @@ System.register("src/components/pageslider.component", ["src/components/render.c
                     var _this = this;
                     if (this.blockInteraction)
                         return;
-                    if (this.page == 0)
-                        return;
+                    if (this.page == 0) {
+                        return this.AnimateToX(1, 0).then(function () { _this.pageOffset = 1; });
+                    }
+                    if (momentum === undefined)
+                        momentum = 0;
                     this.AnimateToX(0, momentum).then(function () {
                         _this.page--;
                         _this.pageOffset = 1;
@@ -715,23 +731,37 @@ System.register("src/components/pageslider.component", ["src/components/render.c
                     return new animation_1.SlideAnimation(this.innerContainer, // Element to animate
                     -this.pageOffset * w, // Current position (px)
                     -x * w, // Destination position (px)
-                    momentum * w // User scroll momentum (px/s)
+                    momentum * w, // User scroll momentum (px/s)
+                    this.transitionDuration // Default duration, when momentum = 0
                     ).then(function () {
                         _this.blockInteraction = false;
                     });
                 };
-                // HELPERS
+                // OVERSCROLL (iOS STYLE) ===============================================================
                 // Get X to a reasonable range, taking into account page boundaries
                 KBPageSliderComponent.prototype.ClampX = function (x) {
                     if (x < 0)
                         x = 0;
                     if (x > 2)
                         x = 2;
-                    if (this.page == 0 && x < 1)
-                        x = 1;
-                    if (this.page == this.renderer.pageCount - 1 && x > 1)
-                        x = 1;
+                    // Allow some overscrolling on the first and last page
+                    if (this.page == 0 && x < 1) {
+                        if (this.enableOverscroll)
+                            x = 1 - this.OverscrollRamp(1 - x);
+                        else
+                            x = 1;
+                    }
+                    if (this.page == this.renderer.pageCount - 1 && x > 1) {
+                        if (this.enableOverscroll)
+                            x = 1 + this.OverscrollRamp(x - 1);
+                        else
+                            x = 1;
+                    }
                     return x;
+                };
+                // Exponential ramp to simulate elastic pressure on overscrolling
+                KBPageSliderComponent.prototype.OverscrollRamp = function (input) {
+                    return Math.pow(input, 0.5) / 5;
                 };
                 __decorate([
                     core_3.Input(), 
@@ -745,6 +775,10 @@ System.register("src/components/pageslider.component", ["src/components/render.c
                 __decorate([
                     core_3.Output(), 
                     __metadata('design:type', Object)
+                ], KBPageSliderComponent.prototype, "pageSizeChange", void 0);
+                __decorate([
+                    core_3.Output(), 
+                    __metadata('design:type', Object)
                 ], KBPageSliderComponent.prototype, "pageCountChange", void 0);
                 __decorate([
                     core_3.Input(), 
@@ -754,6 +788,14 @@ System.register("src/components/pageslider.component", ["src/components/render.c
                     core_3.Input(), 
                     __metadata('design:type', Boolean)
                 ], KBPageSliderComponent.prototype, "overlayIndicator", void 0);
+                __decorate([
+                    core_3.Input(), 
+                    __metadata('design:type', Number)
+                ], KBPageSliderComponent.prototype, "transitionDuration", void 0);
+                __decorate([
+                    core_3.Input(), 
+                    __metadata('design:type', Boolean)
+                ], KBPageSliderComponent.prototype, "enableOverscroll", void 0);
                 __decorate([
                     core_3.Input(), 
                     __metadata('design:type', Boolean), 

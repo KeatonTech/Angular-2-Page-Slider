@@ -40,23 +40,31 @@ although I have not gotten the chance to test that.*
 Container component for pages. Optionally includes a KBDotIndicatorComponent at the bottom.
 Handles touch events, resizing and animation.
 
-### Properties
+### Input Properties
 * **page:** Current page number, zero-based index.
-	* Input property, allows two-way data binding
+	* Allows two-way data binding
 	* Must be a number 0 <= page < pageCount
 	* Defaults to 0
-* **pageCount:** Total number of pages, determined by KBPagesRendererDirective.
-	* *Read-only* instance property
-	* Number >= 0
+* **transitionDuration:** In the absence of scrolling momentum, how long should a transition take?
+	* Expressed as an integer number of milliseconds >= 0
+	* Defaults to 250ms
 * **showIndicator:** When true, includes a dot indicator at the bottom.
-	* Input property
 	* Boolean, defaults to true
 * **overlayIndicator:** When true, renders indicator above the page content.
-	* Input property
+	* Boolean, defaults to true
+* **enableOverscroll:** When true, user can scroll slightly past the first and last page.
 	* Boolean, defaults to true
 * **enableSideClicks:** When true, clicking near the edge of a page will cause page navigation.
-	* Input property
 	* Boolean, defaults to true
+
+### Instance Properties
+* **pageCount:** Total number of pages, determined by KBPagesRendererDirective.
+	* *Read-only* instance property
+	* Observe with pageCountChange
+	* Number >= 0
+* **pageWidth / pageHeight:** Pixel size of an individual page
+	* *Read-only* instance properties
+	* Observe with pageSizeChange
 
 
 ## KBPagesRendererDirective (kbPages)
