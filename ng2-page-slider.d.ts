@@ -196,7 +196,7 @@ declare module "src/components/pageslider.component" {
         protected OverscrollRamp(input: number): number;
     }
 }
-declare module "ng2-page-slider" {
+declare module "index" {
     export { KBPageSliderComponent } from "src/components/pageslider.component";
     export { KBPagesRendererDirective } from "src/components/render.component";
     export { KBDotIndicatorComponent } from "src/components/dotindicator.component";

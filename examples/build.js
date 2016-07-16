@@ -1097,7 +1097,7 @@ System.register("src/components/pageslider.component", ["src/components/render.c
     DEALINGS IN THE SOFTWARE.
 
 */
-System.register("ng2-page-slider", ["src/components/pageslider.component", "src/components/render.component", "src/components/dotindicator.component", "src/components/navbutton.component"], function(exports_10, context_10) {
+System.register("index", ["src/components/pageslider.component", "src/components/render.component", "src/components/dotindicator.component", "src/components/navbutton.component"], function(exports_10, context_10) {
     "use strict";
     var __moduleName = context_10 && context_10.id;
     return {
@@ -1126,10 +1126,10 @@ System.register("ng2-page-slider", ["src/components/pageslider.component", "src/
         }
     }
 });
-System.register("examples/hero/app", ['@angular/core', '@angular/platform-browser-dynamic', "ng2-page-slider"], function(exports_11, context_11) {
+System.register("examples/hero/app", ['@angular/core', '@angular/platform-browser-dynamic', "index"], function(exports_11, context_11) {
     "use strict";
     var __moduleName = context_11 && context_11.id;
-    var core_5, platform_browser_dynamic_1, ng2_page_slider_1;
+    var core_5, platform_browser_dynamic_1, index_1;
     var HeroAppComponent;
     return {
         setters:[
@@ -1139,8 +1139,8 @@ System.register("examples/hero/app", ['@angular/core', '@angular/platform-browse
             function (platform_browser_dynamic_1_1) {
                 platform_browser_dynamic_1 = platform_browser_dynamic_1_1;
             },
-            function (ng2_page_slider_1_1) {
-                ng2_page_slider_1 = ng2_page_slider_1_1;
+            function (index_1_1) {
+                index_1 = index_1_1;
             }],
         execute: function() {
             HeroAppComponent = (function () {
@@ -1181,7 +1181,7 @@ System.register("examples/hero/app", ['@angular/core', '@angular/platform-browse
                 HeroAppComponent = __decorate([
                     core_5.Component({
                         selector: 'hero-example-app',
-                        directives: [ng2_page_slider_1.KBPagesRendererDirective, ng2_page_slider_1.KBPageSliderComponent, ng2_page_slider_1.KBNavButtonComponent],
+                        directives: [index_1.KBPagesRendererDirective, index_1.KBPageSliderComponent, index_1.KBNavButtonComponent],
                         template: "\n\t\t<div class=\"header\">\n\t\t\t<h1>My Great Website</h1>\n\t\t</div>\n\t\t<kb-page-slider [overlayIndicator]=\"false\" dotColor=\"black\"\n\t\t\t\t\t\t[(page)]=\"pageNumber\" [(pageCount)]=\"pageCount\">\n\n\t\t\t<!-- Pages -->\n\t\t\t<div *kbPages=\"let page of pages\" class=\"page\" [style.background]=\"page.color\">\n\t\t\t\t<div class=\"pageTitle\">{{page.title}}</div>\n\t\t\t</div>\n\n\t\t\t<!-- Navigation -->\n\t\t\t<kb-nav-button backward [showBackground]=\"true\"\n\t\t\t\t\t\t[(page)]=\"pageNumber\" [pageCount]=\"pageCount\">\n\t\t\t</kb-nav-button>\n\t\t\t<kb-nav-button forward [showBackground]=\"true\"\n\t\t\t\t\t\t[(page)]=\"pageNumber\" [pageCount]=\"pageCount\">\n\t\t\t</kb-nav-button>\n\t\t</kb-page-slider>\n\t",
                         styles: [
                             ".pageTitle {\n\t\t\tposition: absolute;\n\t\t\tleft: 0px;\n\t\t\tbottom: 0px;\n\t\t\twidth: 100%;\n\t\t\theight: 44px;\n\t\t\tline-height: 44px;\n\n\t\t\tbackground-color: rgba(0,0,0,0.25);\n\t\t\tcolor: white;\n\n\t\t\tfont-family: \"San Francisco\", \"Arial\", sans-serif;\n\t\t\tfont-weight: bold;\n\t\t\tfont-size: 18px;\n\t\t\ttext-align: center;\n\t\t}"
@@ -1197,10 +1197,10 @@ System.register("examples/hero/app", ['@angular/core', '@angular/platform-browse
         }
     }
 });
-System.register("examples/mobile/app", ['@angular/core', '@angular/platform-browser-dynamic', "ng2-page-slider"], function(exports_12, context_12) {
+System.register("examples/mobile/app", ['@angular/core', '@angular/platform-browser-dynamic', "index"], function(exports_12, context_12) {
     "use strict";
     var __moduleName = context_12 && context_12.id;
-    var core_6, platform_browser_dynamic_2, ng2_page_slider_2;
+    var core_6, platform_browser_dynamic_2, index_2;
     var MobileAppComponent;
     return {
         setters:[
@@ -1210,8 +1210,8 @@ System.register("examples/mobile/app", ['@angular/core', '@angular/platform-brow
             function (platform_browser_dynamic_2_1) {
                 platform_browser_dynamic_2 = platform_browser_dynamic_2_1;
             },
-            function (ng2_page_slider_2_1) {
-                ng2_page_slider_2 = ng2_page_slider_2_1;
+            function (index_2_1) {
+                index_2 = index_2_1;
             }],
         execute: function() {
             MobileAppComponent = (function () {
@@ -1250,7 +1250,7 @@ System.register("examples/mobile/app", ['@angular/core', '@angular/platform-brow
                 MobileAppComponent = __decorate([
                     core_6.Component({
                         selector: 'mobile-example-app',
-                        directives: [ng2_page_slider_2.KBPagesRendererDirective, ng2_page_slider_2.KBPageSliderComponent],
+                        directives: [index_2.KBPagesRendererDirective, index_2.KBPageSliderComponent],
                         template: "\n\t\t<kb-page-slider>\n\t\t\t<div *kbPages=\"let page of pages\" class=\"page\" [style.background]=\"page.color\">\n\t\t\t\t<h1>{{page.title}}</h1>\n\t\t\t</div>\n\t\t</kb-page-slider>\n\t",
                         styles: [
                             ":host {\n\t\t\tposition: relative;\n\t\t\tdisplay: block;\n\t\t\twidth: 100%;\n\t\t\theight: 100%;\n\t\t}",

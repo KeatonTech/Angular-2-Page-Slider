@@ -11,6 +11,6 @@
     "outFile": "ng2-page-slider.js"
   },
   "files": [
-    "ng2-page-slider.ts"
+    "index.ts"
   ]
 }
