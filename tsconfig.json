@@ -3,14 +3,14 @@
     "target": "es5",
     "module": "system",
     "moduleResolution": "node",
-    "sourceMap": false,
+    "sourceMap": true,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "removeComments": false,
     "noImplicitAny": false,
-    "outFile": "index.js"
+    "outFile": "ng2-page-slider.js"
   },
   "files": [
-    "index.ts"
+    "ng2-page-slider.ts"
   ]
 }

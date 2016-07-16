@@ -14,7 +14,7 @@ declare module "src/types" {
     }
 }
 declare module "src/components/render.component" {
-    import { ViewContainerRef, TemplateRef } from '@angular/core';
+    import { EventEmitter, ViewContainerRef, TemplateRef } from '@angular/core';
     import { StackLocation } from "src/types";
     export class KBPage {
         $implicit: any;
@@ -35,7 +35,7 @@ declare module "src/components/render.component" {
         ngOnInit(): void;
         private _lastPageCount;
         pageCount: number;
-        pageCountChange: any;
+        pageCountChange: EventEmitter<number>;
         private _page;
         page: number;
         SetPage(page: number): boolean;
@@ -67,11 +67,12 @@ declare module "src/components/dotindicator.component" {
     }
 }
 declare module "src/components/navbutton.component" {
+    import { EventEmitter } from '@angular/core';
     export class KBNavButtonComponent {
         private isForward;
         constructor(forward: string, backward: string);
         page: number;
-        pageChange: any;
+        pageChange: EventEmitter<number>;
         pageCount: number;
         size: number;
         showBackground: boolean;
@@ -150,7 +151,7 @@ declare module "src/functionality/arrowkeys" {
 }
 declare module "src/components/pageslider.component" {
     export { KBPagesRendererDirective, KBPage } from "src/components/render.component";
-    import { ElementRef } from '@angular/core';
+    import { EventEmitter, ElementRef } from '@angular/core';
     import { KBPagesRendererDirective } from "src/components/render.component";
     import { PageSliderControlAPI } from "src/types";
     import { SlideAnimation } from "src/functionality/animation";
@@ -162,10 +163,10 @@ declare module "src/components/pageslider.component" {
         private arrowKeysHandler;
         constructor(element: ElementRef);
         page: number;
-        pageChange: any;
-        pageSizeChange: any;
+        pageChange: EventEmitter<number>;
+        pageSizeChange: EventEmitter<[number, number]>;
         pageCount: number;
-        pageCountChange: any;
+        pageCountChange: EventEmitter<number>;
         showIndicator: boolean;
         overlayIndicator: boolean;
         dotColor: string;
@@ -195,7 +196,7 @@ declare module "src/components/pageslider.component" {
         protected OverscrollRamp(input: number): number;
     }
 }
-declare module "index" {
+declare module "ng2-page-slider" {
     export { KBPageSliderComponent } from "src/components/pageslider.component";
     export { KBPagesRendererDirective } from "src/components/render.component";
     export { KBDotIndicatorComponent } from "src/components/dotindicator.component";

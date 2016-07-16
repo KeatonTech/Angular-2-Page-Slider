@@ -3,7 +3,7 @@
  */
 import { Component } 	from '@angular/core';
 import { bootstrap }    from '@angular/platform-browser-dynamic';
-import { KBPagesRendererDirective, KBPageSliderComponent } from '../../index';
+import { KBPagesRendererDirective, KBPageSliderComponent } from '../../ng2-page-slider';
 
 @Component({
 	selector: 'mobile-example-app',

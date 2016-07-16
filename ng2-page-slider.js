@@ -241,10 +241,9 @@ System.register("src/components/render.component", ['@angular/core', "src/types"
                 ], KBPagesRendererDirective.prototype, "kbPagesOf", null);
                 KBPagesRendererDirective = __decorate([
                     core_1.Directive({ selector: '[kbPages]' }), 
-                    __metadata('design:paramtypes', [(typeof (_a = typeof core_1.ViewContainerRef !== 'undefined' && core_1.ViewContainerRef) === 'function' && _a) || Object, (typeof (_b = typeof core_1.TemplateRef !== 'undefined' && core_1.TemplateRef) === 'function' && _b) || Object])
+                    __metadata('design:paramtypes', [core_1.ViewContainerRef, core_1.TemplateRef])
                 ], KBPagesRendererDirective);
                 return KBPagesRendererDirective;
-                var _a, _b;
             }());
             exports_2("KBPagesRendererDirective", KBPagesRendererDirective);
         }
@@ -1065,10 +1064,9 @@ System.register("src/components/pageslider.component", ["src/components/render.c
                             ".buttons >>> kb-nav-button[forward] {right: 15px;}",
                         ]
                     }), 
-                    __metadata('design:paramtypes', [(typeof (_a = typeof core_4.ElementRef !== 'undefined' && core_4.ElementRef) === 'function' && _a) || Object])
+                    __metadata('design:paramtypes', [core_4.ElementRef])
                 ], KBPageSliderComponent);
                 return KBPageSliderComponent;
-                var _a;
             }());
             exports_9("KBPageSliderComponent", KBPageSliderComponent);
         }
@@ -1099,7 +1097,7 @@ System.register("src/components/pageslider.component", ["src/components/render.c
     DEALINGS IN THE SOFTWARE.
 
 */
-System.register("index", ["src/components/pageslider.component", "src/components/render.component", "src/components/dotindicator.component", "src/components/navbutton.component"], function(exports_10, context_10) {
+System.register("ng2-page-slider", ["src/components/pageslider.component", "src/components/render.component", "src/components/dotindicator.component", "src/components/navbutton.component"], function(exports_10, context_10) {
     "use strict";
     var __moduleName = context_10 && context_10.id;
     return {
@@ -1128,3 +1126,4 @@ System.register("index", ["src/components/pageslider.component", "src/components
         }
     }
 });
+//# sourceMappingURL=ng2-page-slider.js.map

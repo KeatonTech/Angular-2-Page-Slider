@@ -5,7 +5,7 @@ import { Component } 	from '@angular/core';
 import { bootstrap }    from '@angular/platform-browser-dynamic';
 import {
 	KBPagesRendererDirective, KBPageSliderComponent, KBNavButtonComponent 
-} from '../../index';
+} from '../../ng2-page-slider';
 
 @Component({
 	selector: 'hero-example-app',
