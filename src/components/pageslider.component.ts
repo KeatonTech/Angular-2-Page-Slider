@@ -168,6 +168,15 @@ export class KBPageSliderComponent implements PageSliderControlAPI {
 	// Get the page renderer loop and keep its size up to date
 	@ContentChild(KBPagesRendererDirective) renderer : KBPagesRendererDirective;
 	ngOnInit(){
+		if (!this.renderer) {
+			console.log(`
+				The *kbPages directive is used to render pages efficiently, such that only
+				pages that are visible are in the DOM. Without this directive, the page
+				slider will not display anything.
+			`);
+			throw new Error('No *kbPages directive found inside kb-page-slider');
+		}
+
 		this.renderer.pageCountChange.subscribe((count)=>{
 			this.pageCountChange.emit(count);
 		});

@@ -903,6 +903,10 @@ System.register("src/components/pageslider.component", ["src/components/render.c
                 });
                 KBPageSliderComponent.prototype.ngOnInit = function () {
                     var _this = this;
+                    if (!this.renderer) {
+                        console.log("\n\t\t\t\tThe *kbPages directive is used to render pages efficiently, such that only\n\t\t\t\tpages that are visible are in the DOM. Without this directive, the page\n\t\t\t\tslider will not display anything.\n\t\t\t");
+                        throw new Error('No *kbPages directive found inside kb-page-slider');
+                    }
                     this.renderer.pageCountChange.subscribe(function (count) {
                         _this.pageCountChange.emit(count);
                     });
