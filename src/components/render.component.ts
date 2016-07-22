@@ -101,6 +101,7 @@ export class KBPagesRendererDirective {
 
 	// Renders 3 pages
 	private CreateDOM() {
+		if (this.pageCount == 0 || this.collection == undefined) return;
 		if (this.page > 0) this.BuildPage(this.page - 1, StackLocation.Previous);
 		this.BuildPage(this.page, StackLocation.Current);
 		if (this.page < this.pageCount) this.BuildPage(this.page + 1, StackLocation.Next);
