@@ -47,7 +47,7 @@ export class KBDotIndicatorComponent {
 	}
 
 	@Input() set pageCount(p : number) {
-		this._pageCount = p;
+		this._pageCount = p || 0;
 		this.updateItems();
 	}
 

@@ -280,7 +280,7 @@ System.register("src/components/dotindicator.component", ['@angular/core'], func
                 });
                 Object.defineProperty(KBDotIndicatorComponent.prototype, "pageCount", {
                     set: function (p) {
-                        this._pageCount = p;
+                        this._pageCount = p || 0;
                         this.updateItems();
                     },
                     enumerable: true,
