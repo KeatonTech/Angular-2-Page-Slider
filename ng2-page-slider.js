@@ -789,6 +789,8 @@ System.register("src/components/pageslider.component", ["src/components/render.c
                     this.showIndicator = true;
                     this.overlayIndicator = true;
                     this.dotColor = "white";
+                    // Interactivity
+                    this.locked = false;
                     this.enableOverscroll = true;
                     // INTERNAL STATE =======================================================================
                     this._pageOffset = 1;
@@ -925,13 +927,13 @@ System.register("src/components/pageslider.component", ["src/components/render.c
                     this.innerContainer.style.left = -this.pageWidth + "px";
                 };
                 KBPageSliderComponent.prototype.ScrollTo = function (x) {
-                    if (this.blockInteraction)
+                    if (this.locked || this.blockInteraction)
                         return;
                     this.pageOffset = this.ClampX(x);
                 };
                 KBPageSliderComponent.prototype.AnimateToNextPage = function (momentum) {
                     var _this = this;
-                    if (this.blockInteraction)
+                    if (this.locked || this.blockInteraction)
                         return;
                     if (this.page == this.renderer.pageCount - 1) {
                         return this.AnimateToX(1, 0).then(function () { _this.pageOffset = 1; });
@@ -946,7 +948,7 @@ System.register("src/components/pageslider.component", ["src/components/render.c
                 };
                 KBPageSliderComponent.prototype.AnimateToPreviousPage = function (momentum) {
                     var _this = this;
-                    if (this.blockInteraction)
+                    if (this.locked || this.blockInteraction)
                         return;
                     if (this.page == 0) {
                         return this.AnimateToX(1, 0).then(function () { _this.pageOffset = 1; });
@@ -961,7 +963,7 @@ System.register("src/components/pageslider.component", ["src/components/render.c
                 };
                 KBPageSliderComponent.prototype.AnimateToX = function (x, momentum) {
                     var _this = this;
-                    if (this.blockInteraction)
+                    if (this.locked || this.blockInteraction)
                         return;
                     this.blockInteraction = true;
                     var w = this.pageWidth;
@@ -1029,6 +1031,10 @@ System.register("src/components/pageslider.component", ["src/components/render.c
                     core_4.Input(), 
                     __metadata('design:type', String)
                 ], KBPageSliderComponent.prototype, "dotColor", void 0);
+                __decorate([
+                    core_4.Input(), 
+                    __metadata('design:type', Boolean)
+                ], KBPageSliderComponent.prototype, "locked", void 0);
                 __decorate([
                     core_4.Input(), 
                     __metadata('design:type', Number)

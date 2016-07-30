@@ -95,6 +95,8 @@ Handles touch events, resizing and animation.
 * **transitionDuration:** In the absence of scrolling momentum, how long should a transition take?
 	* Expressed as an integer number of milliseconds >= 0
 	* Defaults to 250ms
+* **locked:** When true, page scrolling is disabled 
+	* Boolean, defaults to false
 * **showIndicator:** When true, includes a dot indicator at the bottom.
 	* Boolean, defaults to true
 * **overlayIndicator:** When true, renders indicator above the page content.

@@ -170,6 +170,7 @@ declare module "src/components/pageslider.component" {
         showIndicator: boolean;
         overlayIndicator: boolean;
         dotColor: string;
+        locked: boolean;
         transitionDuration: number;
         enableOverscroll: boolean;
         enableSideClicks: boolean;

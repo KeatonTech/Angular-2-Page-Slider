@@ -120,6 +120,7 @@ export class KBPageSliderComponent implements PageSliderControlAPI {
 	@Input() public dotColor : string = "white";
 
 	// Interactivity
+	@Input() public locked: boolean = false;
 	@Input() public transitionDuration : number;
 	@Input() public enableOverscroll : boolean = true;
 	@Input() public set enableSideClicks(enabled: boolean) {
@@ -201,12 +202,12 @@ export class KBPageSliderComponent implements PageSliderControlAPI {
 	private blockInteraction : boolean = false;
 
 	public ScrollTo(x: number) {
-		if (this.blockInteraction) return;
+		if (this.locked || this.blockInteraction) return;
 		this.pageOffset = this.ClampX(x);
 	}
 
 	public AnimateToNextPage(momentum?: number) {
-		if (this.blockInteraction) return;
+		if (this.locked || this.blockInteraction) return;
 		if (this.page == this.renderer.pageCount - 1) {
 			return this.AnimateToX(1, 0).then(()=>{this.pageOffset = 1;})
 		}
@@ -220,7 +221,7 @@ export class KBPageSliderComponent implements PageSliderControlAPI {
 	}
 
 	public AnimateToPreviousPage(momentum?: number) {
-		if (this.blockInteraction) return;
+		if (this.locked || this.blockInteraction) return;
 		if (this.page == 0) {
 			return this.AnimateToX(1, 0).then(()=>{this.pageOffset = 1;})
 		}
@@ -234,7 +235,7 @@ export class KBPageSliderComponent implements PageSliderControlAPI {
 	}
 
 	public AnimateToX(x: number, momentum: number) {
-		if (this.blockInteraction) return;
+		if (this.locked || this.blockInteraction) return;
 		this.blockInteraction = true;
 
 		var w = this.pageWidth;
