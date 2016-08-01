@@ -61,7 +61,9 @@ declare module "src/components/dotindicator.component" {
         page: number;
         pageCount: number;
         dotColor: string;
-        private items;
+        items: {
+            active: boolean;
+        }[];
         private updateItems();
         private updateSelected();
     }
@@ -182,8 +184,8 @@ declare module "src/components/pageslider.component" {
         buttonTop: string;
         pageWidth: any;
         pageHeight: number;
-        protected containerWidth: string;
-        protected containerHeight: string;
+        containerWidth: string;
+        containerHeight: string;
         private dotBottom;
         renderer: KBPagesRendererDirective;
         ngOnInit(): void;

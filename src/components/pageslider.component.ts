@@ -162,8 +162,8 @@ export class KBPageSliderComponent implements PageSliderControlAPI {
 		return fullHeight - chin;
 	}
 
-	protected get containerWidth() {return this.pageWidth * 3 + "px";}
-	protected get containerHeight() {return this.pageHeight + "px";}
+	public get containerWidth() {return this.pageWidth * 3 + "px";}
+	public get containerHeight() {return this.pageHeight + "px";}
 
 	private get dotBottom() {return (this.overlayIndicator) ? "16px" : "0px";}
 

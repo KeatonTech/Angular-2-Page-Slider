@@ -59,7 +59,7 @@ export class KBDotIndicatorComponent {
 	// DATA REPRESENTATION
 
 	// An array of page dots, one of which (the active one) is true.
-	private items : {active:boolean}[] = [];
+	public items : {active:boolean}[] = [];
 	private updateItems() {
 		this.items = new Array(this._pageCount);
 		for (let i = 0; i < this._pageCount; i++) {

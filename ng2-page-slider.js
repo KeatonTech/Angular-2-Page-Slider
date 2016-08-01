@@ -251,15 +251,18 @@ System.register("src/components/render.component", ['@angular/core', "src/types"
         }
     }
 });
-System.register("src/components/dotindicator.component", ['@angular/core'], function(exports_3, context_3) {
+System.register("src/components/dotindicator.component", ['@angular/core', '@angular/common'], function(exports_3, context_3) {
     "use strict";
     var __moduleName = context_3 && context_3.id;
-    var core_2;
+    var core_2, common_1;
     var KBDotIndicatorComponent;
     return {
         setters:[
             function (core_2_1) {
                 core_2 = core_2_1;
+            },
+            function (common_1_1) {
+                common_1 = common_1_1;
             }],
         execute: function() {
             KBDotIndicatorComponent = (function () {
@@ -320,6 +323,7 @@ System.register("src/components/dotindicator.component", ['@angular/core'], func
                 KBDotIndicatorComponent = __decorate([
                     core_2.Component({
                         selector: 'kb-dot-indicator',
+                        directives: [common_1.CORE_DIRECTIVES],
                         template: "\n\t\t<div *ngFor=\"let item of items\" class=\"dot\"\n\t\t\t [style.background]=\"dotColor\"\n\t\t\t [class.active]=\"item.active\"></div>\n\t",
                         styles: [
                             ":host {\n\t\t\tdisplay: -webkit-box;\n\t\t\tdisplay: -ms-flexbox;\n\t\t\tdisplay: flex;\n\t\t\t-webkit-box-orient: horizontal;\n\t\t\t-webkit-box-direction: normal;\n\t\t\t\t-ms-flex-direction: row;\n\t\t\t\t\tflex-direction: row;\n\t\t\t-webkit-box-pack: center;\n\t\t\t\t-ms-flex-pack: center;\n\t\t\t\t\tjustify-content: center;\n\t\t}",
@@ -741,10 +745,10 @@ System.register("src/functionality/arrowkeys", [], function(exports_8, context_8
         }
     }
 });
-System.register("src/components/pageslider.component", ["src/components/render.component", '@angular/core', "src/components/dotindicator.component", "src/components/navbutton.component", "src/functionality/animation", "src/functionality/sideclick", "src/functionality/touchevents", "src/functionality/arrowkeys"], function(exports_9, context_9) {
+System.register("src/components/pageslider.component", ["src/components/render.component", '@angular/core', '@angular/common', "src/components/dotindicator.component", "src/components/navbutton.component", "src/functionality/animation", "src/functionality/sideclick", "src/functionality/touchevents", "src/functionality/arrowkeys"], function(exports_9, context_9) {
     "use strict";
     var __moduleName = context_9 && context_9.id;
-    var core_4, render_component_1, dotindicator_component_1, navbutton_component_1, animation_1, sideclick_1, touchevents_1, arrowkeys_1;
+    var core_4, common_2, render_component_1, dotindicator_component_1, navbutton_component_1, animation_1, sideclick_1, touchevents_1, arrowkeys_1;
     var KBPageSliderComponent;
     return {
         setters:[
@@ -757,6 +761,9 @@ System.register("src/components/pageslider.component", ["src/components/render.c
             },
             function (core_4_1) {
                 core_4 = core_4_1;
+            },
+            function (common_2_1) {
+                common_2 = common_2_1;
             },
             function (dotindicator_component_1_1) {
                 dotindicator_component_1 = dotindicator_component_1_1;
@@ -1064,7 +1071,7 @@ System.register("src/components/pageslider.component", ["src/components/render.c
                 KBPageSliderComponent = __decorate([
                     core_4.Component({
                         selector: 'kb-page-slider',
-                        directives: [dotindicator_component_1.KBDotIndicatorComponent],
+                        directives: [dotindicator_component_1.KBDotIndicatorComponent, common_2.CORE_DIRECTIVES],
                         template: "\n\t\t<!-- Display the actual pages -->\n\t\t<div class=\"inner\" \n\t\t\t\t[style.width]=\"containerWidth\"\n\t\t\t\t[style.height]=\"containerHeight\">\n\t\t\t<ng-content></ng-content>\n\t\t</div>\n\n\t\t<div class=\"buttons\" *ngIf=\"buttons.length > 0\" [style.top]=\"buttonTop\">\n\t\t\t<!-- Display navigation buttons -->\n\t\t\t<ng-content select=\"kb-nav-button[forward]\"></ng-content>\n\t\t\t<ng-content select=\"kb-nav-button[backward]\"></ng-content>\n\t\t</div>\n\n\t\t<!-- Display the page indicator -->\n\t\t<kb-dot-indicator *ngIf=\"showIndicator\"\n\t\t\t\t[page]=\"page\"\n\t\t\t\t[pageCount]=\"pageCount\"\n\t\t\t\t[dotColor]=\"dotColor\"\n\t\t\t\t[style.bottom]=\"dotBottom\">\n\t\t</kb-dot-indicator>\n\t",
                         styles: [
                             ":host {\n\t\t\toverflow: hidden;\n\t\t\tdisplay: block;\n\t\t\tposition: relative;\n\t\t}",
