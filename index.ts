@@ -24,20 +24,23 @@
 
 */
 
-import { NgModule } from "@angular/core";
+import { NgModule } 				from "@angular/core";
+import { BrowserModule }          	from '@angular/platform-browser';
 
-import { KBPageSliderComponent } from "./src/components/pageslider.component";
+import { KBPageSliderComponent } 	from "./src/components/pageslider.component";
 import { KBPagesRendererDirective } from "./src/components/render.component";
-import { KBDotIndicatorComponent } from "./src/components/dotindicator.component";
-import { KBNavButtonComponent } from "./src/components/navbutton.component";
+import { KBDotIndicatorComponent } 	from "./src/components/dotindicator.component";
+import { KBNavButtonComponent } 	from "./src/components/navbutton.component";
 
 @NgModule({
-  imports: [ ],
-  declarations: [
-    KBPageSliderComponent,
-	KBPagesRendererDirective,
-	KBDotIndicatorComponent,
-	KBNavButtonComponent
-  ]
+	imports: [
+		BrowserModule
+	],
+	declarations: [
+		KBPageSliderComponent,
+		KBPagesRendererDirective,
+		KBDotIndicatorComponent,
+		KBNavButtonComponent
+	]
 })
 export class PageSliderModule { }

@@ -1,9 +1,7 @@
 import { Component, Input, Output } from '@angular/core';
-import { CORE_DIRECTIVES }          from '@angular/common';
 
 @Component({
 	selector: 'kb-dot-indicator',
-	directives: [CORE_DIRECTIVES],
 	template: `
 		<div *ngFor="let item of items" class="dot"
 			 [style.background]="dotColor"

@@ -3,7 +3,6 @@ export { KBPagesRendererDirective, KBPage } from "./render.component";
 import {
 	Component, Input, Output, EventEmitter, ContentChild, ContentChildren, ElementRef
 } from '@angular/core';
-import { CORE_DIRECTIVES }          from '@angular/common';
 
 import { KBPagesRendererDirective, KBPage } from "./render.component";
 import { KBDotIndicatorComponent } from './dotindicator.component';
@@ -21,7 +20,7 @@ import { ArrowKeysHandler } from "../functionality/arrowkeys";
 
 @Component({
 	selector: 'kb-page-slider',
-	directives: [KBDotIndicatorComponent, CORE_DIRECTIVES],
+	directives: [KBDotIndicatorComponent],
 	template: `
 		<!-- Display the actual pages -->
 		<div class="inner" 
