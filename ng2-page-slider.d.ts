@@ -200,8 +200,6 @@ declare module "src/components/pageslider.component" {
     }
 }
 declare module "index" {
-    export { KBPageSliderComponent } from "src/components/pageslider.component";
-    export { KBPagesRendererDirective } from "src/components/render.component";
-    export { KBDotIndicatorComponent } from "src/components/dotindicator.component";
-    export { KBNavButtonComponent } from "src/components/navbutton.component";
+    export class PageSliderModule {
+    }
 }

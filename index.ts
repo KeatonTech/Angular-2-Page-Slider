@@ -41,6 +41,12 @@ import { KBNavButtonComponent } 	from "./src/components/navbutton.component";
 		KBPagesRendererDirective,
 		KBDotIndicatorComponent,
 		KBNavButtonComponent
+	],
+	exports: [
+		KBPageSliderComponent,
+		KBPagesRendererDirective,
+		KBDotIndicatorComponent,
+		KBNavButtonComponent
 	]
 })
 export class PageSliderModule { }
