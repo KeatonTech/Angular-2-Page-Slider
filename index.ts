@@ -24,7 +24,20 @@
 
 */
 
-export { KBPageSliderComponent } from "./src/components/pageslider.component";
-export { KBPagesRendererDirective } from "./src/components/render.component";
-export { KBDotIndicatorComponent } from "./src/components/dotindicator.component";
-export { KBNavButtonComponent } from "./src/components/navbutton.component";
+import { NgModule } from "@angular/core";
+
+import { KBPageSliderComponent } from "./src/components/pageslider.component";
+import { KBPagesRendererDirective } from "./src/components/render.component";
+import { KBDotIndicatorComponent } from "./src/components/dotindicator.component";
+import { KBNavButtonComponent } from "./src/components/navbutton.component";
+
+@NgModule({
+  imports: [ ],
+  declarations: [
+    KBPageSliderComponent,
+	KBPagesRendererDirective,
+	KBDotIndicatorComponent,
+	KBNavButtonComponent
+  ]
+})
+export class PageSliderModule { }

@@ -2,6 +2,8 @@
 DOM recycling and CSS3 transitions for near-native performance. Built with Angular 2, and
 designed to work seamlessly in normal NG2 templates.**
 
+*Please update to Angular 2 RC 5 before use. This library makes use of ngModule*
+
 ### Live Demo
 https://keatontech.github.io/Angular-2-Page-Slider/
 
