@@ -588,7 +588,7 @@ System.register("src/functionality/sideclick", [], function(exports_6, context_6
 System.register("src/functionality/touchevents", [], function(exports_7, context_7) {
     "use strict";
     var __moduleName = context_7 && context_7.id;
-    var kDistanceThreshold, kMomentumThreshold, kDistanceMomentumThreshold, TouchEventHandler;
+    var kDistanceThreshold, kMomentumThreshold, kDistanceMomentumThreshold, kAcceptAtX, kRejectAtY, TouchEventHandler;
     return {
         setters:[],
         execute: function() {
@@ -598,6 +598,11 @@ System.register("src/functionality/touchevents", [], function(exports_7, context
             // unless that are moving at more than 30% the page width every second
             kMomentumThreshold = 0.3;
             kDistanceMomentumThreshold = 0.5;
+            // Ignore scrolls until they have moved at least 3% along X. If, during that time, they
+            // move more than 20px on Y, they will be rejected and interpreted instead as a vertical
+            // scroll gesture
+            kAcceptAtX = 0.03;
+            kRejectAtY = 20;
             TouchEventHandler = (function () {
                 function TouchEventHandler(delegate, element) {
                     this.delegate = delegate;
@@ -605,8 +610,10 @@ System.register("src/functionality/touchevents", [], function(exports_7, context
                     // Touch tracking state
                     this.start_x = 0;
                     this.current_x = 0;
+                    this.start_ypx = 0;
                     this.current_scroll = 1;
                     this.tracking = null;
+                    this.accepted = false;
                     // MOMENTUM HIGH PASS
                     this.diffs_x = [0, 0, 0];
                     this.times_x = [20, 20, 20];
@@ -647,7 +654,9 @@ System.register("src/functionality/touchevents", [], function(exports_7, context
                     this.tracking = event.touches.item(0).identifier;
                     this.start_x = event.touches.item(0).clientX / this.delegate.pageWidth;
                     this.current_x = this.start_x;
+                    this.start_ypx = event.touches.item(0).clientY;
                     this.last_sample_time = new Date().getTime();
+                    this.accepted = false;
                 };
                 TouchEventHandler.prototype.TouchMove = function (event) {
                     var touch = this.GetTrackingTouch(event.changedTouches);
@@ -655,6 +664,18 @@ System.register("src/functionality/touchevents", [], function(exports_7, context
                         return;
                     var new_x = touch.clientX / this.delegate.pageWidth;
                     var diff_x = new_x - this.current_x;
+                    if (!this.accepted) {
+                        if (Math.abs(new_x - this.start_x) >= kAcceptAtX) {
+                            if (Math.abs(touch.clientY - this.start_ypx) > kRejectAtY) {
+                                this.tracking = null;
+                                return;
+                            }
+                            else {
+                                this.accepted = true;
+                                this.delegate.StartScroll();
+                            }
+                        }
+                    }
                     this.CaptureXDiff(diff_x);
                     this.current_scroll = this.current_scroll - diff_x;
                     this.delegate.ScrollTo(this.current_scroll);
@@ -666,6 +687,9 @@ System.register("src/functionality/touchevents", [], function(exports_7, context
                         return;
                     if (this.start_x == this.current_x)
                         return;
+                    if (!this.accepted)
+                        return;
+                    this.delegate.EndScroll();
                     this.tracking = null;
                     this.current_scroll = 1;
                     var ending_momentum_x = this.momentum_x;
@@ -792,6 +816,7 @@ System.register("src/components/pageslider.component", ["src/components/render.c
                     // Interactivity
                     this.locked = false;
                     this.enableOverscroll = true;
+                    this.scrollStateChange = new core_4.EventEmitter();
                     // INTERNAL STATE =======================================================================
                     this._pageOffset = 1;
                     // INTERACTIVE NAVIGATION ===============================================================
@@ -976,6 +1001,8 @@ System.register("src/components/pageslider.component", ["src/components/render.c
                         _this.blockInteraction = false;
                     });
                 };
+                KBPageSliderComponent.prototype.StartScroll = function () { this.scrollStateChange.emit(true); };
+                KBPageSliderComponent.prototype.EndScroll = function () { this.scrollStateChange.emit(false); };
                 // OVERSCROLL (iOS STYLE) ===============================================================
                 // Get X to a reasonable range, taking into account page boundaries
                 KBPageSliderComponent.prototype.ClampX = function (x) {
@@ -1053,6 +1080,10 @@ System.register("src/components/pageslider.component", ["src/components/render.c
                     __metadata('design:type', Boolean), 
                     __metadata('design:paramtypes', [Boolean])
                 ], KBPageSliderComponent.prototype, "enableArrowKeys", null);
+                __decorate([
+                    core_4.Output(), 
+                    __metadata('design:type', Object)
+                ], KBPageSliderComponent.prototype, "scrollStateChange", void 0);
                 __decorate([
                     core_4.ContentChildren(navbutton_component_1.KBNavButtonComponent), 
                     __metadata('design:type', Object)

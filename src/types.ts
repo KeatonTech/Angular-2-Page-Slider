@@ -15,6 +15,8 @@ export interface PageSliderControlAPI {
 	AnimateToX(x: number, momentum: number);
 	AnimateToNextPage(momentum: number);
 	AnimateToPreviousPage(momentum: number);
+	StartScroll();
+	EndScroll();
 
 	pageWidth : number;
 	pageHeight : number;

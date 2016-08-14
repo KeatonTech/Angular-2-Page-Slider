@@ -9,6 +9,8 @@ declare module "src/types" {
         AnimateToX(x: number, momentum: number): any;
         AnimateToNextPage(momentum: number): any;
         AnimateToPreviousPage(momentum: number): any;
+        StartScroll(): any;
+        EndScroll(): any;
         pageWidth: number;
         pageHeight: number;
     }
@@ -124,8 +126,10 @@ declare module "src/functionality/touchevents" {
         constructor(delegate: PageSliderControlAPI, element: HTMLElement);
         private start_x;
         private current_x;
+        private start_ypx;
         private current_scroll;
         private tracking;
+        accepted: boolean;
         diffs_x: number[];
         times_x: number[];
         last_sample_time: number;
@@ -177,6 +181,7 @@ declare module "src/components/pageslider.component" {
         enableOverscroll: boolean;
         enableSideClicks: boolean;
         enableArrowKeys: boolean;
+        scrollStateChange: EventEmitter<boolean>;
         private _pageOffset;
         protected pageOffset: number;
         private pxOffset;
@@ -195,6 +200,8 @@ declare module "src/components/pageslider.component" {
         AnimateToNextPage(momentum?: number): SlideAnimation;
         AnimateToPreviousPage(momentum?: number): SlideAnimation;
         AnimateToX(x: number, momentum: number): SlideAnimation;
+        StartScroll(): void;
+        EndScroll(): void;
         protected ClampX(x: number): number;
         protected OverscrollRamp(input: number): number;
     }

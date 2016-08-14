@@ -130,6 +130,8 @@ export class KBPageSliderComponent implements PageSliderControlAPI {
 		(this.arrowKeysHandler) ? this.arrowKeysHandler.enabled = enabled : null;
 	}
 
+	@Output() scrollStateChange = new EventEmitter<boolean>();
+
 
 	// INTERNAL STATE =======================================================================
 
@@ -250,6 +252,8 @@ export class KBPageSliderComponent implements PageSliderControlAPI {
 		});
 	}
 
+	public StartScroll() {this.scrollStateChange.emit(true);}
+	public EndScroll() {this.scrollStateChange.emit(false);}
 
 	// OVERSCROLL (iOS STYLE) ===============================================================
 

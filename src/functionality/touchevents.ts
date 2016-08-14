@@ -11,6 +11,12 @@ const kDistanceThreshold = 0.1;
 const kMomentumThreshold = 0.3;
 const kDistanceMomentumThreshold = 0.5;
 
+// Ignore scrolls until they have moved at least 3% along X. If, during that time, they
+// move more than 20px on Y, they will be rejected and interpreted instead as a vertical
+// scroll gesture
+const kAcceptAtX = 0.03;
+const kRejectAtY = 20;
+
 
 export class TouchEventHandler {
 	constructor(
@@ -28,8 +34,11 @@ export class TouchEventHandler {
 	// Touch tracking state
 	private start_x : number = 0;
 	private current_x : number = 0;
+	private start_ypx: number = 0;
+
 	private current_scroll : number = 1;
 	private tracking : number = null;
+	public 	accepted : boolean = false;
 
 
 	// MOMENTUM HIGH PASS
@@ -68,7 +77,9 @@ export class TouchEventHandler {
 		this.tracking = event.touches.item(0).identifier;
 		this.start_x = event.touches.item(0).clientX / this.delegate.pageWidth;
 		this.current_x = this.start_x;
+		this.start_ypx = event.touches.item(0).clientY;
 		this.last_sample_time = new Date().getTime();
+		this.accepted = false;
 	}
 
 	public TouchMove(event: TouchEvent) {
@@ -77,6 +88,19 @@ export class TouchEventHandler {
 
 		var new_x = touch.clientX / this.delegate.pageWidth;
 		var diff_x = new_x - this.current_x;
+
+		if (!this.accepted) {
+			if (Math.abs(new_x - this.start_x) >= kAcceptAtX) {
+				if (Math.abs(touch.clientY - this.start_ypx) > kRejectAtY) {
+					this.tracking = null;
+					return;
+				} else {
+					this.accepted = true;
+					this.delegate.StartScroll();
+				}
+			}
+		}
+
 		this.CaptureXDiff(diff_x);
 		this.current_scroll = this.current_scroll - diff_x;
 		this.delegate.ScrollTo(this.current_scroll);
@@ -87,6 +111,9 @@ export class TouchEventHandler {
 		var touch = this.GetTrackingTouch(event.changedTouches);
 		if (touch == null) return;
 		if (this.start_x == this.current_x) return;
+		if (!this.accepted) return;
+		this.delegate.EndScroll();
+
 		this.tracking = null;
 		this.current_scroll = 1;
 		var ending_momentum_x = this.momentum_x;
