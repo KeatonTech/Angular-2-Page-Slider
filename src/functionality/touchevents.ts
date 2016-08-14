@@ -98,7 +98,7 @@ export class TouchEventHandler {
 					this.accepted = true;
 					this.delegate.StartScroll();
 				}
-			}
+			} else return;
 		}
 
 		this.CaptureXDiff(diff_x);
