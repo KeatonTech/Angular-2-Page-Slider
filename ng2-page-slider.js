@@ -675,6 +675,8 @@ System.register("src/functionality/touchevents", [], function(exports_7, context
                                 this.delegate.StartScroll();
                             }
                         }
+                        else
+                            return;
                     }
                     this.CaptureXDiff(diff_x);
                     this.current_scroll = this.current_scroll - diff_x;
@@ -685,12 +687,12 @@ System.register("src/functionality/touchevents", [], function(exports_7, context
                     var touch = this.GetTrackingTouch(event.changedTouches);
                     if (touch == null)
                         return;
+                    this.tracking = null;
                     if (this.start_x == this.current_x)
                         return;
                     if (!this.accepted)
                         return;
                     this.delegate.EndScroll();
-                    this.tracking = null;
                     this.current_scroll = 1;
                     var ending_momentum_x = this.momentum_x;
                     if (this.current_x + kDistanceThreshold < this.start_x) {
