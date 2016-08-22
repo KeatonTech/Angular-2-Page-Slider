@@ -73,6 +73,7 @@ export class TouchEventHandler {
 	public TouchStart(event: TouchEvent) {
 		if (this.tracking) return;
 		if (event.touches.length > 1) return;
+		event.preventDefault();
 
 		this.tracking = event.touches.item(0).identifier;
 		this.start_x = event.touches.item(0).clientX / this.delegate.pageWidth;
@@ -110,6 +111,7 @@ export class TouchEventHandler {
 	public TouchEnd(event: TouchEvent) {
 		var touch = this.GetTrackingTouch(event.changedTouches);
 		if (touch == null) return;
+		event.preventDefault();
 
 		this.tracking = null;
 		if (this.start_x == this.current_x) return;
