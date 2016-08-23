@@ -73,7 +73,6 @@ export class TouchEventHandler {
 	public TouchStart(event: TouchEvent) {
 		if (this.tracking) return;
 		if (event.touches.length > 1) return;
-		event.stopPropagation();
 
 		this.tracking = event.touches.item(0).identifier;
 		this.start_x = event.touches.item(0).clientX / this.delegate.pageWidth;
@@ -102,6 +101,7 @@ export class TouchEventHandler {
 			} else return;
 		}
 
+		event.preventDefault();
 		this.CaptureXDiff(diff_x);
 		this.current_scroll = this.current_scroll - diff_x;
 		this.delegate.ScrollTo(this.current_scroll);

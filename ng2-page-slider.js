@@ -651,7 +651,6 @@ System.register("src/functionality/touchevents", [], function(exports_7, context
                         return;
                     if (event.touches.length > 1)
                         return;
-                    event.stopPropagation();
                     this.tracking = event.touches.item(0).identifier;
                     this.start_x = event.touches.item(0).clientX / this.delegate.pageWidth;
                     this.current_x = this.start_x;
@@ -679,6 +678,7 @@ System.register("src/functionality/touchevents", [], function(exports_7, context
                         else
                             return;
                     }
+                    event.preventDefault();
                     this.CaptureXDiff(diff_x);
                     this.current_scroll = this.current_scroll - diff_x;
                     this.delegate.ScrollTo(this.current_scroll);
