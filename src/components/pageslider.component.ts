@@ -20,7 +20,6 @@ import { ArrowKeysHandler } from "../functionality/arrowkeys";
 
 @Component({
 	selector: 'kb-page-slider',
-	directives: [KBDotIndicatorComponent],
 	template: `
 		<!-- Display the actual pages -->
 		<div class="inner" 
