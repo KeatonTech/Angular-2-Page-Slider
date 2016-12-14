@@ -101,6 +101,7 @@ export class KBPageSliderComponent implements PageSliderControlAPI {
 				if (this.blockInteraction) {this.pageChange.emit(this.page); return;}
 				this.AnimateToPreviousPage();
 			} else {
+				if (this.blockInteraction) {this.pageChange.emit(this.page); return;}
 				this.renderer.page = pn;
 				this.pageChange.emit(pn);
 			}

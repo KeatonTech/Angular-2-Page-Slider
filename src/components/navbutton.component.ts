@@ -86,23 +86,23 @@ export class KBNavButtonComponent {
 		}
 	}
 
-	private get derivedIconColor() {
+	public get derivedIconColor() {
 		if (this.iconColor !== undefined) return this.iconColor;
 		return (this.showBackground) ? "black" : "white";
 	}
 
-	private get derivedBackgroundColor() {
+	public get derivedBackgroundColor() {
 		return (this.showBackground) ? this.backgroundColor : "none";
 	}
 
-	private get derivedSize() {return this.size + "px";}
-	private get halfSize() {return this.size / 2 + "px";}
+	public get derivedSize() {return this.size + "px";}
+	public get halfSize() {return this.size / 2 + "px";}
 
-	private get symbol() {
+	public get symbol() {
 		return (this.isForward) ? "&rsaquo;" : "&lsaquo;";
 	}
 
-	private OnClick() {
+	public OnClick() {
 		if (this.disabled) return;
 		this.pageChange.emit((this.isForward) ? ++this.page : --this.page);
 	}

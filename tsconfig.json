@@ -1,8 +1,12 @@
 {
   "compilerOptions": {
     "target": "es5",
-    "module": "system",
+    "module": "commonjs",
     "moduleResolution": "node",
+    "lib": [
+      "es6",
+      "dom"
+    ],
     "sourceMap": true,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
@@ -10,6 +14,9 @@
     "noImplicitAny": false,
     "outFile": "ng2-page-slider.js"
   },
+  "exclude": [
+    "node_modules"
+  ],
   "files": [
     "index.ts"
   ]

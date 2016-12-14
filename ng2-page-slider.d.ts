@@ -83,12 +83,12 @@ declare module "src/components/navbutton.component" {
         iconColor: string;
         backgroundColor: string;
         disabled: boolean;
-        private derivedIconColor;
-        private derivedBackgroundColor;
-        private derivedSize;
-        private halfSize;
-        private symbol;
-        private OnClick();
+        derivedIconColor;
+        derivedBackgroundColor;
+        derivedSize;
+        halfSize;
+        symbol;
+        OnClick();
     }
 }
 declare module "src/functionality/animation" {
