@@ -2,7 +2,7 @@
 DOM recycling and CSS3 transitions for near-native performance. Built with Angular 2, and
 designed to work seamlessly in normal NG2 templates.**
 
-*Designed for Angular 2 RC 6*
+*Designed for Angular 2.3.0*
 
 ### Live Demo
 https://keatontech.github.io/Angular-2-Page-Slider/
@@ -52,7 +52,7 @@ import {
 	directives: [KBPagesRendererDirective, KBPageSliderComponent, KBNavButtonComponent],
 	template: `
 		<kb-page-slider [overlayIndicator]="false" dotColor="black"
-						[(page)]="pageNumber" [(pageCount)]="pageCount">
+						[(page)]="pageNumber">
 
 			<!-- Pages -->
 			<div *kbPages="let page of pages" [style.background]="page.image"></div>

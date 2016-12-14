@@ -1,7 +1,7 @@
 {
   "name": "ng2-page-slider",
-  "version": "0.8.0",
-  "description": "Mimicks the functionality of UIPageViewController in pure HTML for mobile web apps with Angular 2",
+  "version": "0.9.0",
+  "description": "Mimicks the functionality of UIPageViewController in pure HTML for mobile web apps with Angular 2.",
   "repository": "https://github.com/KeatonTech/Angular-2-Page-Slider",
   "main": "index.ts",
   "scripts": {
