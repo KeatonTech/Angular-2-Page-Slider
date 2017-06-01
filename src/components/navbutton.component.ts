@@ -36,7 +36,7 @@ import { Component, Input, Output, EventEmitter, Attribute } from '@angular/core
 			padding-right: 3px;
 		}`,
 		`a.circle {
-			box-shadow: 0px 1px 2px rgba(0,0,0,0.25);
+			box-shadow: 0 1px 2px rgba(0,0,0,0.25);
 		}`,
 		`a.disabled {
 			opacity: 0.33;

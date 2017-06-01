@@ -1,23 +1,21 @@
 {
+  "extends": "./tsconfig.base.json",
   "compilerOptions": {
-    "target": "es5",
-    "module": "system",
-    "moduleResolution": "node",
-    "lib": [
-      "es6",
-      "dom"
-    ],
-    "sourceMap": true,
-    "emitDecoratorMetadata": true,
-    "experimentalDecorators": true,
-    "removeComments": false,
-    "noImplicitAny": false,
-    "outFile": "ng2-page-slider.js"
+    "module": "es2015",
+    "emitDecoratorMetadata": false,
+    "declaration": true,
+    "declarationDir": "typings/",
+    "outDir": "dist/"
   },
-  "exclude": [
-    "node_modules"
-  ],
   "files": [
     "index.ts"
-  ]
+  ],
+  "angularCompilerOptions": {
+    "annotateForClosureCompiler": true,
+    "strictMetadataEmit": true,
+    "flatModuleOutFile": "ng2-page-slider.js",
+    "flatModuleId": "ng2-page-slider",
+    "skipTemplateCodegen": true,
+    "generateCodeForLibraries": false
+  }
 }

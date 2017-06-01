@@ -11,13 +11,13 @@ export enum StackLocation {
 
 // Internal API for event handlers to control the page slider
 export interface PageSliderControlAPI {
-	ScrollTo(x: number);
-	AnimateToX(x: number, momentum: number);
-	AnimateToNextPage(momentum: number);
-	AnimateToPreviousPage(momentum: number);
-	StartScroll();
-	EndScroll();
+	ScrollTo(x: number): void;
+	AnimateToX(x: number, momentum: number): void;
+	AnimateToNextPage(momentum: number): void;
+	AnimateToPreviousPage(momentum: number): void;
+	StartScroll(): void;
+	EndScroll(): void;
 
-	pageWidth : number;
-	pageHeight : number;
+	pageWidth: number;
+	pageHeight: number;
 }

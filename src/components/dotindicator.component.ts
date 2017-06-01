@@ -1,4 +1,4 @@
-import { Component, Input, Output } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 @Component({
 	selector: 'kb-dot-indicator',
@@ -40,7 +40,7 @@ export class KBDotIndicatorComponent {
 	// PUBLIC PROPERTIES
 	private _page : number = 0;
 	private _pageCount : number = 0;
-	
+
 	@Input() set page(p : number) {
 		this._page = p;
 		this.updateSelected();

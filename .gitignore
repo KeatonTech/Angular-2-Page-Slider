@@ -1,2 +1,8 @@
 node_modules
 ./npm-debug.log
+
+# Compiled JS files using AOT compilator
+/dist/
+
+# Dist package
+/*.tgz

@@ -6,8 +6,7 @@ import { PageSliderControlAPI } from "../types";
 
 export class ArrowKeysHandler {
 	constructor(
-		private delegate : PageSliderControlAPI,
-		private element : HTMLElement
+		private delegate : PageSliderControlAPI
 	) {
 		document.addEventListener("keydown",  this.KeyHandler.bind(this));
 	}

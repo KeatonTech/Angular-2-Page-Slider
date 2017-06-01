@@ -18,7 +18,7 @@ export class SideClickHandler {
 	private ClickHandler(e: MouseEvent) {
 		if (!this.enabled) return;
 
-		var elementX = e.clientX - this.element.getBoundingClientRect().left;
+		let elementX = e.clientX - this.element.getBoundingClientRect().left;
 		if (elementX < this.threshold) {
 			this.delegate.AnimateToPreviousPage(0);
 		} else if (elementX > this.element.offsetWidth - this.threshold) {

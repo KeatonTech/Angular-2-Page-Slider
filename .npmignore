@@ -1,0 +1,9 @@
+**/*
+!bundles/*.js
+!typings/**/*
+!examples/**/*.js
+!examples/**/*.js.map
+!examples/**/*.css
+!examples/**/*.html
+!LICENSE
+!README.md

@@ -1,38 +1,35 @@
 /**
  * Highest level controller for the app. Basically just defers to the router.
  */
-import { Component } 	from '@angular/core';
-import { bootstrap }    from '@angular/platform-browser-dynamic';
-import {
-	KBPagesRendererDirective, KBPageSliderComponent, KBNavButtonComponent 
-} from '../../index';
+import {Component, NgModule}    from '@angular/core';
+import {platformBrowserDynamic}    from '@angular/platform-browser-dynamic';
+import {PageSliderModule} from '../../index';
 
 @Component({
 	selector: 'hero-example-app',
-	directives: [KBPagesRendererDirective, KBPageSliderComponent, KBNavButtonComponent],
 	template: `
-		<div class="header">
-			<h1>My Great Website</h1>
-		</div>
-		<kb-page-slider [overlayIndicator]="false" dotColor="black"
-						[(page)]="pageNumber" [(pageCount)]="pageCount">
+        <div class="header">
+            <h1>My Great Website</h1>
+        </div>
+        <kb-page-slider [overlayIndicator]="false" dotColor="black"
+                        [(page)]="pageNumber" (pageCountChange)="pageCount = $event">
 
-			<!-- Pages -->
-			<div *kbPages="let page of pages" class="page" [style.background]="page.color">
-				<div class="pageTitle">{{page.title}}</div>
-			</div>
+            <!-- Pages -->
+            <div *kbPages="let page of pages" class="page" [style.background]="page.color">
+                <div class="pageTitle">{{page.title}}</div>
+            </div>
 
-			<!-- Navigation -->
-			<kb-nav-button backward [showBackground]="true"
-						[(page)]="pageNumber" [pageCount]="pageCount">
-			</kb-nav-button>
-			<kb-nav-button forward [showBackground]="true"
-						[(page)]="pageNumber" [pageCount]="pageCount">
-			</kb-nav-button>
-		</kb-page-slider>
+            <!-- Navigation -->
+            <kb-nav-button backward [showBackground]="true"
+                           [(page)]="pageNumber" [pageCount]="pageCount">
+            </kb-nav-button>
+            <kb-nav-button forward [showBackground]="true"
+                           [(page)]="pageNumber" [pageCount]="pageCount">
+            </kb-nav-button>
+        </kb-page-slider>
 	`,
 	styles: [
-		`.pageTitle {
+			`.pageTitle {
 			position: absolute;
 			left: 0px;
 			bottom: 0px;
@@ -40,7 +37,7 @@ import {
 			height: 44px;
 			line-height: 44px;
 
-			background-color: rgba(0,0,0,0.25);
+			background-color: rgba(0, 0, 0, 0.25);
 			color: white;
 
 			font-family: "San Francisco", "Arial", sans-serif;
@@ -51,8 +48,8 @@ import {
 	]
 })
 export class HeroAppComponent {
-	public pageNumber : number = 0;
-	public pageCount : number = 0;
+	public pageNumber: number = 0;
+	public pageCount: number = 0;
 
 	public pages = [
 		{
@@ -86,5 +83,19 @@ export class HeroAppComponent {
 	]
 }
 
+@NgModule({
+	imports: [
+		PageSliderModule
+	],
+	declarations: [
+		HeroAppComponent
+	],
+	bootstrap: [
+		HeroAppComponent
+	]
+})
+export class HeroAppModule {
+}
+
 // Angular Bootstrap
-bootstrap(HeroAppComponent);
+platformBrowserDynamic().bootstrapModule(HeroAppModule);

@@ -1,11 +1,10 @@
 export { KBPagesRendererDirective, KBPage } from "./render.component";
 
 import {
-	Component, Input, Output, EventEmitter, ContentChild, ContentChildren, ElementRef
+	Component, Input, Output, EventEmitter, ContentChild, ContentChildren, ElementRef, QueryList
 } from '@angular/core';
 
-import { KBPagesRendererDirective, KBPage } from "./render.component";
-import { KBDotIndicatorComponent } from './dotindicator.component';
+import { KBPagesRendererDirective } from "./render.component";
 import { KBNavButtonComponent } from './navbutton.component';
 import { PageSliderControlAPI } from "../types";
 import { SlideAnimation } from "../functionality/animation";
@@ -80,11 +79,11 @@ export class KBPageSliderComponent implements PageSliderControlAPI {
 	constructor(
 		private element: ElementRef
 	) {
-		var htmlElement = this.element.nativeElement;
+		let htmlElement = this.element.nativeElement;
 
 		this.touchEventHandler = new TouchEventHandler(this, htmlElement);
 		this.sideClickHandler = new SideClickHandler(this, htmlElement);
-		this.arrowKeysHandler = new ArrowKeysHandler(this, htmlElement);
+		this.arrowKeysHandler = new ArrowKeysHandler(this);
 	}
 
 
@@ -148,7 +147,7 @@ export class KBPageSliderComponent implements PageSliderControlAPI {
 
 	// NAV BUTTONS
 
-	@ContentChildren(KBNavButtonComponent) buttons;
+	@ContentChildren(KBNavButtonComponent) buttons: QueryList<KBNavButtonComponent>;
 	public get buttonTop() {
 		return this.pageHeight / 2 - this.buttons.first.size / 2 + "px"
 	}
@@ -158,8 +157,8 @@ export class KBPageSliderComponent implements PageSliderControlAPI {
 
 	public get pageWidth() {return this.element.nativeElement.offsetWidth;}
 	public get pageHeight() {
-		var fullHeight = this.element.nativeElement.offsetHeight;
-		var chin = (this.showIndicator && !this.overlayIndicator) ? 20 : 0;
+		let fullHeight = this.element.nativeElement.offsetHeight;
+		let chin = (this.showIndicator && !this.overlayIndicator) ? 20 : 0;
 		return fullHeight - chin;
 	}
 
@@ -180,7 +179,7 @@ export class KBPageSliderComponent implements PageSliderControlAPI {
 			throw new Error('No *kbPages directive found inside kb-page-slider');
 		}
 
-		this.renderer.pageCountChange.subscribe((count)=>{
+		this.renderer.pageCountChange.subscribe((count :number)=>{
 			this.pageCountChange.emit(count);
 		});
 
@@ -208,39 +207,39 @@ export class KBPageSliderComponent implements PageSliderControlAPI {
 		this.pageOffset = this.ClampX(x);
 	}
 
-	public AnimateToNextPage(momentum?: number) {
-		if (this.locked || this.blockInteraction) return;
+	public AnimateToNextPage(momentum?: number): SlideAnimation | null {
+		if (this.locked || this.blockInteraction) return null;
 		if (this.page == this.renderer.pageCount - 1) {
 			return this.AnimateToX(1, 0).then(()=>{this.pageOffset = 1;})
 		}
 		if (momentum === undefined) momentum = 0;
 
-		this.AnimateToX(2, momentum).then(()=>{
+		return this.AnimateToX(2, momentum).then(()=>{
 			this.renderer.page++;
 			this.pageChange.emit(this.renderer.page);
 			this.pageOffset = 1;
 		});
 	}
 
-	public AnimateToPreviousPage(momentum?: number) {
-		if (this.locked || this.blockInteraction) return;
+	public AnimateToPreviousPage(momentum?: number): SlideAnimation | null {
+		if (this.locked || this.blockInteraction) return null;
 		if (this.page == 0) {
 			return this.AnimateToX(1, 0).then(()=>{this.pageOffset = 1;})
 		}
 		if (momentum === undefined) momentum = 0;
 
-		this.AnimateToX(0, momentum).then(()=>{
+		return this.AnimateToX(0, momentum).then(()=>{
 			this.renderer.page--;
 			this.pageChange.emit(this.renderer.page);
 			this.pageOffset = 1;
 		});
 	}
 
-	public AnimateToX(x: number, momentum: number) {
-		if (this.locked || this.blockInteraction) return;
+	public AnimateToX(x: number, momentum: number): SlideAnimation | null {
+		if (this.locked || this.blockInteraction) return null;
 		this.blockInteraction = true;
 
-		var w = this.pageWidth;
+		let w = this.pageWidth;
 		return new SlideAnimation(
 			this.innerContainer,	 	// Element to animate
 			-this.pageOffset * w,		// Current position (px)

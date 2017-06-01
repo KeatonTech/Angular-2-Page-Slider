@@ -1,35 +1,36 @@
 /**
  * Highest level controller for the app. Basically just defers to the router.
  */
-import { Component } 	from '@angular/core';
-import { bootstrap }    from '@angular/platform-browser-dynamic';
-import { KBPagesRendererDirective, KBPageSliderComponent } from '../../index';
+import {Component, NgModule}    from '@angular/core';
+import {platformBrowserDynamic}    from '@angular/platform-browser-dynamic';
+import {PageSliderModule} from '../../index';
 
 @Component({
 	selector: 'mobile-example-app',
-	directives: [KBPagesRendererDirective, KBPageSliderComponent],
 	template: `
-		<kb-page-slider>
-			<div *kbPages="let page of pages" class="page" [style.background]="page.color">
-				<h1>{{page.title}}</h1>
-			</div>
-		</kb-page-slider>
+        <kb-page-slider>
+            <div *kbPages="let page of pages" class="page" [style.background]="page.color">
+                <h1>{{page.title}}</h1>
+            </div>
+        </kb-page-slider>
 	`,
-	styles: [
-		`:host {
+	styles: [`
+		:host {
 			position: relative;
 			display: block;
 			width: 100%;
 			height: 100%;
-		}`,
-		`kb-page-slider {
+		}
+	`, `
+		kb-page-slider {
 			position: absolute;
 			top: 0;
 			bottom: 0;
 			left: 0;
 			right: 0;
-		}`,
-		`.page {
+		}
+	`, `
+		.page {
 			padding: 15px 5px;
 			text-align: center;
 		}`
@@ -68,5 +69,19 @@ export class MobileAppComponent {
 	]
 }
 
+@NgModule({
+	imports: [
+		PageSliderModule
+	],
+	declarations: [
+		MobileAppComponent
+	],
+	bootstrap: [
+		MobileAppComponent
+	]
+})
+export class MobileAppModule {
+}
+
 // Angular Bootstrap
-bootstrap(MobileAppComponent);
+platformBrowserDynamic().bootstrapModule(MobileAppModule);

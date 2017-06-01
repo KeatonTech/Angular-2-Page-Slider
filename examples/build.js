@@ -13,13 +13,15 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 /*
     This file contains some helpful types that are used throughout the module
 */
-System.register("src/types", [], function(exports_1, context_1) {
+System.register("src/types", [], function (exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
     var StackLocation;
     return {
-        setters:[],
-        execute: function() {
+        setters: [],
+        execute: function () {/*
+                This file contains some helpful types that are used throughout the module
+            */
             // The slider renders 3 pages to DOM at once, as follows
             (function (StackLocation) {
                 StackLocation[StackLocation["Previous"] = 0] = "Previous";
@@ -29,22 +31,22 @@ System.register("src/types", [], function(exports_1, context_1) {
             exports_1("StackLocation", StackLocation);
             ;
         }
-    }
+    };
 });
-System.register("src/components/render.component", ['@angular/core', "src/types"], function(exports_2, context_2) {
+System.register("src/components/render.component", ["@angular/core", "src/types"], function (exports_2, context_2) {
     "use strict";
     var __moduleName = context_2 && context_2.id;
-    var core_1, types_1;
-    var KBPage, KBPagesRendererDirective;
+    var core_1, types_1, KBPage, KBPagesRendererDirective;
     return {
-        setters:[
+        setters: [
             function (core_1_1) {
                 core_1 = core_1_1;
             },
             function (types_1_1) {
                 types_1 = types_1_1;
-            }],
-        execute: function() {
+            }
+        ],
+        execute: function () {
             // PAGE CLASS ===============================================================================
             // Stores information about each page that is accessible from the template
             KBPage = (function () {
@@ -73,8 +75,6 @@ System.register("src/components/render.component", ['@angular/core', "src/types"
                 return KBPage;
             }());
             exports_2("KBPage", KBPage);
-            // PAGE RENDERER DIRECTIVE ==================================================================
-            // Similar to ngFor, but renders items as stacked full-screen pages
             KBPagesRendererDirective = (function () {
                 // Angular Injection
                 function KBPagesRendererDirective(viewContainer, template) {
@@ -140,10 +140,12 @@ System.register("src/components/render.component", ['@angular/core', "src/types"
                 };
                 // Renders 3 pages
                 KBPagesRendererDirective.prototype.CreateDOM = function () {
+                    if (this.pageCount == 0 || this.collection == undefined)
+                        return;
                     if (this.page > 0)
                         this.BuildPage(this.page - 1, types_1.StackLocation.Previous);
                     this.BuildPage(this.page, types_1.StackLocation.Current);
-                    if (this.page < this.pageCount)
+                    if (this.page < this.pageCount - 1)
                         this.BuildPage(this.page + 1, types_1.StackLocation.Next);
                 };
                 // Clears all pages out of the DOM, useful for re-rendering
@@ -200,6 +202,7 @@ System.register("src/components/render.component", ['@angular/core', "src/types"
                     }
                     else if (newPage == oldPage - 1) {
                         this.GoToPreviousPage();
+                        // Otherwise, just rebuild the DOM around this new page
                     }
                     else {
                         this.ClearDOM();
@@ -234,119 +237,36 @@ System.register("src/components/render.component", ['@angular/core', "src/types"
                         this.BuildPage(this.page - 1, types_1.StackLocation.Previous);
                     }
                 };
-                __decorate([
-                    core_1.Input(), 
-                    __metadata('design:type', Array), 
-                    __metadata('design:paramtypes', [Array])
-                ], KBPagesRendererDirective.prototype, "kbPagesOf", null);
-                KBPagesRendererDirective = __decorate([
-                    core_1.Directive({ selector: '[kbPages]' }), 
-                    __metadata('design:paramtypes', [core_1.ViewContainerRef, core_1.TemplateRef])
-                ], KBPagesRendererDirective);
                 return KBPagesRendererDirective;
             }());
+            __decorate([
+                core_1.Input(),
+                __metadata("design:type", Array),
+                __metadata("design:paramtypes", [Array])
+            ], KBPagesRendererDirective.prototype, "kbPagesOf", null);
+            KBPagesRendererDirective = __decorate([
+                core_1.Directive({ selector: '[kbPages]' }),
+                __metadata("design:paramtypes", [core_1.ViewContainerRef,
+                    core_1.TemplateRef])
+            ], KBPagesRendererDirective);
             exports_2("KBPagesRendererDirective", KBPagesRendererDirective);
         }
-    }
+    };
 });
-System.register("src/components/dotindicator.component", ['@angular/core'], function(exports_3, context_3) {
+System.register("src/components/navbutton.component", ["@angular/core"], function (exports_3, context_3) {
     "use strict";
     var __moduleName = context_3 && context_3.id;
-    var core_2;
-    var KBDotIndicatorComponent;
+    var core_2, KBNavButtonComponent;
     return {
-        setters:[
+        setters: [
             function (core_2_1) {
                 core_2 = core_2_1;
-            }],
-        execute: function() {
-            KBDotIndicatorComponent = (function () {
-                function KBDotIndicatorComponent() {
-                    // PUBLIC PROPERTIES
-                    this._page = 0;
-                    this._pageCount = 0;
-                    this.dotColor = "white";
-                    // DATA REPRESENTATION
-                    // An array of page dots, one of which (the active one) is true.
-                    this.items = [];
-                }
-                Object.defineProperty(KBDotIndicatorComponent.prototype, "page", {
-                    set: function (p) {
-                        this._page = p;
-                        this.updateSelected();
-                    },
-                    enumerable: true,
-                    configurable: true
-                });
-                Object.defineProperty(KBDotIndicatorComponent.prototype, "pageCount", {
-                    set: function (p) {
-                        this._pageCount = p;
-                        this.updateItems();
-                    },
-                    enumerable: true,
-                    configurable: true
-                });
-                KBDotIndicatorComponent.prototype.updateItems = function () {
-                    this.items = new Array(this._pageCount);
-                    for (var i = 0; i < this._pageCount; i++) {
-                        this.items[i] = { active: i == this._page };
-                    }
-                };
-                KBDotIndicatorComponent.prototype.updateSelected = function () {
-                    if (this.items.length != this._pageCount)
-                        return this.updateItems();
-                    if (this.items.length == 0)
-                        return;
-                    for (var i = 0; i < this._pageCount; i++)
-                        this.items[i].active = false;
-                    this.items[this._page].active = true;
-                };
-                __decorate([
-                    core_2.Input(), 
-                    __metadata('design:type', Number), 
-                    __metadata('design:paramtypes', [Number])
-                ], KBDotIndicatorComponent.prototype, "page", null);
-                __decorate([
-                    core_2.Input(), 
-                    __metadata('design:type', Number), 
-                    __metadata('design:paramtypes', [Number])
-                ], KBDotIndicatorComponent.prototype, "pageCount", null);
-                __decorate([
-                    core_2.Input(), 
-                    __metadata('design:type', String)
-                ], KBDotIndicatorComponent.prototype, "dotColor", void 0);
-                KBDotIndicatorComponent = __decorate([
-                    core_2.Component({
-                        selector: 'kb-dot-indicator',
-                        template: "\n\t\t<div *ngFor=\"let item of items\" class=\"dot\"\n\t\t\t [style.background]=\"dotColor\"\n\t\t\t [class.active]=\"item.active\"></div>\n\t",
-                        styles: [
-                            ":host {\n\t\t\tdisplay: -webkit-box;\n\t\t\tdisplay: -ms-flexbox;\n\t\t\tdisplay: flex;\n\t\t\t-webkit-box-orient: horizontal;\n\t\t\t-webkit-box-direction: normal;\n\t\t\t\t-ms-flex-direction: row;\n\t\t\t\t\tflex-direction: row;\n\t\t\t-webkit-box-pack: center;\n\t\t\t\t-ms-flex-pack: center;\n\t\t\t\t\tjustify-content: center;\n\t\t}",
-                            ".dot {\n\t\t\twidth: 6px;\n\t\t\theight: 6px;\n\t\t\tborder-radius: 3px;\n\t\t\tmargin: 0 2px;\n\t\t\topacity: 0.33;\n\n\t\t\ttransition: opacity 90ms linear;\n\t\t\t-webkit-transition: opacity 90ms linear;\n\t\t}",
-                            ".dot.active {\n\t\t\topacity: 1.0;\n\t\t}",
-                        ]
-                    }), 
-                    __metadata('design:paramtypes', [])
-                ], KBDotIndicatorComponent);
-                return KBDotIndicatorComponent;
-            }());
-            exports_3("KBDotIndicatorComponent", KBDotIndicatorComponent);
-        }
-    }
-});
-System.register("src/components/navbutton.component", ['@angular/core'], function(exports_4, context_4) {
-    "use strict";
-    var __moduleName = context_4 && context_4.id;
-    var core_3;
-    var KBNavButtonComponent;
-    return {
-        setters:[
-            function (core_3_1) {
-                core_3 = core_3_1;
-            }],
-        execute: function() {
+            }
+        ],
+        execute: function () {
             KBNavButtonComponent = (function () {
                 function KBNavButtonComponent(forward, backward) {
-                    this.pageChange = new core_3.EventEmitter();
+                    this.pageChange = new core_2.EventEmitter();
                     this.size = 44;
                     this.showBackground = false;
                     this.backgroundColor = "white";
@@ -416,68 +336,71 @@ System.register("src/components/navbutton.component", ['@angular/core'], functio
                         return;
                     this.pageChange.emit((this.isForward) ? ++this.page : --this.page);
                 };
-                __decorate([
-                    core_3.Input(), 
-                    __metadata('design:type', Number)
-                ], KBNavButtonComponent.prototype, "page", void 0);
-                __decorate([
-                    core_3.Output(), 
-                    __metadata('design:type', Object)
-                ], KBNavButtonComponent.prototype, "pageChange", void 0);
-                __decorate([
-                    core_3.Input(), 
-                    __metadata('design:type', Number)
-                ], KBNavButtonComponent.prototype, "pageCount", void 0);
-                __decorate([
-                    core_3.Input(), 
-                    __metadata('design:type', Number)
-                ], KBNavButtonComponent.prototype, "size", void 0);
-                __decorate([
-                    core_3.Input(), 
-                    __metadata('design:type', Boolean)
-                ], KBNavButtonComponent.prototype, "showBackground", void 0);
-                __decorate([
-                    core_3.Input(), 
-                    __metadata('design:type', String)
-                ], KBNavButtonComponent.prototype, "iconColor", void 0);
-                __decorate([
-                    core_3.Input(), 
-                    __metadata('design:type', String)
-                ], KBNavButtonComponent.prototype, "backgroundColor", void 0);
-                KBNavButtonComponent = __decorate([
-                    core_3.Component({
-                        selector: 'kb-nav-button',
-                        template: "\n\t\t<a\t(click)=\"OnClick()\"\n\t\t\t[innerHTML]=\"symbol\"\n\t\t\t[class.circle]=\"showBackground\"\n\t\t\t[class.disabled]=\"disabled\"\n\t\t\t[style.width]=\"derivedSize\" [style.height]=\"derivedSize\"\n\t\t\t[style.borderRadius]=\"halfSize\"\n\t\t\t[style.fontSize]=\"derivedSize\"\n\t\t\t[style.color]=\"derivedIconColor\"\n\t\t\t[style.backgroundColor]=\"derivedBackgroundColor\"\n\t\t></a>\n\t",
-                        styles: [
-                            ":host {\n\t\t\tcursor: pointer;\n\t\t\t-webkit-touch-callout: none; /* iOS Safari */\n\t\t\t-webkit-user-select: none;   /* Chrome/Safari/Opera */\n\t\t\t-khtml-user-select: none;    /* Konqueror */\n\t\t\t-moz-user-select: none;      /* Firefox */\n\t\t\t-ms-user-select: none;       /* Internet Explorer/Edge */\n\t\t\tuser-select: none;\n\t\t}",
-                            "a {\n\t\t\tdisplay: block;\n\t\t\ttext-align: center;\n    \t\tline-height: 36px;\n\t\t}",
-                            ":host[forward] a {\n\t\t\tpadding-left: 3px;\n\t\t}",
-                            ":host[backward] a {\n\t\t\tpadding-right: 3px;\n\t\t}",
-                            "a.circle {\n\t\t\tbox-shadow: 0px 1px 2px rgba(0,0,0,0.25);\n\t\t}",
-                            "a.disabled {\n\t\t\topacity: 0.33;\n\t\t}"
-                        ]
-                    }),
-                    __param(0, core_3.Attribute('forward')),
-                    __param(1, core_3.Attribute('backward')), 
-                    __metadata('design:paramtypes', [String, String])
-                ], KBNavButtonComponent);
                 return KBNavButtonComponent;
             }());
-            exports_4("KBNavButtonComponent", KBNavButtonComponent);
+            __decorate([
+                core_2.Input(),
+                __metadata("design:type", Number)
+            ], KBNavButtonComponent.prototype, "page", void 0);
+            __decorate([
+                core_2.Output(),
+                __metadata("design:type", Object)
+            ], KBNavButtonComponent.prototype, "pageChange", void 0);
+            __decorate([
+                core_2.Input(),
+                __metadata("design:type", Number)
+            ], KBNavButtonComponent.prototype, "pageCount", void 0);
+            __decorate([
+                core_2.Input(),
+                __metadata("design:type", Number)
+            ], KBNavButtonComponent.prototype, "size", void 0);
+            __decorate([
+                core_2.Input(),
+                __metadata("design:type", Boolean)
+            ], KBNavButtonComponent.prototype, "showBackground", void 0);
+            __decorate([
+                core_2.Input(),
+                __metadata("design:type", String)
+            ], KBNavButtonComponent.prototype, "iconColor", void 0);
+            __decorate([
+                core_2.Input(),
+                __metadata("design:type", String)
+            ], KBNavButtonComponent.prototype, "backgroundColor", void 0);
+            KBNavButtonComponent = __decorate([
+                core_2.Component({
+                    selector: 'kb-nav-button',
+                    template: "\n\t\t<a\t(click)=\"OnClick()\"\n\t\t\t[innerHTML]=\"symbol\"\n\t\t\t[class.circle]=\"showBackground\"\n\t\t\t[class.disabled]=\"disabled\"\n\t\t\t[style.width]=\"derivedSize\" [style.height]=\"derivedSize\"\n\t\t\t[style.borderRadius]=\"halfSize\"\n\t\t\t[style.fontSize]=\"derivedSize\"\n\t\t\t[style.color]=\"derivedIconColor\"\n\t\t\t[style.backgroundColor]=\"derivedBackgroundColor\"\n\t\t></a>\n\t",
+                    styles: [
+                        ":host {\n\t\t\tcursor: pointer;\n\t\t\t-webkit-touch-callout: none; /* iOS Safari */\n\t\t\t-webkit-user-select: none;   /* Chrome/Safari/Opera */\n\t\t\t-khtml-user-select: none;    /* Konqueror */\n\t\t\t-moz-user-select: none;      /* Firefox */\n\t\t\t-ms-user-select: none;       /* Internet Explorer/Edge */\n\t\t\tuser-select: none;\n\t\t}",
+                        "a {\n\t\t\tdisplay: block;\n\t\t\ttext-align: center;\n    \t\tline-height: 36px;\n\t\t}",
+                        ":host[forward] a {\n\t\t\tpadding-left: 3px;\n\t\t}",
+                        ":host[backward] a {\n\t\t\tpadding-right: 3px;\n\t\t}",
+                        "a.circle {\n\t\t\tbox-shadow: 0 1px 2px rgba(0,0,0,0.25);\n\t\t}",
+                        "a.disabled {\n\t\t\topacity: 0.33;\n\t\t}"
+                    ]
+                }),
+                __param(0, core_2.Attribute('forward')),
+                __param(1, core_2.Attribute('backward')),
+                __metadata("design:paramtypes", [String, String])
+            ], KBNavButtonComponent);
+            exports_3("KBNavButtonComponent", KBNavButtonComponent);
         }
-    }
+    };
 });
 /*
     A special class that wraps CSS3 animations and also determines their ideal duration
     based on momentum and distance to travel.
 */
-System.register("src/functionality/animation", [], function(exports_5, context_5) {
+System.register("src/functionality/animation", [], function (exports_4, context_4) {
     "use strict";
-    var __moduleName = context_5 && context_5.id;
+    var __moduleName = context_4 && context_4.id;
     var kEasingFunction, kEasingStartSlope, kDefaultDuration, kMinDuration, kMaxDuration, SlideAnimation;
     return {
-        setters:[],
-        execute: function() {
+        setters: [],
+        execute: function () {/*
+                A special class that wraps CSS3 animations and also determines their ideal duration
+                based on momentum and distance to travel.
+            */
             kEasingFunction = "cubic-bezier(.35,.45,.5,1)";
             kEasingStartSlope = 1.33;
             kDefaultDuration = 250;
@@ -489,7 +412,6 @@ System.register("src/functionality/animation", [], function(exports_5, context_5
                 // but certainly this code could be generalized if needed.
                 function SlideAnimation(element, current_px, dest_px, momentum_px, default_duration) {
                     var _this = this;
-                    this.element = element;
                     this.current_px = current_px;
                     this.dest_px = dest_px;
                     this.momentum_px = momentum_px;
@@ -535,6 +457,7 @@ System.register("src/functionality/animation", [], function(exports_5, context_5
                         var linear_duration = 1000 * Math.abs(travel_px) / Math.abs(this.momentum_px);
                         var estimate = linear_duration * kEasingStartSlope;
                         return Math.max(Math.min(estimate, kMaxDuration), kMinDuration);
+                        // Otherwise, throw it out and use our default duration
                     }
                     else {
                         return this.default_duration;
@@ -542,20 +465,22 @@ System.register("src/functionality/animation", [], function(exports_5, context_5
                 };
                 return SlideAnimation;
             }());
-            exports_5("SlideAnimation", SlideAnimation);
+            exports_4("SlideAnimation", SlideAnimation);
         }
-    }
+    };
 });
 /**
  * When the user clicks very close to the edge of a page, move in that direction.
  */
-System.register("src/functionality/sideclick", [], function(exports_6, context_6) {
+System.register("src/functionality/sideclick", [], function (exports_5, context_5) {
     "use strict";
-    var __moduleName = context_6 && context_6.id;
+    var __moduleName = context_5 && context_5.id;
     var SideClickHandler;
     return {
-        setters:[],
-        execute: function() {
+        setters: [],
+        execute: function () {/**
+             * When the user clicks very close to the edge of a page, move in that direction.
+             */
             SideClickHandler = (function () {
                 function SideClickHandler(delegate, element) {
                     this.delegate = delegate;
@@ -577,34 +502,41 @@ System.register("src/functionality/sideclick", [], function(exports_6, context_6
                 };
                 return SideClickHandler;
             }());
-            exports_6("SideClickHandler", SideClickHandler);
+            exports_5("SideClickHandler", SideClickHandler);
         }
-    }
+    };
 });
 // INTERACTIVITY - TOUCH EVENTS =============================================================
-// Handles HTML touch events and formats it nicely for 
-System.register("src/functionality/touchevents", [], function(exports_7, context_7) {
+// Handles HTML touch events and formats it nicely for
+System.register("src/functionality/touchevents", [], function (exports_6, context_6) {
     "use strict";
-    var __moduleName = context_7 && context_7.id;
-    var kDistanceThreshold, kMomentumThreshold, kDistanceMomentumThreshold, TouchEventHandler;
+    var __moduleName = context_6 && context_6.id;
+    var kDistanceThreshold, kMomentumThreshold, kDistanceMomentumThreshold, kAcceptAtX, kRejectAtY, TouchEventHandler;
     return {
-        setters:[],
-        execute: function() {
+        setters: [],
+        execute: function () {// INTERACTIVITY - TOUCH EVENTS =============================================================
+            // Handles HTML touch events and formats it nicely for
             // Snap back if user has moved less than 10% of the page
             kDistanceThreshold = 0.1;
             // If the user has moved less than 50% of the page, snap back
             // unless that are moving at more than 30% the page width every second
             kMomentumThreshold = 0.3;
             kDistanceMomentumThreshold = 0.5;
+            // Ignore scrolls until they have moved at least 3% along X. If, during that time, they
+            // move more than 20px on Y, they will be rejected and interpreted instead as a vertical
+            // scroll gesture
+            kAcceptAtX = 0.03;
+            kRejectAtY = 20;
             TouchEventHandler = (function () {
                 function TouchEventHandler(delegate, element) {
                     this.delegate = delegate;
-                    this.element = element;
                     // Touch tracking state
                     this.start_x = 0;
                     this.current_x = 0;
+                    this.start_ypx = 0;
                     this.current_scroll = 1;
                     this.tracking = null;
+                    this.accepted = false;
                     // MOMENTUM HIGH PASS
                     this.diffs_x = [0, 0, 0];
                     this.times_x = [20, 20, 20];
@@ -645,7 +577,9 @@ System.register("src/functionality/touchevents", [], function(exports_7, context
                     this.tracking = event.touches.item(0).identifier;
                     this.start_x = event.touches.item(0).clientX / this.delegate.pageWidth;
                     this.current_x = this.start_x;
+                    this.start_ypx = event.touches.item(0).clientY;
                     this.last_sample_time = new Date().getTime();
+                    this.accepted = false;
                 };
                 TouchEventHandler.prototype.TouchMove = function (event) {
                     var touch = this.GetTrackingTouch(event.changedTouches);
@@ -653,6 +587,21 @@ System.register("src/functionality/touchevents", [], function(exports_7, context
                         return;
                     var new_x = touch.clientX / this.delegate.pageWidth;
                     var diff_x = new_x - this.current_x;
+                    if (!this.accepted) {
+                        if (Math.abs(new_x - this.start_x) >= kAcceptAtX) {
+                            if (Math.abs(touch.clientY - this.start_ypx) > kRejectAtY) {
+                                this.tracking = null;
+                                return;
+                            }
+                            else {
+                                this.accepted = true;
+                                this.delegate.StartScroll();
+                            }
+                        }
+                        else
+                            return;
+                    }
+                    event.preventDefault();
                     this.CaptureXDiff(diff_x);
                     this.current_scroll = this.current_scroll - diff_x;
                     this.delegate.ScrollTo(this.current_scroll);
@@ -662,9 +611,13 @@ System.register("src/functionality/touchevents", [], function(exports_7, context
                     var touch = this.GetTrackingTouch(event.changedTouches);
                     if (touch == null)
                         return;
+                    this.tracking = null;
                     if (this.start_x == this.current_x)
                         return;
-                    this.tracking = null;
+                    if (!this.accepted)
+                        return;
+                    event.preventDefault();
+                    this.delegate.EndScroll();
                     this.current_scroll = 1;
                     var ending_momentum_x = this.momentum_x;
                     if (this.current_x + kDistanceThreshold < this.start_x) {
@@ -702,24 +655,25 @@ System.register("src/functionality/touchevents", [], function(exports_7, context
                 };
                 return TouchEventHandler;
             }());
-            exports_7("TouchEventHandler", TouchEventHandler);
+            exports_6("TouchEventHandler", TouchEventHandler);
         }
-    }
+    };
 });
 /**
  * When the user clicks very close to the edge of a page, move in that direction.
  */
-System.register("src/functionality/arrowkeys", [], function(exports_8, context_8) {
+System.register("src/functionality/arrowkeys", [], function (exports_7, context_7) {
     "use strict";
-    var __moduleName = context_8 && context_8.id;
+    var __moduleName = context_7 && context_7.id;
     var ArrowKeysHandler;
     return {
-        setters:[],
-        execute: function() {
+        setters: [],
+        execute: function () {/**
+             * When the user clicks very close to the edge of a page, move in that direction.
+             */
             ArrowKeysHandler = (function () {
-                function ArrowKeysHandler(delegate, element) {
+                function ArrowKeysHandler(delegate) {
                     this.delegate = delegate;
-                    this.element = element;
                     this.enabled = true;
                     document.addEventListener("keydown", this.KeyHandler.bind(this));
                 }
@@ -735,29 +689,25 @@ System.register("src/functionality/arrowkeys", [], function(exports_8, context_8
                 };
                 return ArrowKeysHandler;
             }());
-            exports_8("ArrowKeysHandler", ArrowKeysHandler);
+            exports_7("ArrowKeysHandler", ArrowKeysHandler);
         }
-    }
+    };
 });
-System.register("src/components/pageslider.component", ["src/components/render.component", '@angular/core', "src/components/dotindicator.component", "src/components/navbutton.component", "src/functionality/animation", "src/functionality/sideclick", "src/functionality/touchevents", "src/functionality/arrowkeys"], function(exports_9, context_9) {
+System.register("src/components/pageslider.component", ["src/components/render.component", "@angular/core", "src/components/navbutton.component", "src/functionality/animation", "src/functionality/sideclick", "src/functionality/touchevents", "src/functionality/arrowkeys"], function (exports_8, context_8) {
     "use strict";
-    var __moduleName = context_9 && context_9.id;
-    var core_4, render_component_1, dotindicator_component_1, navbutton_component_1, animation_1, sideclick_1, touchevents_1, arrowkeys_1;
-    var KBPageSliderComponent;
+    var __moduleName = context_8 && context_8.id;
+    var core_3, render_component_1, navbutton_component_1, animation_1, sideclick_1, touchevents_1, arrowkeys_1, KBPageSliderComponent;
     return {
-        setters:[
+        setters: [
             function (render_component_2_1) {
-                exports_9({
+                exports_8({
                     "KBPagesRendererDirective": render_component_2_1["KBPagesRendererDirective"],
                     "KBPage": render_component_2_1["KBPage"]
                 });
                 render_component_1 = render_component_2_1;
             },
-            function (core_4_1) {
-                core_4 = core_4_1;
-            },
-            function (dotindicator_component_1_1) {
-                dotindicator_component_1 = dotindicator_component_1_1;
+            function (core_3_1) {
+                core_3 = core_3_1;
             },
             function (navbutton_component_1_1) {
                 navbutton_component_1 = navbutton_component_1_1;
@@ -773,21 +723,23 @@ System.register("src/components/pageslider.component", ["src/components/render.c
             },
             function (arrowkeys_1_1) {
                 arrowkeys_1 = arrowkeys_1_1;
-            }],
-        execute: function() {
-            // PAGE CONTAINER DIRECTIVE =================================================================
-            // Handles fancy things like page animation and controls KBPagesRendererDirective
+            }
+        ],
+        execute: function () {
             KBPageSliderComponent = (function () {
                 function KBPageSliderComponent(element) {
                     this.element = element;
-                    this.pageChange = new core_4.EventEmitter();
-                    this.pageSizeChange = new core_4.EventEmitter();
-                    this.pageCountChange = new core_4.EventEmitter();
+                    this.pageChange = new core_3.EventEmitter();
+                    this.pageSizeChange = new core_3.EventEmitter();
+                    this.pageCountChange = new core_3.EventEmitter();
                     // Dot Indicator
                     this.showIndicator = true;
                     this.overlayIndicator = true;
                     this.dotColor = "white";
+                    // Interactivity
+                    this.locked = false;
                     this.enableOverscroll = true;
+                    this.scrollStateChange = new core_3.EventEmitter();
                     // INTERNAL STATE =======================================================================
                     this._pageOffset = 1;
                     // INTERACTIVE NAVIGATION ===============================================================
@@ -795,7 +747,7 @@ System.register("src/components/pageslider.component", ["src/components/render.c
                     var htmlElement = this.element.nativeElement;
                     this.touchEventHandler = new touchevents_1.TouchEventHandler(this, htmlElement);
                     this.sideClickHandler = new sideclick_1.SideClickHandler(this, htmlElement);
-                    this.arrowKeysHandler = new arrowkeys_1.ArrowKeysHandler(this, htmlElement);
+                    this.arrowKeysHandler = new arrowkeys_1.ArrowKeysHandler(this);
                 }
                 Object.defineProperty(KBPageSliderComponent.prototype, "page", {
                     get: function () { return (this.renderer) ? this.renderer.page : 0; },
@@ -821,6 +773,10 @@ System.register("src/components/pageslider.component", ["src/components/render.c
                                 this.AnimateToPreviousPage();
                             }
                             else {
+                                if (this.blockInteraction) {
+                                    this.pageChange.emit(this.page);
+                                    return;
+                                }
                                 this.renderer.page = pn;
                                 this.pageChange.emit(pn);
                             }
@@ -923,20 +879,20 @@ System.register("src/components/pageslider.component", ["src/components/render.c
                     this.innerContainer.style.left = -this.pageWidth + "px";
                 };
                 KBPageSliderComponent.prototype.ScrollTo = function (x) {
-                    if (this.blockInteraction)
+                    if (this.locked || this.blockInteraction)
                         return;
                     this.pageOffset = this.ClampX(x);
                 };
                 KBPageSliderComponent.prototype.AnimateToNextPage = function (momentum) {
                     var _this = this;
-                    if (this.blockInteraction)
-                        return;
+                    if (this.locked || this.blockInteraction)
+                        return null;
                     if (this.page == this.renderer.pageCount - 1) {
                         return this.AnimateToX(1, 0).then(function () { _this.pageOffset = 1; });
                     }
                     if (momentum === undefined)
                         momentum = 0;
-                    this.AnimateToX(2, momentum).then(function () {
+                    return this.AnimateToX(2, momentum).then(function () {
                         _this.renderer.page++;
                         _this.pageChange.emit(_this.renderer.page);
                         _this.pageOffset = 1;
@@ -944,14 +900,14 @@ System.register("src/components/pageslider.component", ["src/components/render.c
                 };
                 KBPageSliderComponent.prototype.AnimateToPreviousPage = function (momentum) {
                     var _this = this;
-                    if (this.blockInteraction)
-                        return;
+                    if (this.locked || this.blockInteraction)
+                        return null;
                     if (this.page == 0) {
                         return this.AnimateToX(1, 0).then(function () { _this.pageOffset = 1; });
                     }
                     if (momentum === undefined)
                         momentum = 0;
-                    this.AnimateToX(0, momentum).then(function () {
+                    return this.AnimateToX(0, momentum).then(function () {
                         _this.renderer.page--;
                         _this.pageChange.emit(_this.renderer.page);
                         _this.pageOffset = 1;
@@ -959,8 +915,8 @@ System.register("src/components/pageslider.component", ["src/components/render.c
                 };
                 KBPageSliderComponent.prototype.AnimateToX = function (x, momentum) {
                     var _this = this;
-                    if (this.blockInteraction)
-                        return;
+                    if (this.locked || this.blockInteraction)
+                        return null;
                     this.blockInteraction = true;
                     var w = this.pageWidth;
                     return new animation_1.SlideAnimation(this.innerContainer, // Element to animate
@@ -972,6 +928,8 @@ System.register("src/components/pageslider.component", ["src/components/render.c
                         _this.blockInteraction = false;
                     });
                 };
+                KBPageSliderComponent.prototype.StartScroll = function () { this.scrollStateChange.emit(true); };
+                KBPageSliderComponent.prototype.EndScroll = function () { this.scrollStateChange.emit(false); };
                 // OVERSCROLL (iOS STYLE) ===============================================================
                 // Get X to a reasonable range, taking into account page boundaries
                 KBPageSliderComponent.prototype.ClampX = function (x) {
@@ -998,155 +956,294 @@ System.register("src/components/pageslider.component", ["src/components/render.c
                 KBPageSliderComponent.prototype.OverscrollRamp = function (input) {
                     return Math.pow(input, 0.5) / 5;
                 };
-                __decorate([
-                    core_4.Input(), 
-                    __metadata('design:type', Number), 
-                    __metadata('design:paramtypes', [Number])
-                ], KBPageSliderComponent.prototype, "page", null);
-                __decorate([
-                    core_4.Output(), 
-                    __metadata('design:type', Object)
-                ], KBPageSliderComponent.prototype, "pageChange", void 0);
-                __decorate([
-                    core_4.Output(), 
-                    __metadata('design:type', Object)
-                ], KBPageSliderComponent.prototype, "pageSizeChange", void 0);
-                __decorate([
-                    core_4.Output(), 
-                    __metadata('design:type', Object)
-                ], KBPageSliderComponent.prototype, "pageCountChange", void 0);
-                __decorate([
-                    core_4.Input(), 
-                    __metadata('design:type', Boolean)
-                ], KBPageSliderComponent.prototype, "showIndicator", void 0);
-                __decorate([
-                    core_4.Input(), 
-                    __metadata('design:type', Boolean)
-                ], KBPageSliderComponent.prototype, "overlayIndicator", void 0);
-                __decorate([
-                    core_4.Input(), 
-                    __metadata('design:type', String)
-                ], KBPageSliderComponent.prototype, "dotColor", void 0);
-                __decorate([
-                    core_4.Input(), 
-                    __metadata('design:type', Number)
-                ], KBPageSliderComponent.prototype, "transitionDuration", void 0);
-                __decorate([
-                    core_4.Input(), 
-                    __metadata('design:type', Boolean)
-                ], KBPageSliderComponent.prototype, "enableOverscroll", void 0);
-                __decorate([
-                    core_4.Input(), 
-                    __metadata('design:type', Boolean), 
-                    __metadata('design:paramtypes', [Boolean])
-                ], KBPageSliderComponent.prototype, "enableSideClicks", null);
-                __decorate([
-                    core_4.Input(), 
-                    __metadata('design:type', Boolean), 
-                    __metadata('design:paramtypes', [Boolean])
-                ], KBPageSliderComponent.prototype, "enableArrowKeys", null);
-                __decorate([
-                    core_4.ContentChildren(navbutton_component_1.KBNavButtonComponent), 
-                    __metadata('design:type', Object)
-                ], KBPageSliderComponent.prototype, "buttons", void 0);
-                __decorate([
-                    core_4.ContentChild(render_component_1.KBPagesRendererDirective), 
-                    __metadata('design:type', render_component_1.KBPagesRendererDirective)
-                ], KBPageSliderComponent.prototype, "renderer", void 0);
-                KBPageSliderComponent = __decorate([
-                    core_4.Component({
-                        selector: 'kb-page-slider',
-                        directives: [dotindicator_component_1.KBDotIndicatorComponent],
-                        template: "\n\t\t<!-- Display the actual pages -->\n\t\t<div class=\"inner\" \n\t\t\t\t[style.width]=\"containerWidth\"\n\t\t\t\t[style.height]=\"containerHeight\">\n\t\t\t<ng-content></ng-content>\n\t\t</div>\n\n\t\t<div class=\"buttons\" *ngIf=\"buttons.length > 0\" [style.top]=\"buttonTop\">\n\t\t\t<!-- Display navigation buttons -->\n\t\t\t<ng-content select=\"kb-nav-button[forward]\"></ng-content>\n\t\t\t<ng-content select=\"kb-nav-button[backward]\"></ng-content>\n\t\t</div>\n\n\t\t<!-- Display the page indicator -->\n\t\t<kb-dot-indicator *ngIf=\"showIndicator\"\n\t\t\t\t[page]=\"page\"\n\t\t\t\t[pageCount]=\"pageCount\"\n\t\t\t\t[dotColor]=\"dotColor\"\n\t\t\t\t[style.bottom]=\"dotBottom\">\n\t\t</kb-dot-indicator>\n\t",
-                        styles: [
-                            ":host {\n\t\t\toverflow: hidden;\n\t\t\tdisplay: block;\n\t\t\tposition: relative;\n\t\t}",
-                            ".inner {\n\t\t\tposition: absolute;\n\t\t\ttop: 0;\n\t\t\twill-change: left;\n\t\t}",
-                            "kb-dot-indicator {\n\t\t\tposition: absolute;\n\t\t\twidth: 100%;\n\t\t}",
-                            ".buttons {\n\t\t\tposition: absolute;\n\t\t\tz-index: 100;\n\t\t\twidth: 100%;\n\t\t}",
-                            ".buttons >>> kb-nav-button {\n\t\t\tposition: absolute;\n\t\t\ttop: 0;\n\t\t}",
-                            ".buttons >>> kb-nav-button[backward] {left: 15px;}",
-                            ".buttons >>> kb-nav-button[forward] {right: 15px;}",
-                        ]
-                    }), 
-                    __metadata('design:paramtypes', [core_4.ElementRef])
-                ], KBPageSliderComponent);
                 return KBPageSliderComponent;
             }());
-            exports_9("KBPageSliderComponent", KBPageSliderComponent);
+            __decorate([
+                core_3.Input(),
+                __metadata("design:type", Number),
+                __metadata("design:paramtypes", [Number])
+            ], KBPageSliderComponent.prototype, "page", null);
+            __decorate([
+                core_3.Output(),
+                __metadata("design:type", Object)
+            ], KBPageSliderComponent.prototype, "pageChange", void 0);
+            __decorate([
+                core_3.Output(),
+                __metadata("design:type", Object)
+            ], KBPageSliderComponent.prototype, "pageSizeChange", void 0);
+            __decorate([
+                core_3.Output(),
+                __metadata("design:type", Object)
+            ], KBPageSliderComponent.prototype, "pageCountChange", void 0);
+            __decorate([
+                core_3.Input(),
+                __metadata("design:type", Boolean)
+            ], KBPageSliderComponent.prototype, "showIndicator", void 0);
+            __decorate([
+                core_3.Input(),
+                __metadata("design:type", Boolean)
+            ], KBPageSliderComponent.prototype, "overlayIndicator", void 0);
+            __decorate([
+                core_3.Input(),
+                __metadata("design:type", String)
+            ], KBPageSliderComponent.prototype, "dotColor", void 0);
+            __decorate([
+                core_3.Input(),
+                __metadata("design:type", Boolean)
+            ], KBPageSliderComponent.prototype, "locked", void 0);
+            __decorate([
+                core_3.Input(),
+                __metadata("design:type", Number)
+            ], KBPageSliderComponent.prototype, "transitionDuration", void 0);
+            __decorate([
+                core_3.Input(),
+                __metadata("design:type", Boolean)
+            ], KBPageSliderComponent.prototype, "enableOverscroll", void 0);
+            __decorate([
+                core_3.Input(),
+                __metadata("design:type", Boolean),
+                __metadata("design:paramtypes", [Boolean])
+            ], KBPageSliderComponent.prototype, "enableSideClicks", null);
+            __decorate([
+                core_3.Input(),
+                __metadata("design:type", Boolean),
+                __metadata("design:paramtypes", [Boolean])
+            ], KBPageSliderComponent.prototype, "enableArrowKeys", null);
+            __decorate([
+                core_3.Output(),
+                __metadata("design:type", Object)
+            ], KBPageSliderComponent.prototype, "scrollStateChange", void 0);
+            __decorate([
+                core_3.ContentChildren(navbutton_component_1.KBNavButtonComponent),
+                __metadata("design:type", core_3.QueryList)
+            ], KBPageSliderComponent.prototype, "buttons", void 0);
+            __decorate([
+                core_3.ContentChild(render_component_1.KBPagesRendererDirective),
+                __metadata("design:type", render_component_1.KBPagesRendererDirective)
+            ], KBPageSliderComponent.prototype, "renderer", void 0);
+            KBPageSliderComponent = __decorate([
+                core_3.Component({
+                    selector: 'kb-page-slider',
+                    template: "\n\t\t<!-- Display the actual pages -->\n\t\t<div class=\"inner\" \n\t\t\t\t[style.width]=\"containerWidth\"\n\t\t\t\t[style.height]=\"containerHeight\">\n\t\t\t<ng-content></ng-content>\n\t\t</div>\n\n\t\t<div class=\"buttons\" *ngIf=\"buttons.length > 0\" [style.top]=\"buttonTop\">\n\t\t\t<!-- Display navigation buttons -->\n\t\t\t<ng-content select=\"kb-nav-button[forward]\"></ng-content>\n\t\t\t<ng-content select=\"kb-nav-button[backward]\"></ng-content>\n\t\t</div>\n\n\t\t<!-- Display the page indicator -->\n\t\t<kb-dot-indicator *ngIf=\"showIndicator\"\n\t\t\t\t[page]=\"page\"\n\t\t\t\t[pageCount]=\"pageCount\"\n\t\t\t\t[dotColor]=\"dotColor\"\n\t\t\t\t[style.bottom]=\"dotBottom\">\n\t\t</kb-dot-indicator>\n\t",
+                    styles: [
+                        ":host {\n\t\t\toverflow: hidden;\n\t\t\tdisplay: block;\n\t\t\tposition: relative;\n\t\t}",
+                        ".inner {\n\t\t\tposition: absolute;\n\t\t\ttop: 0;\n\t\t\twill-change: left;\n\t\t}",
+                        "kb-dot-indicator {\n\t\t\tposition: absolute;\n\t\t\twidth: 100%;\n\t\t}",
+                        ".buttons {\n\t\t\tposition: absolute;\n\t\t\tz-index: 100;\n\t\t\twidth: 100%;\n\t\t}",
+                        ".buttons >>> kb-nav-button {\n\t\t\tposition: absolute;\n\t\t\ttop: 0;\n\t\t}",
+                        ".buttons >>> kb-nav-button[backward] {left: 15px;}",
+                        ".buttons >>> kb-nav-button[forward] {right: 15px;}",
+                    ]
+                }),
+                __metadata("design:paramtypes", [core_3.ElementRef])
+            ], KBPageSliderComponent);
+            exports_8("KBPageSliderComponent", KBPageSliderComponent);
         }
-    }
+    };
+});
+System.register("src/components/dotindicator.component", ["@angular/core"], function (exports_9, context_9) {
+    "use strict";
+    var __moduleName = context_9 && context_9.id;
+    var core_4, KBDotIndicatorComponent;
+    return {
+        setters: [
+            function (core_4_1) {
+                core_4 = core_4_1;
+            }
+        ],
+        execute: function () {
+            KBDotIndicatorComponent = (function () {
+                function KBDotIndicatorComponent() {
+                    // PUBLIC PROPERTIES
+                    this._page = 0;
+                    this._pageCount = 0;
+                    this.dotColor = "white";
+                    // DATA REPRESENTATION
+                    // An array of page dots, one of which (the active one) is true.
+                    this.items = [];
+                }
+                Object.defineProperty(KBDotIndicatorComponent.prototype, "page", {
+                    set: function (p) {
+                        this._page = p;
+                        this.updateSelected();
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                Object.defineProperty(KBDotIndicatorComponent.prototype, "pageCount", {
+                    set: function (p) {
+                        this._pageCount = p || 0;
+                        this.updateItems();
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                KBDotIndicatorComponent.prototype.updateItems = function () {
+                    this.items = new Array(this._pageCount);
+                    for (var i = 0; i < this._pageCount; i++) {
+                        this.items[i] = { active: i == this._page };
+                    }
+                };
+                KBDotIndicatorComponent.prototype.updateSelected = function () {
+                    if (this.items.length != this._pageCount)
+                        return this.updateItems();
+                    if (this.items.length == 0)
+                        return;
+                    for (var i = 0; i < this._pageCount; i++)
+                        this.items[i].active = false;
+                    this.items[this._page].active = true;
+                };
+                return KBDotIndicatorComponent;
+            }());
+            __decorate([
+                core_4.Input(),
+                __metadata("design:type", Number),
+                __metadata("design:paramtypes", [Number])
+            ], KBDotIndicatorComponent.prototype, "page", null);
+            __decorate([
+                core_4.Input(),
+                __metadata("design:type", Number),
+                __metadata("design:paramtypes", [Number])
+            ], KBDotIndicatorComponent.prototype, "pageCount", null);
+            __decorate([
+                core_4.Input(),
+                __metadata("design:type", String)
+            ], KBDotIndicatorComponent.prototype, "dotColor", void 0);
+            KBDotIndicatorComponent = __decorate([
+                core_4.Component({
+                    selector: 'kb-dot-indicator',
+                    template: "\n\t\t<div *ngFor=\"let item of items\" class=\"dot\"\n\t\t\t [style.background]=\"dotColor\"\n\t\t\t [class.active]=\"item.active\"></div>\n\t",
+                    styles: [
+                        ":host {\n\t\t\tdisplay: -webkit-box;\n\t\t\tdisplay: -ms-flexbox;\n\t\t\tdisplay: flex;\n\t\t\t-webkit-box-orient: horizontal;\n\t\t\t-webkit-box-direction: normal;\n\t\t\t\t-ms-flex-direction: row;\n\t\t\t\t\tflex-direction: row;\n\t\t\t-webkit-box-pack: center;\n\t\t\t\t-ms-flex-pack: center;\n\t\t\t\t\tjustify-content: center;\n\t\t}",
+                        ".dot {\n\t\t\twidth: 6px;\n\t\t\theight: 6px;\n\t\t\tborder-radius: 3px;\n\t\t\tmargin: 0 2px;\n\t\t\topacity: 0.33;\n\n\t\t\ttransition: opacity 90ms linear;\n\t\t\t-webkit-transition: opacity 90ms linear;\n\t\t}",
+                        ".dot.active {\n\t\t\topacity: 1.0;\n\t\t}",
+                    ]
+                })
+            ], KBDotIndicatorComponent);
+            exports_9("KBDotIndicatorComponent", KBDotIndicatorComponent);
+        }
+    };
 });
 /*
 
-    ANGULAR 2 PAGE SLIDER COMPONENT
-    with DOM recycling and caching
-    designed for mobile devices
+ ANGULAR 2 PAGE SLIDER COMPONENT
+ with DOM recycling and caching
+ designed for mobile devices
 
-    Copyright (c) 2016 Keaton Brandt
+ Copyright (c) 2016 Keaton Brandt
 
-    Permission is hereby granted, free of charge, to any person obtaining a copy of this
-    software and associated documentation files (the "Software"), to deal in the Software
-    without restriction, including without limitation the rights to use, copy, modify, merge,
-    publish, distribute, sublicense, and/or sell copies of the Software, and to permit
-    persons to whom the Software is furnished to do so, subject to the following conditions:
+ Permission is hereby granted, free of charge, to any person obtaining a copy of this
+ software and associated documentation files (the "Software"), to deal in the Software
+ without restriction, including without limitation the rights to use, copy, modify, merge,
+ publish, distribute, sublicense, and/or sell copies of the Software, and to permit
+ persons to whom the Software is furnished to do so, subject to the following conditions:
 
-    The above copyright notice and this permission notice shall be included in all copies or
-    substantial portions of the Software.
+ The above copyright notice and this permission notice shall be included in all copies or
+ substantial portions of the Software.
 
-    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,
-    INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR
-    PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE
-    FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
-    OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
-    DEALINGS IN THE SOFTWARE.
+ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,
+ INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR
+ PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE
+ FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
+ OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+ DEALINGS IN THE SOFTWARE.
 
-*/
-System.register("index", ["src/components/pageslider.component", "src/components/render.component", "src/components/dotindicator.component", "src/components/navbutton.component"], function(exports_10, context_10) {
+ */
+System.register("index", ["@angular/core", "@angular/platform-browser", "src/components/pageslider.component", "src/components/render.component", "src/components/dotindicator.component", "src/components/navbutton.component"], function (exports_10, context_10) {
     "use strict";
     var __moduleName = context_10 && context_10.id;
+    var core_5, platform_browser_1, pageslider_component_1, render_component_3, dotindicator_component_1, navbutton_component_2, PageSliderModule;
     return {
-        setters:[
-            function (pageslider_component_1_1) {
-                exports_10({
-                    "KBPageSliderComponent": pageslider_component_1_1["KBPageSliderComponent"]
-                });
-            },
-            function (render_component_3_1) {
-                exports_10({
-                    "KBPagesRendererDirective": render_component_3_1["KBPagesRendererDirective"]
-                });
-            },
-            function (dotindicator_component_2_1) {
-                exports_10({
-                    "KBDotIndicatorComponent": dotindicator_component_2_1["KBDotIndicatorComponent"]
-                });
-            },
-            function (navbutton_component_2_1) {
-                exports_10({
-                    "KBNavButtonComponent": navbutton_component_2_1["KBNavButtonComponent"]
-                });
-            }],
-        execute: function() {
-        }
-    }
-});
-System.register("examples/hero/app", ['@angular/core', '@angular/platform-browser-dynamic', "index"], function(exports_11, context_11) {
-    "use strict";
-    var __moduleName = context_11 && context_11.id;
-    var core_5, platform_browser_dynamic_1, index_1;
-    var HeroAppComponent;
-    return {
-        setters:[
+        setters: [
             function (core_5_1) {
                 core_5 = core_5_1;
+            },
+            function (platform_browser_1_1) {
+                platform_browser_1 = platform_browser_1_1;
+            },
+            function (pageslider_component_1_1) {
+                pageslider_component_1 = pageslider_component_1_1;
+            },
+            function (render_component_3_1) {
+                render_component_3 = render_component_3_1;
+            },
+            function (dotindicator_component_1_1) {
+                dotindicator_component_1 = dotindicator_component_1_1;
+            },
+            function (navbutton_component_2_1) {
+                navbutton_component_2 = navbutton_component_2_1;
+            }
+        ],
+        execute: function () {/*
+            
+             ANGULAR 2 PAGE SLIDER COMPONENT
+             with DOM recycling and caching
+             designed for mobile devices
+            
+             Copyright (c) 2016 Keaton Brandt
+            
+             Permission is hereby granted, free of charge, to any person obtaining a copy of this
+             software and associated documentation files (the "Software"), to deal in the Software
+             without restriction, including without limitation the rights to use, copy, modify, merge,
+             publish, distribute, sublicense, and/or sell copies of the Software, and to permit
+             persons to whom the Software is furnished to do so, subject to the following conditions:
+            
+             The above copyright notice and this permission notice shall be included in all copies or
+             substantial portions of the Software.
+            
+             THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,
+             INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR
+             PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE
+             FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
+             OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+             DEALINGS IN THE SOFTWARE.
+            
+             */
+            PageSliderModule = (function () {
+                function PageSliderModule() {
+                }
+                return PageSliderModule;
+            }());
+            PageSliderModule = __decorate([
+                core_5.NgModule({
+                    imports: [
+                        platform_browser_1.BrowserModule
+                    ],
+                    declarations: [
+                        pageslider_component_1.KBPageSliderComponent,
+                        render_component_3.KBPagesRendererDirective,
+                        dotindicator_component_1.KBDotIndicatorComponent,
+                        navbutton_component_2.KBNavButtonComponent
+                    ],
+                    exports: [
+                        pageslider_component_1.KBPageSliderComponent,
+                        render_component_3.KBPagesRendererDirective,
+                        dotindicator_component_1.KBDotIndicatorComponent,
+                        navbutton_component_2.KBNavButtonComponent
+                    ]
+                })
+            ], PageSliderModule);
+            exports_10("PageSliderModule", PageSliderModule);
+        }
+    };
+});
+System.register("examples/hero/app", ["@angular/core", "@angular/platform-browser-dynamic", "index"], function (exports_11, context_11) {
+    "use strict";
+    var __moduleName = context_11 && context_11.id;
+    var core_6, platform_browser_dynamic_1, index_1, HeroAppComponent, HeroAppModule;
+    return {
+        setters: [
+            function (core_6_1) {
+                core_6 = core_6_1;
             },
             function (platform_browser_dynamic_1_1) {
                 platform_browser_dynamic_1 = platform_browser_dynamic_1_1;
             },
             function (index_1_1) {
                 index_1 = index_1_1;
-            }],
-        execute: function() {
+            }
+        ],
+        execute: function () {
             HeroAppComponent = (function () {
                 function HeroAppComponent() {
                     this.pageNumber = 0;
@@ -1182,42 +1279,59 @@ System.register("examples/hero/app", ['@angular/core', '@angular/platform-browse
                         }
                     ];
                 }
-                HeroAppComponent = __decorate([
-                    core_5.Component({
-                        selector: 'hero-example-app',
-                        directives: [index_1.KBPagesRendererDirective, index_1.KBPageSliderComponent, index_1.KBNavButtonComponent],
-                        template: "\n\t\t<div class=\"header\">\n\t\t\t<h1>My Great Website</h1>\n\t\t</div>\n\t\t<kb-page-slider [overlayIndicator]=\"false\" dotColor=\"black\"\n\t\t\t\t\t\t[(page)]=\"pageNumber\" [(pageCount)]=\"pageCount\">\n\n\t\t\t<!-- Pages -->\n\t\t\t<div *kbPages=\"let page of pages\" class=\"page\" [style.background]=\"page.color\">\n\t\t\t\t<div class=\"pageTitle\">{{page.title}}</div>\n\t\t\t</div>\n\n\t\t\t<!-- Navigation -->\n\t\t\t<kb-nav-button backward [showBackground]=\"true\"\n\t\t\t\t\t\t[(page)]=\"pageNumber\" [pageCount]=\"pageCount\">\n\t\t\t</kb-nav-button>\n\t\t\t<kb-nav-button forward [showBackground]=\"true\"\n\t\t\t\t\t\t[(page)]=\"pageNumber\" [pageCount]=\"pageCount\">\n\t\t\t</kb-nav-button>\n\t\t</kb-page-slider>\n\t",
-                        styles: [
-                            ".pageTitle {\n\t\t\tposition: absolute;\n\t\t\tleft: 0px;\n\t\t\tbottom: 0px;\n\t\t\twidth: 100%;\n\t\t\theight: 44px;\n\t\t\tline-height: 44px;\n\n\t\t\tbackground-color: rgba(0,0,0,0.25);\n\t\t\tcolor: white;\n\n\t\t\tfont-family: \"San Francisco\", \"Arial\", sans-serif;\n\t\t\tfont-weight: bold;\n\t\t\tfont-size: 18px;\n\t\t\ttext-align: center;\n\t\t}"
-                        ]
-                    }), 
-                    __metadata('design:paramtypes', [])
-                ], HeroAppComponent);
                 return HeroAppComponent;
             }());
+            HeroAppComponent = __decorate([
+                core_6.Component({
+                    selector: 'hero-example-app',
+                    template: "\n        <div class=\"header\">\n            <h1>My Great Website</h1>\n        </div>\n        <kb-page-slider [overlayIndicator]=\"false\" dotColor=\"black\"\n                        [(page)]=\"pageNumber\" (pageCountChange)=\"pageCount = $event\">\n\n            <!-- Pages -->\n            <div *kbPages=\"let page of pages\" class=\"page\" [style.background]=\"page.color\">\n                <div class=\"pageTitle\">{{page.title}}</div>\n            </div>\n\n            <!-- Navigation -->\n            <kb-nav-button backward [showBackground]=\"true\"\n                           [(page)]=\"pageNumber\" [pageCount]=\"pageCount\">\n            </kb-nav-button>\n            <kb-nav-button forward [showBackground]=\"true\"\n                           [(page)]=\"pageNumber\" [pageCount]=\"pageCount\">\n            </kb-nav-button>\n        </kb-page-slider>\n\t",
+                    styles: [
+                        ".pageTitle {\n\t\t\tposition: absolute;\n\t\t\tleft: 0px;\n\t\t\tbottom: 0px;\n\t\t\twidth: 100%;\n\t\t\theight: 44px;\n\t\t\tline-height: 44px;\n\n\t\t\tbackground-color: rgba(0, 0, 0, 0.25);\n\t\t\tcolor: white;\n\n\t\t\tfont-family: \"San Francisco\", \"Arial\", sans-serif;\n\t\t\tfont-weight: bold;\n\t\t\tfont-size: 18px;\n\t\t\ttext-align: center;\n\t\t}"
+                    ]
+                })
+            ], HeroAppComponent);
             exports_11("HeroAppComponent", HeroAppComponent);
+            HeroAppModule = (function () {
+                function HeroAppModule() {
+                }
+                return HeroAppModule;
+            }());
+            HeroAppModule = __decorate([
+                core_6.NgModule({
+                    imports: [
+                        index_1.PageSliderModule
+                    ],
+                    declarations: [
+                        HeroAppComponent
+                    ],
+                    bootstrap: [
+                        HeroAppComponent
+                    ]
+                })
+            ], HeroAppModule);
+            exports_11("HeroAppModule", HeroAppModule);
             // Angular Bootstrap
-            platform_browser_dynamic_1.bootstrap(HeroAppComponent);
+            platform_browser_dynamic_1.platformBrowserDynamic().bootstrapModule(HeroAppModule);
         }
-    }
+    };
 });
-System.register("examples/mobile/app", ['@angular/core', '@angular/platform-browser-dynamic', "index"], function(exports_12, context_12) {
+System.register("examples/mobile/app", ["@angular/core", "@angular/platform-browser-dynamic", "index"], function (exports_12, context_12) {
     "use strict";
     var __moduleName = context_12 && context_12.id;
-    var core_6, platform_browser_dynamic_2, index_2;
-    var MobileAppComponent;
+    var core_7, platform_browser_dynamic_2, index_2, MobileAppComponent, MobileAppModule;
     return {
-        setters:[
-            function (core_6_1) {
-                core_6 = core_6_1;
+        setters: [
+            function (core_7_1) {
+                core_7 = core_7_1;
             },
             function (platform_browser_dynamic_2_1) {
                 platform_browser_dynamic_2 = platform_browser_dynamic_2_1;
             },
             function (index_2_1) {
                 index_2 = index_2_1;
-            }],
-        execute: function() {
+            }
+        ],
+        execute: function () {
             MobileAppComponent = (function () {
                 function MobileAppComponent() {
                     this.pages = [
@@ -1251,25 +1365,39 @@ System.register("examples/mobile/app", ['@angular/core', '@angular/platform-brow
                         }
                     ];
                 }
-                MobileAppComponent = __decorate([
-                    core_6.Component({
-                        selector: 'mobile-example-app',
-                        directives: [index_2.KBPagesRendererDirective, index_2.KBPageSliderComponent],
-                        template: "\n\t\t<kb-page-slider>\n\t\t\t<div *kbPages=\"let page of pages\" class=\"page\" [style.background]=\"page.color\">\n\t\t\t\t<h1>{{page.title}}</h1>\n\t\t\t</div>\n\t\t</kb-page-slider>\n\t",
-                        styles: [
-                            ":host {\n\t\t\tposition: relative;\n\t\t\tdisplay: block;\n\t\t\twidth: 100%;\n\t\t\theight: 100%;\n\t\t}",
-                            "kb-page-slider {\n\t\t\tposition: absolute;\n\t\t\ttop: 0;\n\t\t\tbottom: 0;\n\t\t\tleft: 0;\n\t\t\tright: 0;\n\t\t}",
-                            ".page {\n\t\t\tpadding: 15px 5px;\n\t\t\ttext-align: center;\n\t\t}"
-                        ]
-                    }), 
-                    __metadata('design:paramtypes', [])
-                ], MobileAppComponent);
                 return MobileAppComponent;
             }());
+            MobileAppComponent = __decorate([
+                core_7.Component({
+                    selector: 'mobile-example-app',
+                    template: "\n        <kb-page-slider>\n            <div *kbPages=\"let page of pages\" class=\"page\" [style.background]=\"page.color\">\n                <h1>{{page.title}}</h1>\n            </div>\n        </kb-page-slider>\n\t",
+                    styles: ["\n\t\t:host {\n\t\t\tposition: relative;\n\t\t\tdisplay: block;\n\t\t\twidth: 100%;\n\t\t\theight: 100%;\n\t\t}\n\t", "\n\t\tkb-page-slider {\n\t\t\tposition: absolute;\n\t\t\ttop: 0;\n\t\t\tbottom: 0;\n\t\t\tleft: 0;\n\t\t\tright: 0;\n\t\t}\n\t", "\n\t\t.page {\n\t\t\tpadding: 15px 5px;\n\t\t\ttext-align: center;\n\t\t}"
+                    ]
+                })
+            ], MobileAppComponent);
             exports_12("MobileAppComponent", MobileAppComponent);
+            MobileAppModule = (function () {
+                function MobileAppModule() {
+                }
+                return MobileAppModule;
+            }());
+            MobileAppModule = __decorate([
+                core_7.NgModule({
+                    imports: [
+                        index_2.PageSliderModule
+                    ],
+                    declarations: [
+                        MobileAppComponent
+                    ],
+                    bootstrap: [
+                        MobileAppComponent
+                    ]
+                })
+            ], MobileAppModule);
+            exports_12("MobileAppModule", MobileAppModule);
             // Angular Bootstrap
-            platform_browser_dynamic_2.bootstrap(MobileAppComponent);
+            platform_browser_dynamic_2.platformBrowserDynamic().bootstrapModule(MobileAppModule);
         }
-    }
+    };
 });
 //# sourceMappingURL=build.js.map

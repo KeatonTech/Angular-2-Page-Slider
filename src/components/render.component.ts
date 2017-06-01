@@ -1,7 +1,4 @@
-import {
-	Directive, Input, Output, EventEmitter, ContentChild,
-	ViewContainerRef, TemplateRef, EmbeddedViewRef
-} from '@angular/core';
+import {Directive, Input, EventEmitter, ViewContainerRef, TemplateRef, EmbeddedViewRef} from '@angular/core';
 
 import { StackLocation } from "../types";
 
@@ -56,13 +53,13 @@ export class KBPagesRendererDirective {
 		this.CreateDOM();
 	}
 
-	
+
 	// PAGINATION
 
 	// Calculate page count from the loop
 	private _lastPageCount : number;
 	public get pageCount() {
-		var count = (this.collection) ? this.collection.length : 0;
+		let count = (this.collection) ? this.collection.length : 0;
 		if (this._lastPageCount != count) this.pageCountChange.emit(count);
 		return count;
 	}
@@ -73,7 +70,7 @@ export class KBPagesRendererDirective {
 	public set page(page: number) {this.SetPage(page);}
 	public SetPage(page: number) : boolean {
 		if (page < 0 || page >= this.pageCount) return false;
-		var oldPage = this._page;
+		let oldPage = this._page;
 		this._page = page;
 		this.ChangePage(page, oldPage);
 		return true;
@@ -146,7 +143,7 @@ export class KBPagesRendererDirective {
 
 	// Styles a DOM element with an X location in the container
 	protected StyleAtStackLocation(pageElement: HTMLElement, loc: StackLocation) {
-		var xLocationInContainer = loc * this.pageWidth;
+		let xLocationInContainer = loc * this.pageWidth;
 		pageElement.style.left = xLocationInContainer + "px";
 	}
 

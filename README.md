@@ -1,8 +1,8 @@
 **Mimicks the functionality of UIPageViewController in pure HTML for mobile web apps, using
-DOM recycling and CSS3 transitions for near-native performance. Built with Angular 2, and
+DOM recycling and CSS3 transitions for near-native performance. Built with Angular 4, and
 designed to work seamlessly in normal NG2 templates.**
 
-*Designed for Angular 2.3.0*
+*Designed for Angular 2.3.0+ and 4.0.0+*
 
 ### Live Demo
 https://keatontech.github.io/Angular-2-Page-Slider/
@@ -17,12 +17,11 @@ npm install --save ng2-page-slider
 ### Typescript - NG2 Mobile Slider
 
 ```typescript
-import { Component } from '@angular/core';
-import { KBPagesRendererDirective, KBPageSliderComponent } from 'ng2-page-slider';
+import {Component, NgModule} from '@angular/core';
+import {PageSliderModule}    from 'ng2-page-slider';
 
 @Component({
 	selector: 'example-component',
-	directives: [KBPagesRendererDirective, KBPageSliderComponent],
 	template: `
 		<kb-page-slider>
 			<div *kbPages="let page of pages" class="page" [style.background]="page.color">
@@ -36,23 +35,31 @@ export class ExampleComponent {
 		{title: "Page 1", color: "red"},
 		{title: "Page 2", color: "green"}
 	];
+} 
+
+@NgModule({
+	imports: [
+		PageSliderModule
+	],
+	declarations: [
+		ExampleComponent
+	]
+})
+export class ExampleModule {
 }
 ```
 
 ### Typescript - NG2 Desktop Hero w/ Buttons
 
 ```typescript
-import { Component } from '@angular/core';
-import { 
-	KBPagesRendererDirective, KBPageSliderComponent, KBNavButtonComponent
-} from 'ng2-page-slider';
+import {Component, NgModule} from '@angular/core';
+import {PageSliderModule}    from 'ng2-page-slider';
 
 @Component({
 	selector: 'example-component',
-	directives: [KBPagesRendererDirective, KBPageSliderComponent, KBNavButtonComponent],
 	template: `
 		<kb-page-slider [overlayIndicator]="false" dotColor="black"
-						[(page)]="pageNumber">
+						[(page)]="pageNumber" (pageCountChange)="pageCount = $event">
 
 			<!-- Pages -->
 			<div *kbPages="let page of pages" [style.background]="page.image"></div>
@@ -76,6 +83,17 @@ export class ExampleComponent {
 		{image: "http://asset.url/1.png"},
 		{image: "http://asset.url/2.png"}
 	];
+}
+
+@NgModule({
+	imports: [
+		PageSliderModule
+	],
+	declarations: [
+		ExampleComponent
+	]
+})
+export class ExampleModule {
 }
 ```
 

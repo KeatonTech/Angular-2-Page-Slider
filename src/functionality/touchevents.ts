@@ -1,5 +1,5 @@
 // INTERACTIVITY - TOUCH EVENTS =============================================================
-// Handles HTML touch events and formats it nicely for 
+// Handles HTML touch events and formats it nicely for
 
 import { PageSliderControlAPI } from "../types";
 
@@ -21,7 +21,7 @@ const kRejectAtY = 20;
 export class TouchEventHandler {
 	constructor(
 		private delegate : PageSliderControlAPI,
-		private element : HTMLElement
+		element : HTMLElement
 	) {
 
 		// Add touch event listeners
@@ -50,7 +50,7 @@ export class TouchEventHandler {
 	private CaptureXDiff(diff: number) {
 		this.diffs_x[this.diffs_index] = diff;
 
-		var ctime = new Date().getTime();
+		let ctime = new Date().getTime();
 		this.times_x[this.diffs_index] = ctime - this.last_sample_time;
 		this.last_sample_time = ctime;
 
@@ -60,7 +60,7 @@ export class TouchEventHandler {
 	// Returns the scroll momentum in fractional page widths per second.
 	// (fpw/s * page width = px/s)
 	private get momentum_x() : number {
-		var acc = 0;
+		let acc = 0;
 		for (let i = 0; i < this.diffs_x.length; i++) {
 			acc += (this.diffs_x[i] / this.times_x[i]) * 1000 / 3;
 		}
@@ -83,11 +83,11 @@ export class TouchEventHandler {
 	}
 
 	public TouchMove(event: TouchEvent) {
-		var touch = this.GetTrackingTouch(event.changedTouches);
+		let touch = this.GetTrackingTouch(event.changedTouches);
 		if (touch == null) return;
 
-		var new_x = touch.clientX / this.delegate.pageWidth;
-		var diff_x = new_x - this.current_x;
+		let new_x = touch.clientX / this.delegate.pageWidth;
+		let diff_x = new_x - this.current_x;
 
 		if (!this.accepted) {
 			if (Math.abs(new_x - this.start_x) >= kAcceptAtX) {
@@ -109,7 +109,7 @@ export class TouchEventHandler {
 	}
 
 	public TouchEnd(event: TouchEvent) {
-		var touch = this.GetTrackingTouch(event.changedTouches);
+		let touch = this.GetTrackingTouch(event.changedTouches);
 		if (touch == null) return;
 
 		this.tracking = null;
@@ -119,7 +119,7 @@ export class TouchEventHandler {
 		this.delegate.EndScroll();
 
 		this.current_scroll = 1;
-		var ending_momentum_x = this.momentum_x;
+		let ending_momentum_x = this.momentum_x;
 
 		if (this.current_x + kDistanceThreshold < this.start_x) {
 			if (
@@ -149,8 +149,8 @@ export class TouchEventHandler {
 
 	private GetTrackingTouch(list: TouchList) {
 		if (this.tracking === null) return null;
-		for (var i = 0; i < list.length; i++) {
-			var touch = list.item(i);
+		for (let i = 0; i < list.length; i++) {
+			let touch = list.item(i);
 			if (touch.identifier == this.tracking) return touch;
 		}
 		return null;

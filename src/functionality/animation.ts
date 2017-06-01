@@ -22,7 +22,7 @@ export class SlideAnimation {
 	// Hard-coded to the 'left' property because that's all we use here
 	// but certainly this code could be generalized if needed.
 	constructor (
-		private element : HTMLElement,
+		element : HTMLElement,
 		private current_px : number,
 		private dest_px : number,
 		private momentum_px : number,
@@ -33,8 +33,8 @@ export class SlideAnimation {
 		}
 
 		// Set up the CSS transition
-		var duration = Math.round(this.CalculateDuration());
-		var tProperty = `left ${duration}ms ${kEasingFunction}`;
+		let duration = Math.round(this.CalculateDuration());
+		let tProperty = `left ${duration}ms ${kEasingFunction}`;
 		element.style.transition = tProperty;
 		element.style.webkitTransition = tProperty;
 
@@ -47,7 +47,7 @@ export class SlideAnimation {
 			// Wait for that to finish and clean it up
 			setTimeout(()=>{
 				for (let f of this.on_complete) f();
-				
+
 				element.style.transition = "";
 				element.style.webkitTransition = "";
 			}, duration + 10);
@@ -63,12 +63,12 @@ export class SlideAnimation {
 	// We could do this with 100% accuracy by determining the slope
 	// of the bezier easing curve but ... meh. It's about 1.5-ish.
 	private CalculateDuration() {
-		var travel_px = this.dest_px - this.current_px;
+		let travel_px = this.dest_px - this.current_px;
 
 		// If the momentum is going the same direction as the movement, use it!
 		if (this.momentum_px != 0 && (this.momentum_px < 0) == (travel_px < 0)) {
-			var linear_duration = 1000 * Math.abs(travel_px) / Math.abs(this.momentum_px);
-			var estimate = linear_duration * kEasingStartSlope;
+			let linear_duration = 1000 * Math.abs(travel_px) / Math.abs(this.momentum_px);
+			let estimate = linear_duration * kEasingStartSlope;
 			return Math.max(Math.min(estimate, kMaxDuration), kMinDuration);
 
 		// Otherwise, throw it out and use our default duration
