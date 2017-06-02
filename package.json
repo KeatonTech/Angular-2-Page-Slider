@@ -11,8 +11,9 @@
     "watchExamples": "tsc -w -p ./examples"
   },
   "main": "./bundles/ng2-page-slider.umd.js",
-  "module": "./bundles/ng2-page-slider.cjs.js",
+  "module": "./bundles/ng2-page-slider.es.js",
   "es2015": "./bundles/ng2-page-slider.es.js",
+  "types": "./typings/ng2-page-slider.d.ts",
   "typings": "./typings/ng2-page-slider.d.ts",
   "keywords": [
     "Angular2",
